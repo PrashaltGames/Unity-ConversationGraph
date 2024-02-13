@@ -1,0 +1,16 @@
+{
+  "name": "com.prashalt.unity.conversationgraph",
+  "displayName": "Prashalt Conversation Graph",
+  "version": "2.0.0",
+  "unity": "2022.3",
+  "description": "Node-based conversation system",
+  "keywords": ["Script", "UI"],
+  "author": {
+      "name": "AtsuAtsu(Prashalt Games)",
+      "email": "kanpyou0120@gmail.com",
+      "url": "https://github.com/AtsuAtsu0120"
+  },
+  "dependencies": {
+      "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask"
+  }
+}
