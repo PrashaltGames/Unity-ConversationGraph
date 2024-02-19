@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:appui="Unity.AppUI.UI" xsi="http://www.w3.org/2001/XMLSchema-instance" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+
+    <appui:Panel class="inspector-panel">
+        <ui:VisualElement class="inspector-panel">
+            
+            <!-- Node name -->
+            <appui:Heading text="Narrator Node"/>
+        
+            <!-- main content -->
+            <ui:VisualElement class="inspector-content">
+                <ui:ScrollView/>
+            
+                <appui:Stepper/>
+            </ui:VisualElement>
+            
+        </ui:VisualElement>
+    </appui:Panel>
+
+</ui:UXML>

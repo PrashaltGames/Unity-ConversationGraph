@@ -1,0 +1,15 @@
+.root-main {
+    width: 100%;
+    height: 100%;
+}
+
+.inspector-panel {
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+}
+.inspector-content {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+}

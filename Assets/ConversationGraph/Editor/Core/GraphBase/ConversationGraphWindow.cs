@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using ConversationGraph.Editor.Foundation;
-using ConversationGraph.Runtime.Foundation;
+using ConversationGraph.Editor.Foundation.Nodes;
 using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -28,11 +28,17 @@ namespace ConversationGraph.Editor.Core.GraphBase
         
         #endregion
         #region Methods
-        
+
+        public void ShowInspector(BaseNode node)
+        {
+            var window = GetWindow<ConversationGraphInspector>();
+            window.Show();
+            window.SelectedNode = node;
+        }
         private async void OnEnable()
         {
             rootVisualElement.Clear();
-
+            
             await UniTask.WaitUntil(() => Asset is not null);
             var graphBase = new ConversationGraphView(this);
             rootVisualElement.Add(graphBase);

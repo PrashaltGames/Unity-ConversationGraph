@@ -14,8 +14,11 @@ namespace ConversationGraph.Editor.Core.GraphBase
 {
     public class ConversationGraphView : GraphView
     {
+        private ConversationGraphWindow _window;
         public ConversationGraphView(ConversationGraphWindow window)
         {
+            _window = window;
+            
             // Set size
             this.StretchToParentSize();
             
@@ -41,9 +44,9 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 AddElement(endNode);
 
                 startNode.Initialize(null, 
-                    new Rect(100f, 150f, default, default), "");
+                    new Rect(100f, 150f, default, default), "", window.ShowInspector);
                 endNode.Initialize(null, 
-                    new Rect(800f, 150f, default, default), "");
+                    new Rect(800f, 150f, default, default), "", window.ShowInspector);
             }
             else
             {
@@ -104,7 +107,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 // }
 
                 AddElement(instance);
-                instance.Initialize(nodeData.Id, nodeData.Rect, nodeData.Json);
+                instance.Initialize(nodeData.Id, nodeData.Rect, nodeData.Json, _window.ShowInspector);
             }
         }
         private async void ShowEdgeFromAsset(ConversationGraphAsset asset)
@@ -172,17 +175,17 @@ namespace ConversationGraph.Editor.Core.GraphBase
             {
                 var type = searchTreeEntry.userData as Type;
                 var node = Activator.CreateInstance(type) as Node;
-
+                
                 // マウスの位置にノードを追加
                 var worldMousePosition = _editorWindow.rootVisualElement.ChangeCoordinatesTo(_editorWindow.rootVisualElement.parent, context.screenMousePosition - _editorWindow.position.position);
                 var localMousePosition = _graphView.contentViewContainer.WorldToLocal(worldMousePosition);
                 var nodePosition = new Rect(localMousePosition, new Vector2(100, 100));
                 node.SetPosition(nodePosition);
 
-                // if (node is BaseNode baseNode)
-                // {
-                //     baseNode.Initialize(baseNode.Id, nodePosition, "");
-                // }
+                if (node is BaseNode baseNode)
+                {
+                    baseNode.Initialize(baseNode.Id, nodePosition, "", _editorWindow.ShowInspector);
+                }
                 _graphView.AddElement(node);
                 return true;
             }

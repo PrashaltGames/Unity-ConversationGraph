@@ -20,14 +20,8 @@ namespace ConversationGraph.Runtime.Foundation
 
         public EdgeData(string id, string baseNodeId, string targetNodeId)
         {
-            if(id == null || id == "")
-            {
-                this.Id = System.Guid.NewGuid().ToString("N");
-            }
-            else
-            {
-                this.Id = id;
-            }
+            Id = string.IsNullOrEmpty(id) ?
+                Guid.NewGuid().ToString("N") : id;
 
             BaseNodeId = baseNodeId;
             TargetNodeId = targetNodeId;

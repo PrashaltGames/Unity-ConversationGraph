@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -7,9 +8,10 @@ namespace ConversationGraph.Editor.Foundation.Nodes
     public abstract class BaseNode : Node
     {
         public string Id { get; private set; }
+        private Action<BaseNode> _onSelect;
         public BaseNode()
         {
-            Id = System.Guid.NewGuid().ToString();
+            Id = Guid.NewGuid().ToString();
         }
         
         public BaseNode(string id)
@@ -17,14 +19,19 @@ namespace ConversationGraph.Editor.Foundation.Nodes
             Id = id;
         }
 
+        public override void OnSelected()
+        {
+            _onSelect.Invoke(this);
+        }
+
         public virtual string ToJson()
         {
             return JsonUtility.ToJson(this);
         }
 
-        public virtual void Initialize(string id, Rect rect, string json)
+        public virtual void Initialize(string id, Rect rect, string json, Action<BaseNode> onSelect)
         {
-            if (id is null or "")
+            if (string.IsNullOrEmpty(id))
             {
                 Id = Guid.NewGuid().ToString();
             }
@@ -33,8 +40,9 @@ namespace ConversationGraph.Editor.Foundation.Nodes
                 Id = id;
             }
             SetPosition(rect);
+
+            _onSelect += onSelect;
         }
-        
         
         #region Utility
         
