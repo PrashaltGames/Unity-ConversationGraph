@@ -1,3 +1,4 @@
+using ConversationGraph.Runtime.Foundation;
 using UnityEditor.Experimental.GraphView;
 
 namespace ConversationGraph.Editor.Foundation.Nodes.KeyNodes
@@ -9,6 +10,8 @@ namespace ConversationGraph.Editor.Foundation.Nodes.KeyNodes
             title = "End";
             
             AddInputPort("End", Port.Capacity.Single, typeof(float));
+
+            Data = new EndData();
         }
     }
 }

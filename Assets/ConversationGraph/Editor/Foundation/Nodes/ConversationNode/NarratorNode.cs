@@ -2,7 +2,7 @@ using UnityEditor.Experimental.GraphView;
 
 namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
 {
-    public class NarratorNode : ConversationNode
+    public class NarratorNode : MessageNode
     {
         public NarratorNode() : base()
         {

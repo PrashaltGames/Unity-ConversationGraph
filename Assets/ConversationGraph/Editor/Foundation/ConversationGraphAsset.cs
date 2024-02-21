@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using ConversationGraph.Runtime.Foundation;
+using UnityEditor;
 using UnityEngine;
 
 namespace ConversationGraph.Editor.Foundation
@@ -100,7 +102,20 @@ namespace ConversationGraph.Editor.Foundation
             _edges.RemoveAt(index);
             return true;
         }
-        
+        /// <summary>
+        /// Clear the nodes list.
+        /// </summary>
+        public void ClearNodes()
+        {
+            _nodes.Clear();
+        }
+        /// <summary>
+        /// Clear the edges list.
+        /// </summary>
+        public void ClearEdges()
+        {
+            _edges.Clear();
+        }
         /// <summary>
         /// Find the node from this asset.
         /// </summary>

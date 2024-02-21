@@ -1,15 +1,38 @@
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ConversationGraph.Runtime.Foundation
 {
-    public struct ConversationData
+    public class ConversationData
     {
-        public ConversationData(string speakerName, IEnumerable<string> textList)
+        
+    }
+
+    [Serializable]
+    public class MessageData : ConversationData
+    {
+        public List<string> MessageList
         {
-            SpeakerName = speakerName;
-            TextList = textList;
+            get => _messageList; 
+            set => _messageList = value;
         }
-        public string SpeakerName { get; private set; }
-        public IEnumerable<string> TextList { get; private set; }
+        [SerializeField] private List<string> _messageList = new();
+    }
+
+    [Serializable]
+    public class StartData : ConversationData
+    {
+        [SerializeField] private string _title;
+
+        public StartData(string title)
+        {
+            _title = title;
+        }
+    }
+    [Serializable]
+    public class EndData : ConversationData
+    {
+        
     }
 }

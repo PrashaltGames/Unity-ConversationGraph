@@ -1,3 +1,4 @@
+using ConversationGraph.Runtime.Foundation;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,6 +15,8 @@ namespace ConversationGraph.Editor.Foundation.Nodes.KeyNodes
             
             mainContainer.Add(new Label("Title"));
             mainContainer.Add(new TextField());
+
+            Data = new StartData("Title");
         }
 
         public override string ToJson()

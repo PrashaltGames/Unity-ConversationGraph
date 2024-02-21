@@ -1,3 +1,12 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:Label tabindex="-1" text="Start" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 32px; -unity-font-style: bold; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" />
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:appui="Unity.AppUI.UI" xsi="http://www.w3.org/2001/XMLSchema-instance" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+
+    <appui:Panel class="inspector-panel">
+        <ui:VisualElement class="inspector-panel">
+            
+            <!-- Node name -->
+            <appui:Heading text="Start Node"/>
+            
+        </ui:VisualElement>
+    </appui:Panel>
+
 </ui:UXML>

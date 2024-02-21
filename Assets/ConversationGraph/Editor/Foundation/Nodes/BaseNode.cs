@@ -1,13 +1,17 @@
 using System;
+using ConversationGraph.Runtime.Foundation;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace ConversationGraph.Editor.Foundation.Nodes
 {
+    [Serializable]
     public abstract class BaseNode : Node
     {
         public string Id { get; private set; }
+        public ConversationData Data { get => _data; set => _data = value; }
+        [SerializeField] private ConversationData _data;
         private Action<BaseNode> _onSelect;
         public BaseNode()
         {

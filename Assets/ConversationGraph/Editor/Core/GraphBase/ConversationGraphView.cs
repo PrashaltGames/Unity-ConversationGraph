@@ -113,7 +113,6 @@ namespace ConversationGraph.Editor.Core.GraphBase
         private async void ShowEdgeFromAsset(ConversationGraphAsset asset)
         {
             await UniTask.Delay(10);
-            BaseNode previousBaseNode = null;
             foreach (var edgeData in asset.Edges)
             {
                 var baseNodeGuidWithCount = edgeData.BaseNodeId.Split(":");
