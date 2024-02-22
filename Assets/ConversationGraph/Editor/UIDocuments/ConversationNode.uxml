@@ -1,3 +1,3 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:ListView focusable="false" name="messages" virtualization-method="FixedHeight" show-foldout-header="true" show-add-remove-footer="false" header-title="Messages" horizontal-scrolling="true" show-border="true" reorder-mode="Animated" reorderable="false" style="height: 150px; align-self: stretch;" />
+    <ui:ListView focusable="false" name="messages" virtualization-method="FixedHeight" show-foldout-header="true" show-add-remove-footer="false" header-title="Messages" horizontal-scrolling="true" show-border="true" reorder-mode="Animated" reorderable="false" style="height: 150px; align-self: stretch; background-color: rgb(72, 72, 72);" />
 </ui:UXML>

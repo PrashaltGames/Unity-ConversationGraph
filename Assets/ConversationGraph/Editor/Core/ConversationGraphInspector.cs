@@ -5,11 +5,13 @@ using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
 using Unity.AppUI.UI;
 using UnityEditor;
 using UnityEngine.UIElements;
+using TextField = Unity.AppUI.UI.TextField;
 
 namespace ConversationGraph.Editor.Core
 {
     public class ConversationGraphInspector : EditorWindow
     {
+        private const string SpeakerUIDocumentGuid = "eca362e8131f79d45801f2ec6085117b";
         private const string NarratorUIDocumentGuid = "4807ace79a615444199b94d1e67337c5";
         private const string StartUIDocumentGuid = "813588f557bf22b4693716ad76477b70";
         private const string EndUIDocumentGuid = "3130ce218a52aa440aae8d27541b8ce5";
@@ -50,6 +52,9 @@ namespace ConversationGraph.Editor.Core
             
             switch (_selectedNode)
             {
+                case SpeakerNode speaker:
+                    ShowSpeakerInspector(speaker);
+                    break;
                 case NarratorNode narrator:
                     ShowNarratorInspector(narrator);
                     break;
@@ -66,6 +71,37 @@ namespace ConversationGraph.Editor.Core
         {
             rootVisualElement.Clear();
             _selectedElement = (-1, null);
+        }
+
+        private void ShowSpeakerInspector(SpeakerNode node)
+        {
+            var speakerUI = 
+                ConversationGraphEditorUtility.CreateElementFromGuid(SpeakerUIDocumentGuid);
+
+            var textField = speakerUI.Q<TextField>();
+            textField.value = node.MessageData.Speaker;
+            textField.RegisterValueChangedCallback(e => SpeakerChangeEvent(e, node));
+            
+            // TODO: Method化
+            // Set up ScrollView
+            var scrollView = speakerUI.Q<ScrollView>();
+            int index = 0;
+            foreach (var message in node.MessageData.MessageList)
+            {
+                var textArea = CreateNewTextArea(node, message);
+                var i = index;
+                textArea.RegisterCallback<ClickEvent>(_ => OnSelectTextArea(textArea, i));
+                
+                scrollView.Add(textArea);
+
+                index++;
+            }
+            
+            // Set up Stepper
+            var stepper = speakerUI.Q<Stepper>();
+            stepper.RegisterValueChangedCallback(i => StepperChangeEvent(i.newValue, node, scrollView));
+            
+            rootVisualElement.Add(speakerUI);
         }
         private void ShowNarratorInspector(NarratorNode node)
         {
@@ -91,6 +127,23 @@ namespace ConversationGraph.Editor.Core
             stepper.RegisterValueChangedCallback(i => StepperChangeEvent(i.newValue, node, scrollView));
             
             rootVisualElement.Add(narratorUI);
+        }
+        private void ShowStartInspector(in StartNode node)
+        {
+            // MainContainerをテンプレートからコピー
+            var startUI =
+                ConversationGraphEditorUtility.CreateElementFromGuid(StartUIDocumentGuid);
+            
+            rootVisualElement.Add(startUI);
+        }
+
+        private void ShowEndInspector(in EndNode node)
+        {
+            // MainContainerをテンプレートからコピー
+            var endUI =
+                ConversationGraphEditorUtility.CreateElementFromGuid(EndUIDocumentGuid);
+            
+            rootVisualElement.Add(endUI);
         }
 
         private void StepperChangeEvent(in int i, MessageNode node, in VisualElement view)
@@ -120,7 +173,12 @@ namespace ConversationGraph.Editor.Core
             }
         }
 
-        private void TextChangeEvent(in ChangeEvent<string> e, in MessageNode node)
+        private void SpeakerChangeEvent(in ChangeEvent<string> e, in SpeakerNode node)
+        {
+            node.MessageData.Speaker = e.newValue;
+            node.ChangeSpeakerName(e.newValue);
+        }
+        private void MessageChangeEvent(in ChangeEvent<string> e, in MessageNode node)
         {
             node.MessageData.MessageList[_selectedElement.index] = e.newValue;
             node.RefreshListView();
@@ -141,7 +199,7 @@ namespace ConversationGraph.Editor.Core
             textArea.style.marginRight = 2;
             textArea.style.marginLeft = 2;
             textArea.style.width = Length.Percent(100);
-            textArea.RegisterValueChangedCallback(e => TextChangeEvent(e, node));
+            textArea.RegisterValueChangedCallback(e => MessageChangeEvent(e, node));
 
             return textArea;
         }
@@ -150,23 +208,6 @@ namespace ConversationGraph.Editor.Core
         {
             _selectedElement.element = element;
             _selectedElement.index = index;
-        }
-        private void ShowStartInspector(in StartNode node)
-        {
-            // MainContainerをテンプレートからコピー
-            var startUI =
-                ConversationGraphEditorUtility.CreateElementFromGuid(StartUIDocumentGuid);
-            
-            rootVisualElement.Add(startUI);
-        }
-
-        private void ShowEndInspector(in EndNode node)
-        {
-            // MainContainerをテンプレートからコピー
-            var endUI =
-                ConversationGraphEditorUtility.CreateElementFromGuid(EndUIDocumentGuid);
-            
-            rootVisualElement.Add(endUI);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ConversationGraph.Runtime.Core.Facilitators;
 using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
 using TMPro;
@@ -8,29 +9,41 @@ namespace ConversationGraph.Runtime.Core.Components
 {
     public class ConversationSystem : MonoBehaviour
     {
-        [Header("-- Conversation GUI --")] 
-        [SerializeField] private TextMeshProUGUI _text;
-        [SerializeField] private TextMeshProUGUI _speaker;
-        [SerializeField] private TextMeshProUGUI _title;
+        [Header("▼ Conversation GUI")] 
+        [SerializeField] private TextMeshProUGUI _messageText;
+        [SerializeField] private TextMeshProUGUI _speakerText;
+        [SerializeField] private TextMeshProUGUI _titleText;
 
         [Header("▼ Conversation Asset")] 
-        [SerializeField] private ConversationAsset _asset;
+        [SerializeField] private ConversationAsset _conversationAsset;
         
         
-        private IFacilitator _facilitator;
-        private List<ConversationData> _datas = new();
+        private BaseFacilitator _baseFacilitator;
 
         public void Start()
         {
+            _baseFacilitator = new BasicFacilitator();
             StartConversation();
         }
 
         public void StartConversation()
         {
-            foreach (var saveData in _asset.ConversationSaveData)
+            var datas = 
+                GetConversationDicFromSaveDataDic(_conversationAsset.ConversationSaveData);
+            
+            _baseFacilitator.StartConversation(_conversationAsset.StartId, _titleText,_speakerText, _messageText, datas);
+        }
+
+        private Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(Dictionary<string, ConversationSaveData> saveDataDic)
+        {
+            var resultDic = new Dictionary<string, ConversationData>();
+            foreach (var saveData in 
+                     _conversationAsset.ConversationSaveData)
             {
-                _datas.Add(ConversationUtility.JsonToConversationData(saveData));
+                resultDic.Add(saveData.Key, ConversationUtility.JsonToConversationData(saveData.Value));
             }
+
+            return resultDic;
         }
     }
 }

@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace ConversationGraph.Runtime.Foundation
 {
     public class ConversationAsset : ScriptableObject
     {
-        public List<ConversationSaveData> ConversationSaveData
+        public SerializedDictionary<string, ConversationSaveData> ConversationSaveData
         {
             get => _conversationSaveData;
             set => _conversationSaveData = value;
@@ -18,9 +16,16 @@ namespace ConversationGraph.Runtime.Foundation
             get => _title;
             set => _title = value;
         }
+
+        public string StartId
+        {
+            get => _startId;
+            set => _startId = value;
+        }
         
-        [SerializeField] private List<ConversationSaveData> _conversationSaveData = new();
+        [SerializeField] private SerializedDictionary<string, ConversationSaveData> _conversationSaveData = new();
         [SerializeField] private string _title;
+        [SerializeField] private string _startId;
     }
     [Serializable]
     public class ConversationSaveData

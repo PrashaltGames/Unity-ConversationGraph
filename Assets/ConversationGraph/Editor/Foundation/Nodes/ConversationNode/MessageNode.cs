@@ -1,6 +1,5 @@
 using System;
 using ConversationGraph.Runtime.Foundation;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,33 +10,20 @@ namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
     public class MessageNode : BaseNode
     {
         public MessageData MessageData => Data as MessageData;
-        
-        private const string UIDocumentGuid = "62b599624b359384ea2c322e81eab23a";
-        private ListView _listView;
+        protected ListView _listView;
         public MessageNode()
         {
             AddInputPort("Input", Port.Capacity.Single, typeof(float));
-            
-            //MainContainerをテンプレートからコピー
-            var assetPath = AssetDatabase.GUIDToAssetPath(UIDocumentGuid);
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(assetPath);
-            var defaultContainer = visualTree.Instantiate();
-            
-            _listView = defaultContainer.Q<ListView>();
-            _listView.makeItem += CreateMessageElement;
-            _listView.bindItem += SetMessage;
-            
-            mainContainer.Add(defaultContainer);
 
             Data = new MessageData();
         }
 
-        private void SetMessage(VisualElement visualElement, int index)
+        protected void SetMessage(VisualElement visualElement, int index)
         {
             visualElement.Q<Label>().text = MessageData.MessageList[index];
         }
 
-        private VisualElement CreateMessageElement()
+        protected VisualElement CreateMessageElement()
         {
             var label = new Label
             {
@@ -69,7 +55,8 @@ namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
             else
             {
                 var data = JsonUtility.FromJson<MessageData>(json);
-                MessageData.MessageList = data.MessageList;   
+                MessageData.Speaker = data.Speaker;
+                MessageData.MessageList = data.MessageList;
             }
             
             _listView.itemsSource = MessageData.MessageList;

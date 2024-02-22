@@ -134,30 +134,76 @@ namespace ConversationGraph.Editor.Core.GraphBase
 
         private void AddNewSubAsset()
         {
-            RemoveAllSubAsset();
-
-            var subAsset = CreateInstance<ConversationAsset>();
-            subAsset.name = "Conversation Asset";
-            foreach (var node in _view.nodes)
+            var subAsset = GetSubAsset();
+            if (subAsset is null)
             {
-                if (node is BaseNode baseNode)
+                subAsset = CreateInstance<ConversationAsset>();
+                subAsset.name = "Conversation Asset";
+                AssetDatabase.AddObjectToAsset(subAsset, Asset);
+            }
+            
+            subAsset.ConversationSaveData.Clear();
+            var nodes = _view.nodes.ToList();
+            var count = nodes.Count;
+            for (var i = 0; i < count; i++)
+            {
+                if (nodes[i] is BaseNode baseNode)
                 {
+                    baseNode.Data.NextDataIds = GetNextData(baseNode.Id);
                     var dataJson = JsonUtility.ToJson(baseNode.Data);
                     var saveData = new ConversationSaveData(baseNode.Data.GetType().FullName, dataJson);
-                    subAsset.ConversationSaveData.Add(saveData);
+
+                    if (baseNode.Data.GetType() == typeof(StartData))
+                    {
+                        subAsset.StartId = baseNode.Id;
+                    }
+                    subAsset.ConversationSaveData.Add(baseNode.Id, saveData);
                 }
             }
-            AssetDatabase.AddObjectToAsset(subAsset, Asset);
         }
-        private void RemoveAllSubAsset()
+        private ConversationAsset GetSubAsset()
         {
-            foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(Asset))) 
+            foreach (var asset in 
+                     AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(Asset))) 
             {
-                if (AssetDatabase.IsSubAsset(asset)) 
+                if (AssetDatabase.IsSubAsset(asset) && asset is ConversationAsset conversationAsset)
                 {
-                    DestroyImmediate(asset, true);
+                    return conversationAsset;
                 }
             }
+
+            return null;
+        }
+
+        private List<string> GetNextData(string baseNodeId)
+        {
+            var list = new List<string>();
+            foreach (var edge in _view.edges)
+            {
+                var edgeData = ConversationGraphEditorUtility.EdgeToData(edge);
+                if (edgeData is null) return null;
+
+                if (edgeData.BaseNodeId == baseNodeId)
+                {
+                    list.AddRange(GetTargetNodeIdFromBaseNodeId(edgeData.TargetNodeId));
+                }
+            }
+
+            return list;
+        }
+
+        private List<string> GetTargetNodeIdFromBaseNodeId(string targetNodeId)
+        {
+            var list = new List<string>();
+            foreach (var node in _view.nodes)
+            {
+                if (node is BaseNode baseNode && baseNode.Id == targetNodeId)
+                {
+                    list.Add(baseNode.Id);
+                }
+            }
+
+            return list;
         }
         #endregion
 
