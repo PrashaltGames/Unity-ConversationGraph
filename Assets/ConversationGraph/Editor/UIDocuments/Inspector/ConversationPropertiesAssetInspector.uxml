@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" appui="Unity.AppUI.UI" xsi="http://www.w3.org/2001/XMLSchema-instance" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False" schemaLocation="Unity.AppUI.UI file:/C:/Users/Kaido-Atsuya/ConversationGraph-v2/UIElementsSchema/Unity.AppUI.UI.xsd">
+    <Unity.AppUI.UI.Panel class="inspector-panel" style="height: 700%; min-height: auto;">
+        <ui:VisualElement class="inspector-panel" style="height: 700%; min-height: 250px;">
+            <ui:ScrollView name="ScrollView" style="height: 700px; min-height: 300px;" />
+            <Unity.AppUI.UI.Stepper />
+        </ui:VisualElement>
+    </Unity.AppUI.UI.Panel>
+</ui:UXML>

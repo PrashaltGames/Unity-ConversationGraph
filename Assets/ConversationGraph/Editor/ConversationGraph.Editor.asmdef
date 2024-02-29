@@ -2,14 +2,11 @@
     "name": "ConversationGraph.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:9e0e903e42835774c9c557f18e5300a7",
         "GUID:2f101f87087d58f4ba92ca00188e763d",
-        "GUID:30599ed272688438b8375570b417ba36"
+        "GUID:a6a4272258702bd44a5ee04a76b61bf5",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

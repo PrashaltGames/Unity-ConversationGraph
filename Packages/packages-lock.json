@@ -25,7 +25,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.dt.app-ui": {
-      "version": "1.0.0-pre.15",
+      "version": "1.0.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {

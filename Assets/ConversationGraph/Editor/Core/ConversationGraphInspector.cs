@@ -1,5 +1,4 @@
-﻿using ConversationGraph.Editor.Foundation;
-using ConversationGraph.Editor.Foundation.Nodes;
+﻿using ConversationGraph.Editor.Foundation.Nodes;
 using ConversationGraph.Editor.Foundation.Nodes.ConversationNode;
 using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
 using Unity.AppUI.UI;
@@ -154,7 +153,7 @@ namespace ConversationGraph.Editor.Core
                 node.MessageData.MessageList.Add("");
                 var textArea = CreateNewTextArea(node);
                 var index = node.MessageData.MessageList.Count - 1;
-                textArea.RegisterCallback<ClickEvent>(e => OnSelectTextArea(textArea, index));
+                textArea.RegisterCallback<ClickEvent>(_ => OnSelectTextArea(textArea, index));
                 view.Add(textArea);
             }
             // Remove
@@ -178,7 +177,7 @@ namespace ConversationGraph.Editor.Core
             node.MessageData.Speaker = e.newValue;
             node.ChangeSpeakerName(e.newValue);
         }
-        private void MessageChangeEvent(in ChangeEvent<string> e, in MessageNode node)
+        private void MessageChangeEvent(in ChangeEvent<string> e, in MessageNode node, in TextArea textArea)
         {
             node.MessageData.MessageList[_selectedElement.index] = e.newValue;
             node.RefreshListView();
@@ -199,7 +198,7 @@ namespace ConversationGraph.Editor.Core
             textArea.style.marginRight = 2;
             textArea.style.marginLeft = 2;
             textArea.style.width = Length.Percent(100);
-            textArea.RegisterValueChangedCallback(e => MessageChangeEvent(e, node));
+            textArea.RegisterValueChangedCallback(e => MessageChangeEvent(e, node, textArea));
 
             return textArea;
         }

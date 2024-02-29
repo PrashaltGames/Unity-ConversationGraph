@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using ConversationGraph.Editor.Foundation.Nodes;
 using ConversationGraph.Runtime.Foundation;
@@ -8,13 +6,10 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace ConversationGraph.Editor.Foundation
+namespace ConversationGraph.Editor.Core
 {
     public static class ConversationGraphEditorUtility
     {
-        public const string PackageFilePath = "Assets/ConversationGraph/"
-            /*"Packages/com.prashalt.unity.conversationgraph/"*/;
-
         public static VisualElement CreateElementFromGuid(string guid)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
@@ -54,9 +49,7 @@ namespace ConversationGraph.Editor.Foundation
             var baseNode = edge.output.node as BaseNode;
 
             if (baseNode is null || targetNode is null) return null;
-
             var edgeData = new EdgeData("", baseNode.Id, targetNode.Id);
-
             return edgeData;
         }
 

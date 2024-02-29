@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using ConversationGraph.Runtime.Core.Base;
 using ConversationGraph.Runtime.Core.Facilitators;
-using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
 using TMPro;
 using UnityEngine;
@@ -16,6 +16,7 @@ namespace ConversationGraph.Runtime.Core.Components
 
         [Header("▼ Conversation Asset")] 
         [SerializeField] private ConversationAsset _conversationAsset;
+        [SerializeField] private ConversationPropertyAsset _propertyAsset;
         
         
         private BaseFacilitator _baseFacilitator;
@@ -31,7 +32,29 @@ namespace ConversationGraph.Runtime.Core.Components
             var datas = 
                 GetConversationDicFromSaveDataDic(_conversationAsset.ConversationSaveData);
             
-            _baseFacilitator.StartConversation(_conversationAsset.StartId, _titleText,_speakerText, _messageText, datas);
+            _baseFacilitator.StartConversation(
+                _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
+                datas, _propertyAsset);
+        }
+
+        public void StartConversation(ConversationAsset asset, ConversationPropertyAsset propertyAsset)
+        {
+            var datas = 
+                GetConversationDicFromSaveDataDic(asset.ConversationSaveData);
+            
+            _baseFacilitator.StartConversation(
+                _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
+                datas, propertyAsset);
+        }
+
+        public void StartConversation(Dictionary<string, string> propertiesDictionary)
+        {
+            var datas = 
+                GetConversationDicFromSaveDataDic(_conversationAsset.ConversationSaveData);
+            
+            _baseFacilitator.StartConversation(
+                _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
+                datas, propertiesDictionary);
         }
 
         private Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(Dictionary<string, ConversationSaveData> saveDataDic)
@@ -42,7 +65,7 @@ namespace ConversationGraph.Runtime.Core.Components
             {
                 resultDic.Add(saveData.Key, ConversationUtility.JsonToConversationData(saveData.Value));
             }
-
+            
             return resultDic;
         }
     }

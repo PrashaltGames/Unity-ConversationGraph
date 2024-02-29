@@ -7,12 +7,13 @@ namespace ConversationGraph.Runtime.Core.Interfaces
 {
     public interface IFacilitator
     {
-        public void StartConversation(string startId , TextMeshProUGUI titleText, TextMeshProUGUI speakerText, TextMeshProUGUI messageText, IReadOnlyDictionary<string, ConversationData> dataDic);
-        public void AfterMessage(TextMeshProUGUI text);
-        public void BeforeMessage(TextMeshProUGUI text);
-        public UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText, MessageData data);
-        public void OnStart(StartData data);
-        public void OnEnd(EndData data);
-        public UniTask ReadingMessage();
+        public void StartConversation(string startId , TextMeshProUGUI titleText, TextMeshProUGUI speakerText, TextMeshProUGUI messageText, IReadOnlyDictionary<string, ConversationData> dataDic, IReadOnlyDictionary<string, string> propertyDic);
+        public void StartConversation
+        (in string startId, in TextMeshProUGUI titleText, in TextMeshProUGUI speakerText, in TextMeshProUGUI messageText, in IReadOnlyDictionary<string, ConversationData> dataDic, in ConversationPropertyAsset propertyAsset);
+        public void AfterMessage(in TextMeshProUGUI text);
+        public void BeforeMessage(in TextMeshProUGUI text);
+        public UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText, MessageData data, IReadOnlyDictionary<string, string> propertyDic);
+        public void OnStart(in StartData data);
+        public void OnEnd(in EndData data);
     }
 }

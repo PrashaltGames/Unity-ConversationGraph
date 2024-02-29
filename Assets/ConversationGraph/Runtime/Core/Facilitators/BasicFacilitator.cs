@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using ConversationGraph.Runtime.Core.Interfaces;
+using ConversationGraph.Runtime.Core.Base;
 using ConversationGraph.Runtime.Foundation;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -10,11 +10,14 @@ namespace ConversationGraph.Runtime.Core.Facilitators
     public class BasicFacilitator : BaseFacilitator
     {
         public override async void StartConversation
-        (string startId,
+        (
+            string startId,
             TextMeshProUGUI titleText,
             TextMeshProUGUI speakerText,
             TextMeshProUGUI messageText,
-            IReadOnlyDictionary<string, ConversationData> dataDic)
+            IReadOnlyDictionary<string, ConversationData> dataDic,
+            IReadOnlyDictionary<string, string> propertyDic
+            )
         {
             var id = startId;
             var isEnd = false;
@@ -27,7 +30,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                 {
                     case MessageData messageData:
                         BeforeMessage(messageText);
-                        await OnMessage(speakerText, messageText, messageData);
+                        await OnMessage(speakerText, messageText, messageData, propertyDic);
                         AfterMessage(messageText);
                         break;
                     case StartData startData:
@@ -58,17 +61,23 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             }
         }
 
-        public override void AfterMessage(TextMeshProUGUI text)
+        public override void StartConversation(in string startId, in TextMeshProUGUI titleText, in TextMeshProUGUI speakerText,
+            in TextMeshProUGUI messageText, in IReadOnlyDictionary<string, ConversationData> dataDic, in ConversationPropertyAsset propertyAsset)
+        {
+            StartConversation(startId, titleText, speakerText, messageText, dataDic, propertyAsset.PropertiesDictionary);
+        }
+
+        public override void AfterMessage(in TextMeshProUGUI text)
         {
             
         }
 
-        public override void BeforeMessage(TextMeshProUGUI text)
+        public override void BeforeMessage(in TextMeshProUGUI text)
         {
             
         }
         
-        public override async UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText, MessageData data)
+        public override async UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText, MessageData data, IReadOnlyDictionary<string, string> propertyDic)
         {
             if (string.IsNullOrEmpty(data.Speaker))
             {
@@ -77,27 +86,27 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             else
             {
                 OnSpeaker?.Invoke();
-                speakerText.text = data.Speaker;
+                speakerText.text = ReflectProperty(data.Speaker, propertyDic);
             }
             
             foreach (var message in data.MessageList)
             {
-                messageText.SetText(message);
-                await ReadingMessage();
+                messageText.SetText(ReflectProperty(message, propertyDic));
+                await WaitReading();
             }
         }
 
-        public override void OnStart(StartData data)
+        public override void OnStart(in StartData data)
         {
             OnConversationStart?.Invoke();
         }
 
-        public override void OnEnd(EndData data)
+        public override void OnEnd(in EndData data)
         {
             OnConversationEnd?.Invoke();
         }
 
-        public override async UniTask ReadingMessage()
+        public override async UniTask WaitReading()
         {
             await UniTask.WaitForSeconds(3);
         }
