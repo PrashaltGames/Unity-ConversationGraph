@@ -1,3 +1,4 @@
+using ConversationGraph.Editor.Core;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
@@ -12,13 +13,12 @@ namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
             title = "Narrator";
 
             //MainContainerをテンプレートからコピー
-            var assetPath = AssetDatabase.GUIDToAssetPath(UIDocumentGuid);
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(assetPath);
-            var defaultContainer = visualTree.Instantiate();
+            var defaultContainer = 
+                ConversationGraphEditorUtility.CreateElementFromGuid(UIDocumentGuid);
             
-            _listView = defaultContainer.Q<ListView>();
-            _listView.makeItem += CreateMessageElement;
-            _listView.bindItem += SetMessage;
+            ListView = defaultContainer.Q<ListView>();
+            ListView.makeItem += CreateMessageElement;
+            ListView.bindItem += SetMessage;
             
             mainContainer.Add(defaultContainer);
             

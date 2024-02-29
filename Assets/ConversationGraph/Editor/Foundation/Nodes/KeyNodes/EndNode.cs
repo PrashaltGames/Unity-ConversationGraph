@@ -9,7 +9,7 @@ namespace ConversationGraph.Editor.Foundation.Nodes.KeyNodes
         {
             title = "End";
             
-            AddInputPort("End", Port.Capacity.Single, typeof(float));
+            AddInputPort("End", Port.Capacity.Multi, typeof(float));
 
             Data = new EndData();
         }

@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Unity.AppUI.UI.Panel class="inspector-panel">
+        <ui:VisualElement class="inspector-panel">
+            <Unity.AppUI.UI.Heading text="Select Node" />
+            <ui:ListView reorderable="true" header-title="Selects" show-add-remove-footer="true" fixed-item-height="25" style="height: 202px; min-height: 300px;" />
+        </ui:VisualElement>
+    </Unity.AppUI.UI.Panel>
+</ui:UXML>

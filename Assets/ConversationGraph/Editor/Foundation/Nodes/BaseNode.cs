@@ -65,7 +65,7 @@ namespace ConversationGraph.Editor.Foundation.Nodes
                 capacity,
                 portType
             );
-            result.name = portName;
+            result.portName = portName;
             
             inputContainer.Add(result);
             return result;
@@ -86,7 +86,7 @@ namespace ConversationGraph.Editor.Foundation.Nodes
                 capacity,
                 portType
             );
-            result.name = portName;
+            result.portName = portName;
             
             outputContainer.Add(result);
             return result;

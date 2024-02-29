@@ -23,9 +23,9 @@ namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
             var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(assetPath);
             var defaultContainer = visualTree.Instantiate();
             
-            _listView = defaultContainer.Q<ListView>();
-            _listView.makeItem += CreateMessageElement;
-            _listView.bindItem += SetMessage;
+            ListView = defaultContainer.Q<ListView>();
+            ListView.makeItem += CreateMessageElement;
+            ListView.bindItem += SetMessage;
             
             mainContainer.Add(defaultContainer);
             

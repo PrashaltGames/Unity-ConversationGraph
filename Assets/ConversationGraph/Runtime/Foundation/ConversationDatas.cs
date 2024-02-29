@@ -64,4 +64,15 @@ namespace ConversationGraph.Runtime.Foundation
     {
         
     }
+
+    [Serializable]
+    public class SelectData : ConversationData
+    {
+        public List<string> SelectTexts
+        {
+            get => _selectTexts;
+            set => _selectTexts = value;
+        }
+        [SerializeField] private List<string> _selectTexts = new();
+    }
 }
