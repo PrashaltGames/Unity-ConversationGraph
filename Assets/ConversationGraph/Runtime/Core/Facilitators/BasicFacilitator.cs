@@ -4,20 +4,21 @@ using ConversationGraph.Runtime.Foundation;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ConversationGraph.Runtime.Core.Facilitators
 {
     public class BasicFacilitator : BaseFacilitator
     {
         public override async void StartConversation
-        (
-            string startId,
+        (string startId,
             TextMeshProUGUI titleText,
             TextMeshProUGUI speakerText,
             TextMeshProUGUI messageText,
             IReadOnlyDictionary<string, ConversationData> dataDic,
-            IReadOnlyDictionary<string, string> propertyDic
-            )
+            IReadOnlyDictionary<string, string> propertyDic,
+            Transform selectParent,
+            Button selectPrefab)
         {
             var id = startId;
             var isEnd = false;
@@ -32,6 +33,9 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                         BeforeMessage(messageText);
                         await OnMessage(speakerText, messageText, messageData, propertyDic);
                         AfterMessage(messageText);
+                        break;
+                    case SelectData selectData:
+                        id = await OnSelect(selectData, selectParent, selectPrefab);
                         break;
                     case StartData startData:
                         OnStart(startData);
@@ -62,9 +66,10 @@ namespace ConversationGraph.Runtime.Core.Facilitators
         }
 
         public override void StartConversation(in string startId, in TextMeshProUGUI titleText, in TextMeshProUGUI speakerText,
-            in TextMeshProUGUI messageText, in IReadOnlyDictionary<string, ConversationData> dataDic, in ConversationPropertyAsset propertyAsset)
+            in TextMeshProUGUI messageText, in IReadOnlyDictionary<string, ConversationData> dataDic, in ConversationPropertyAsset propertyAsset,
+            in Transform selectParent, in Button selectPrefab)
         {
-            StartConversation(startId, titleText, speakerText, messageText, dataDic, propertyAsset.PropertiesDictionary);
+            StartConversation(startId, titleText, speakerText, messageText, dataDic, (IReadOnlyDictionary<string, string>)propertyAsset.PropertiesDictionary, selectParent, selectPrefab);
         }
 
         public override void AfterMessage(in TextMeshProUGUI text)
@@ -94,6 +99,32 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                 messageText.SetText(ReflectProperty(message, propertyDic));
                 await WaitReading();
             }
+        }
+        public override async UniTask<string> OnSelect(SelectData data, Transform parent, Button prefab)
+        {
+            var textComponent = prefab.GetComponentInChildren<TextMeshProUGUI>();
+            var isSelected = false;
+            var index = 0;
+            
+            OnShowSelectButtons?.Invoke();
+            foreach (var text in data.SelectTexts)
+            {
+                textComponent.text = text;
+                var obj = Object.Instantiate(prefab, parent);
+
+                var i = index;
+                obj.onClick.AddListener(() =>
+                {
+                    isSelected = true;
+                    index = i;
+                });
+                index++;
+            }
+
+            await UniTask.WaitUntil(() => isSelected);
+            OnSelected?.Invoke();
+            
+            return data.NextDataIds[index];
         }
 
         public override void OnStart(in StartData data)
