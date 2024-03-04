@@ -4,6 +4,7 @@ using ConversationGraph.Runtime.Core.Facilitators;
 using ConversationGraph.Runtime.Foundation;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ConversationGraph.Runtime.Core.Components
 {
@@ -13,11 +14,12 @@ namespace ConversationGraph.Runtime.Core.Components
         [SerializeField] private TextMeshProUGUI _messageText;
         [SerializeField] private TextMeshProUGUI _speakerText;
         [SerializeField] private TextMeshProUGUI _titleText;
+        [SerializeField] private Transform _selectParent;
+        [SerializeField] private Button _selectButton;
 
         [Header("▼ Conversation Asset")] 
         [SerializeField] private ConversationAsset _conversationAsset;
         [SerializeField] private ConversationPropertyAsset _propertyAsset;
-        
         
         private BaseFacilitator _baseFacilitator;
 
@@ -34,7 +36,7 @@ namespace ConversationGraph.Runtime.Core.Components
             
             _baseFacilitator.StartConversation(
                 _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
-                datas, _propertyAsset);
+                datas, _propertyAsset, _selectParent, _selectButton);
         }
 
         public void StartConversation(ConversationAsset asset, ConversationPropertyAsset propertyAsset)
@@ -44,7 +46,7 @@ namespace ConversationGraph.Runtime.Core.Components
             
             _baseFacilitator.StartConversation(
                 _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
-                datas, propertyAsset);
+                datas, propertyAsset, _selectParent, _selectButton);
         }
 
         public void StartConversation(Dictionary<string, string> propertiesDictionary)
@@ -54,7 +56,7 @@ namespace ConversationGraph.Runtime.Core.Components
             
             _baseFacilitator.StartConversation(
                 _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
-                datas, propertiesDictionary);
+                datas, propertiesDictionary, _selectParent, _selectButton);
         }
 
         private Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(Dictionary<string, ConversationSaveData> saveDataDic)

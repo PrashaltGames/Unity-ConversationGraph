@@ -6,6 +6,7 @@ using ConversationGraph.Runtime.Foundation;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ConversationGraph.Runtime.Core.Base
 {
@@ -15,15 +16,20 @@ namespace ConversationGraph.Runtime.Core.Base
         public Action OnConversationEnd;
         public Action OnNarrator;
         public Action OnSpeaker;
-        public abstract void StartConversation(string startId , TextMeshProUGUI titleText, TextMeshProUGUI speakerText, TextMeshProUGUI messageText, IReadOnlyDictionary<string, ConversationData> dataDic, IReadOnlyDictionary<string, string> propertyDic);
+        public Action OnShowSelectButtons;
+        public Action OnSelected;
+        public abstract void StartConversation(string startId, TextMeshProUGUI titleText, TextMeshProUGUI speakerText,
+            TextMeshProUGUI messageText, IReadOnlyDictionary<string, ConversationData> dataDic,
+            IReadOnlyDictionary<string, string> propertyDic, Transform selectParent, Button selectPrefab);
 
-        public abstract void StartConversation(in string startId, in TextMeshProUGUI titleText, in TextMeshProUGUI speakerText, in TextMeshProUGUI messageText, in IReadOnlyDictionary<string, ConversationData> dataDic, in ConversationPropertyAsset propertyAsset);
+        public abstract void StartConversation(in string startId, in TextMeshProUGUI titleText, in TextMeshProUGUI speakerText, in TextMeshProUGUI messageText, in IReadOnlyDictionary<string, ConversationData> dataDic, in ConversationPropertyAsset propertyAsset, in Transform selectParent, in Button selectPrefab);
         
         public abstract void AfterMessage(in TextMeshProUGUI text);
         public abstract void BeforeMessage(in TextMeshProUGUI text);
         public abstract UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText, MessageData data, IReadOnlyDictionary<string, string> propertyDic);
         public abstract void OnStart(in StartData data);
         public abstract void OnEnd(in EndData data);
+        public abstract UniTask<string> OnSelect(SelectData data, Transform parent, Button prefab);
 
         protected string ReflectProperty(string text, in IReadOnlyDictionary<string, string> properties)
         {

@@ -1,6 +1,8 @@
-﻿using ConversationGraph.Editor.Foundation.Nodes;
+﻿using ConversationGraph.Editor.Foundation;
+using ConversationGraph.Editor.Foundation.Nodes;
 using ConversationGraph.Editor.Foundation.Nodes.ConversationNode;
 using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
+using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
 using Unity.AppUI.UI;
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -14,6 +16,7 @@ namespace ConversationGraph.Editor.Core
         private const string NarratorUIDocumentGuid = "4807ace79a615444199b94d1e67337c5";
         private const string StartUIDocumentGuid = "813588f557bf22b4693716ad76477b70";
         private const string EndUIDocumentGuid = "3130ce218a52aa440aae8d27541b8ce5";
+        private const string SelectUIDocumentGuid = "ae6321a0c6aa2af408520ffa5dae5c24";
 
         private const string TSSGuid = "dc39b1949c0d08c4b93d17de7fb085d0";
 
@@ -62,6 +65,9 @@ namespace ConversationGraph.Editor.Core
                     break;
                 case EndNode end:
                     ShowEndInspector(end);
+                    break;
+                case SelectNode select:
+                    ShowSelectInspector(select);
                     break;
             }
         }
@@ -135,7 +141,6 @@ namespace ConversationGraph.Editor.Core
             
             rootVisualElement.Add(startUI);
         }
-
         private void ShowEndInspector(in EndNode node)
         {
             // MainContainerをテンプレートからコピー
@@ -145,6 +150,39 @@ namespace ConversationGraph.Editor.Core
             rootVisualElement.Add(endUI);
         }
 
+        private void ShowSelectInspector(SelectNode node)
+        {
+            var selectUI =
+                ConversationGraphEditorUtility.CreateElementFromGuid(SelectUIDocumentGuid);
+            
+            var listView = selectUI.Q<ListView>();
+            listView.makeItem += () =>
+            {
+                var textField = new TextField
+                {
+                    size = Size.L
+                };
+                return textField;
+            };
+            listView.bindItem += (element, index) =>
+            {
+                var textField = element.Q<TextField>();
+                textField.value = node.SelectData.SelectTexts[index];
+                textField.RegisterValueChangedCallback(e =>
+                {
+                    node.SelectData.SelectTexts[index] = e.newValue;
+                    node.RefreshNode();
+                });
+            };
+            listView.itemsSource = node.SelectData.SelectTexts;
+
+            listView.itemsAdded += _ => node.RefreshNode();
+            listView.itemsRemoved += _ => node.RefreshNode();
+            listView.selectedIndicesChanged += _ => node.RefreshNode();
+            
+            rootVisualElement.Add(selectUI);
+        }
+            
         private void StepperChangeEvent(in int i, MessageNode node, in VisualElement view)
         {
             // Add

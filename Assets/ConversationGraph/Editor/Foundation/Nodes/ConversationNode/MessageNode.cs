@@ -10,7 +10,7 @@ namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
     public class MessageNode : BaseNode
     {
         public MessageData MessageData => Data as MessageData;
-        protected ListView _listView;
+        protected ListView ListView;
         public MessageNode()
         {
             AddInputPort("Input", Port.Capacity.Single, typeof(float));
@@ -59,11 +59,11 @@ namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
                 MessageData.MessageList = data.MessageList;
             }
             
-            _listView.itemsSource = MessageData.MessageList;
+            ListView.itemsSource = MessageData.MessageList;
         }
         public void RefreshListView()
         {
-            _listView.RefreshItems();
+            ListView.RefreshItems();
         }
     }
 }

@@ -5,6 +5,7 @@ using ConversationGraph.Editor.Foundation;
 using ConversationGraph.Editor.Foundation.Nodes;
 using ConversationGraph.Editor.Foundation.Nodes.ConversationNode;
 using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
+using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
 using Cysharp.Threading.Tasks;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -119,9 +120,9 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 var targetNodeGuidWithCount = edgeData.TargetNodeId.Split(":");
                 
                 var baseNode = nodes.Select(x => x as BaseNode)
-                    .FirstOrDefault(x => x.Id == baseNodeGuidWithCount[0]);
+                    .FirstOrDefault(x => x?.Id == baseNodeGuidWithCount[0]);
                 var targetNode = nodes.Select(x => x as BaseNode)
-                    .FirstOrDefault(x => x.Id == targetNodeGuidWithCount[0]);
+                    .FirstOrDefault(x => x?.Id == targetNodeGuidWithCount[0]);
 
                 if (baseNode is null || targetNode is null) return;
 
@@ -152,19 +153,15 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 {
                     new SearchTreeGroupEntry(new GUIContent("Create Node")),
 
-                    new SearchTreeGroupEntry(new GUIContent("Text")) { level = 1 },
-                    new SearchTreeEntry(new GUIContent(nameof(NarratorNode))) { level = 2, userData = typeof(NarratorNode) }, 
-                    new SearchTreeEntry(new GUIContent(nameof(SpeakerNode))) { level = 2, userData = typeof(SpeakerNode) },
-        //             new SearchTreeEntry(new GUIContent(nameof(SelectNode))) { level = 2, userData = typeof(SelectNode) },
+                    new SearchTreeGroupEntry(new GUIContent("Conversation")) { level = 1 },
+                    new (new GUIContent(nameof(NarratorNode))) { level = 2, userData = typeof(NarratorNode) }, 
+                    new (new GUIContent(nameof(SpeakerNode))) { level = 2, userData = typeof(SpeakerNode) }, 
         //
-        //             new SearchTreeGroupEntry(new GUIContent("Logic")) { level = 1 },
+                    new SearchTreeGroupEntry(new GUIContent("Logic")) { level = 1 },
+                    new (new GUIContent(nameof(SelectNode))) { level = 2, userData = typeof(SelectNode) },
         //
         //             new SearchTreeEntry(new GUIContent(nameof(BranchNode))) { level = 2, userData = typeof(BranchNode)},				
         //
-				    new SearchTreeGroupEntry(new GUIContent("Other")) { level = 1 },
-        //
-				    // new SearchTreeEntry(new GUIContent(nameof(RelayNode))) { level = 2, userData = typeof(RelayNode) },
-				    new SearchTreeEntry(new GUIContent(nameof(EndNode))) { level = 2, userData = typeof(EndNode) },
                 };
 
                 return entries;
