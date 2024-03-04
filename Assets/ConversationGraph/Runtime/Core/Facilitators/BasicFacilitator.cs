@@ -18,7 +18,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             IReadOnlyDictionary<string, ConversationData> dataDic,
             IReadOnlyDictionary<string, string> propertyDic,
             Transform selectParent,
-            Button selectPrefab)
+            Button selectPrefab, IReadingWaiter readingWaiter)
         {
             var id = startId;
             var isEnd = false;
@@ -31,11 +31,11 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                 {
                     case MessageData messageData:
                         BeforeMessage(messageText);
-                        await OnMessage(speakerText, messageText, messageData, propertyDic);
+                        await OnMessage(speakerText, messageText, messageData, propertyDic, readingWaiter);
                         AfterMessage(messageText);
                         break;
                     case SelectData selectData:
-                        id = await OnSelect(selectData, selectParent, selectPrefab);
+                        nextIndex = await OnSelect(selectData, selectParent, selectPrefab);
                         break;
                     case StartData startData:
                         OnStart(startData);
@@ -65,11 +65,13 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             }
         }
 
-        public override void StartConversation(in string startId, in TextMeshProUGUI titleText, in TextMeshProUGUI speakerText,
-            in TextMeshProUGUI messageText, in IReadOnlyDictionary<string, ConversationData> dataDic, in ConversationPropertyAsset propertyAsset,
-            in Transform selectParent, in Button selectPrefab)
+        public override void StartConversation(in string startId, in TextMeshProUGUI titleText,
+            in TextMeshProUGUI speakerText,
+            in TextMeshProUGUI messageText, in IReadOnlyDictionary<string, ConversationData> dataDic,
+            in ConversationPropertyAsset propertyAsset,
+            in Transform selectParent, in Button selectPrefab, in IReadingWaiter readingWaiter)
         {
-            StartConversation(startId, titleText, speakerText, messageText, dataDic, (IReadOnlyDictionary<string, string>)propertyAsset.PropertiesDictionary, selectParent, selectPrefab);
+            StartConversation(startId, titleText, speakerText, messageText, dataDic, (IReadOnlyDictionary<string, string>)propertyAsset.PropertiesDictionary, selectParent, selectPrefab, readingWaiter);
         }
 
         public override void AfterMessage(in TextMeshProUGUI text)
@@ -82,7 +84,8 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             
         }
         
-        public override async UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText, MessageData data, IReadOnlyDictionary<string, string> propertyDic)
+        public override async UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText,
+            MessageData data, IReadOnlyDictionary<string, string> propertyDic, IReadingWaiter readingWaiter)
         {
             if (string.IsNullOrEmpty(data.Speaker))
             {
@@ -97,10 +100,10 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             foreach (var message in data.MessageList)
             {
                 messageText.SetText(ReflectProperty(message, propertyDic));
-                await WaitReading();
+                await readingWaiter.WaitReading();
             }
         }
-        public override async UniTask<string> OnSelect(SelectData data, Transform parent, Button prefab)
+        public override async UniTask<int> OnSelect(SelectData data, Transform parent, Button prefab)
         {
             var textComponent = prefab.GetComponentInChildren<TextMeshProUGUI>();
             var isSelected = false;
@@ -124,7 +127,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             await UniTask.WaitUntil(() => isSelected);
             OnSelected?.Invoke();
             
-            return data.NextDataIds[index];
+            return index;
         }
 
         public override void OnStart(in StartData data)
@@ -135,11 +138,6 @@ namespace ConversationGraph.Runtime.Core.Facilitators
         public override void OnEnd(in EndData data)
         {
             OnConversationEnd?.Invoke();
-        }
-
-        public override async UniTask WaitReading()
-        {
-            await UniTask.WaitForSeconds(3);
         }
     }
 }
