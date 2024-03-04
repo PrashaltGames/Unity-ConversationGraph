@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace ConversationGraph.Runtime.Core.Base
 {
-    public abstract class BaseFacilitator : IFacilitator, IReadingWaiter
+    public abstract class BaseFacilitator : IFacilitator
     {
         public Action OnConversationStart;
         public Action OnConversationEnd;
@@ -20,16 +20,21 @@ namespace ConversationGraph.Runtime.Core.Base
         public Action OnSelected;
         public abstract void StartConversation(string startId, TextMeshProUGUI titleText, TextMeshProUGUI speakerText,
             TextMeshProUGUI messageText, IReadOnlyDictionary<string, ConversationData> dataDic,
-            IReadOnlyDictionary<string, string> propertyDic, Transform selectParent, Button selectPrefab);
+            IReadOnlyDictionary<string, string> propertyDic, Transform selectParent, Button selectPrefab,
+            IReadingWaiter readingWaiter);
 
-        public abstract void StartConversation(in string startId, in TextMeshProUGUI titleText, in TextMeshProUGUI speakerText, in TextMeshProUGUI messageText, in IReadOnlyDictionary<string, ConversationData> dataDic, in ConversationPropertyAsset propertyAsset, in Transform selectParent, in Button selectPrefab);
+        public abstract void StartConversation(in string startId, in TextMeshProUGUI titleText,
+            in TextMeshProUGUI speakerText, in TextMeshProUGUI messageText,
+            in IReadOnlyDictionary<string, ConversationData> dataDic, in ConversationPropertyAsset propertyAsset,
+            in Transform selectParent, in Button selectPrefab, in IReadingWaiter readingWaiter);
         
         public abstract void AfterMessage(in TextMeshProUGUI text);
         public abstract void BeforeMessage(in TextMeshProUGUI text);
-        public abstract UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText, MessageData data, IReadOnlyDictionary<string, string> propertyDic);
+        public abstract UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText, MessageData data,
+            IReadOnlyDictionary<string, string> propertyDic, IReadingWaiter readingWaiter);
         public abstract void OnStart(in StartData data);
         public abstract void OnEnd(in EndData data);
-        public abstract UniTask<string> OnSelect(SelectData data, Transform parent, Button prefab);
+        public abstract UniTask<int> OnSelect(SelectData data, Transform parent, Button prefab);
 
         protected string ReflectProperty(string text, in IReadOnlyDictionary<string, string> properties)
         {
@@ -54,6 +59,5 @@ namespace ConversationGraph.Runtime.Core.Base
             }
             return text;
         }
-        public abstract UniTask WaitReading();
     }
 }

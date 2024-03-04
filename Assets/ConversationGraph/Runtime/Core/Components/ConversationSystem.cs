@@ -20,6 +20,9 @@ namespace ConversationGraph.Runtime.Core.Components
         [Header("▼ Conversation Asset")] 
         [SerializeField] private ConversationAsset _conversationAsset;
         [SerializeField] private ConversationPropertyAsset _propertyAsset;
+
+        [Header("▼ Conversation Settings")] 
+        [SerializeReference, SubclassSelector] private IReadingWaiter _readingWaiter;
         
         private BaseFacilitator _baseFacilitator;
 
@@ -36,7 +39,7 @@ namespace ConversationGraph.Runtime.Core.Components
             
             _baseFacilitator.StartConversation(
                 _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
-                datas, _propertyAsset, _selectParent, _selectButton);
+                datas, _propertyAsset, _selectParent, _selectButton, _readingWaiter);
         }
 
         public void StartConversation(ConversationAsset asset, ConversationPropertyAsset propertyAsset)
@@ -46,7 +49,7 @@ namespace ConversationGraph.Runtime.Core.Components
             
             _baseFacilitator.StartConversation(
                 _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
-                datas, propertyAsset, _selectParent, _selectButton);
+                datas, propertyAsset, _selectParent, _selectButton, _readingWaiter);
         }
 
         public void StartConversation(Dictionary<string, string> propertiesDictionary)
@@ -56,7 +59,7 @@ namespace ConversationGraph.Runtime.Core.Components
             
             _baseFacilitator.StartConversation(
                 _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
-                datas, propertiesDictionary, _selectParent, _selectButton);
+                datas, propertiesDictionary, _selectParent, _selectButton, _readingWaiter);
         }
 
         private Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(Dictionary<string, ConversationSaveData> saveDataDic)
