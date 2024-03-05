@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ConversationGraph.Runtime.Core.Base;
+using ConversationGraph.Runtime.Core.Components;
 using ConversationGraph.Runtime.Foundation;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -8,34 +9,30 @@ using UnityEngine.UI;
 
 namespace ConversationGraph.Runtime.Core.Facilitators
 {
+    // TODO: Actionを使用してSystem側に返すようにする形式にしたい
+    // awaitとかをしないといけなくて難しかった…
     public class BasicFacilitator : BaseFacilitator
     {
         public override async void StartConversation
-        (string startId,
-            TextMeshProUGUI titleText,
-            TextMeshProUGUI speakerText,
-            TextMeshProUGUI messageText,
-            IReadOnlyDictionary<string, ConversationData> dataDic,
-            IReadOnlyDictionary<string, string> propertyDic,
-            Transform selectParent,
-            Button selectPrefab, IReadingWaiter readingWaiter)
+            (ConversationSystem conversationSystem)
         {
-            var id = startId;
+            var id = conversationSystem.ConversationAsset.StartId;
             var isEnd = false;
+            var conversationDataDic = GetConversationDicFromSaveDataDic(conversationSystem.ConversationAsset);
             while (true)
             {
-                var data = dataDic[id];
+                var data = conversationDataDic[id];
                 var nextIndex = 0;
 
                 switch (data)
                 {
                     case MessageData messageData:
-                        BeforeMessage(messageText);
-                        await OnMessage(speakerText, messageText, messageData, propertyDic, readingWaiter);
-                        AfterMessage(messageText);
+                        BeforeMessage(conversationSystem.MessageText);
+                        await OnMessage(conversationSystem.SpeakerText, conversationSystem.MessageText, messageData, conversationSystem.ConversationPropertyAsset.PropertiesDictionary, conversationSystem.ReadingWaiter);
+                        AfterMessage(conversationSystem.MessageText);
                         break;
                     case SelectData selectData:
-                        nextIndex = await OnSelect(selectData, selectParent, selectPrefab);
+                        nextIndex = await OnSelect(selectData, conversationSystem.SelectParent, conversationSystem.SelectButton);
                         break;
                     case StartData startData:
                         OnStart(startData);
@@ -63,15 +60,6 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                 }
 #endif
             }
-        }
-
-        public override void StartConversation(in string startId, in TextMeshProUGUI titleText,
-            in TextMeshProUGUI speakerText,
-            in TextMeshProUGUI messageText, in IReadOnlyDictionary<string, ConversationData> dataDic,
-            in ConversationPropertyAsset propertyAsset,
-            in Transform selectParent, in Button selectPrefab, in IReadingWaiter readingWaiter)
-        {
-            StartConversation(startId, titleText, speakerText, messageText, dataDic, (IReadOnlyDictionary<string, string>)propertyAsset.PropertiesDictionary, selectParent, selectPrefab, readingWaiter);
         }
 
         public override void AfterMessage(in TextMeshProUGUI text)

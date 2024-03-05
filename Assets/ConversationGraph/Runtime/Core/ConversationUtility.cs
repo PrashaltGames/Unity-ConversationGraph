@@ -6,6 +6,8 @@ namespace ConversationGraph.Runtime.Core
 {
     public static class ConversationUtility
     {
+        public static bool ShouldNext { get; set; }
+        public static bool WaitForInput { get; set; }
         public static ConversationData JsonToConversationData(ConversationSaveData data)
         {
             return data.TypeName switch

@@ -10,6 +10,15 @@ namespace ConversationGraph.Runtime.Core.Components
 {
     public class ConversationSystem : MonoBehaviour
     {
+        public TextMeshProUGUI MessageText => _messageText;
+        public TextMeshProUGUI SpeakerText => _speakerText;
+        public TextMeshProUGUI TitleText => _titleText;
+        public Transform SelectParent => _selectParent;
+        public Button SelectButton => _selectButton;
+        public ConversationAsset ConversationAsset => _conversationAsset;
+        public ConversationPropertyAsset ConversationPropertyAsset => _propertyAsset;
+        public IReadingWaiter ReadingWaiter => _readingWaiter;
+        
         [Header("▼ Conversation GUI")] 
         [SerializeField] private TextMeshProUGUI _messageText;
         [SerializeField] private TextMeshProUGUI _speakerText;
@@ -31,15 +40,21 @@ namespace ConversationGraph.Runtime.Core.Components
             _baseFacilitator = new BasicFacilitator();
             StartConversation();
         }
+        #if ENABLE_LEGACY_INPUT_MANAGER
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0) && ConversationUtility.WaitForInput)
+            {
+                ConversationUtility.ShouldNext = true;
+            }
+        }
+        #elif ENABLE_INPUT_SYSTEM
+        
+        #endif
 
         public void StartConversation()
         {
-            var datas = 
-                GetConversationDicFromSaveDataDic(_conversationAsset.ConversationSaveData);
-            
-            _baseFacilitator.StartConversation(
-                _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
-                datas, _propertyAsset, _selectParent, _selectButton, _readingWaiter);
+            _baseFacilitator.StartConversation(this);
         }
 
         public void StartConversation(ConversationAsset asset, ConversationPropertyAsset propertyAsset)
@@ -47,9 +62,7 @@ namespace ConversationGraph.Runtime.Core.Components
             var datas = 
                 GetConversationDicFromSaveDataDic(asset.ConversationSaveData);
             
-            _baseFacilitator.StartConversation(
-                _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
-                datas, propertyAsset, _selectParent, _selectButton, _readingWaiter);
+            _baseFacilitator.StartConversation(this);
         }
 
         public void StartConversation(Dictionary<string, string> propertiesDictionary)
@@ -57,9 +70,7 @@ namespace ConversationGraph.Runtime.Core.Components
             var datas = 
                 GetConversationDicFromSaveDataDic(_conversationAsset.ConversationSaveData);
             
-            _baseFacilitator.StartConversation(
-                _conversationAsset.StartId, _titleText,_speakerText, _messageText, 
-                datas, propertiesDictionary, _selectParent, _selectButton, _readingWaiter);
+            _baseFacilitator.StartConversation(this);
         }
 
         private Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(Dictionary<string, ConversationSaveData> saveDataDic)

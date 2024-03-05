@@ -8,7 +8,11 @@ namespace ConversationGraph.Runtime.Core.ReadingWaiter
     {
         public async UniTask WaitReading()
         {
-            await UniTask.Delay(10);
+            ConversationUtility.ShouldNext = false;
+            ConversationUtility.WaitForInput = true;
+            
+            await UniTask.WaitUntil(() => ConversationUtility.ShouldNext);
+            ConversationUtility.WaitForInput = false;
         }
     }
 }

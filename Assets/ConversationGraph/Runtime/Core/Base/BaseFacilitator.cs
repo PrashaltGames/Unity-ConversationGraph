@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using ConversationGraph.Runtime.Core.Interfaces;
+using ConversationGraph.Runtime.Core.Components;
 using ConversationGraph.Runtime.Foundation;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -10,23 +10,16 @@ using UnityEngine.UI;
 
 namespace ConversationGraph.Runtime.Core.Base
 {
-    public abstract class BaseFacilitator : IFacilitator
+    public abstract class BaseFacilitator
     {
+        // for user event
         public Action OnConversationStart;
         public Action OnConversationEnd;
         public Action OnNarrator;
         public Action OnSpeaker;
         public Action OnShowSelectButtons;
         public Action OnSelected;
-        public abstract void StartConversation(string startId, TextMeshProUGUI titleText, TextMeshProUGUI speakerText,
-            TextMeshProUGUI messageText, IReadOnlyDictionary<string, ConversationData> dataDic,
-            IReadOnlyDictionary<string, string> propertyDic, Transform selectParent, Button selectPrefab,
-            IReadingWaiter readingWaiter);
-
-        public abstract void StartConversation(in string startId, in TextMeshProUGUI titleText,
-            in TextMeshProUGUI speakerText, in TextMeshProUGUI messageText,
-            in IReadOnlyDictionary<string, ConversationData> dataDic, in ConversationPropertyAsset propertyAsset,
-            in Transform selectParent, in Button selectPrefab, in IReadingWaiter readingWaiter);
+        public abstract void StartConversation(ConversationSystem conversationSystem);
         
         public abstract void AfterMessage(in TextMeshProUGUI text);
         public abstract void BeforeMessage(in TextMeshProUGUI text);
@@ -58,6 +51,17 @@ namespace ConversationGraph.Runtime.Core.Base
                 text = text.Replace($"{{{propertyName}}}", value);
             }
             return text;
+        }
+        protected Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(ConversationAsset asset)
+        {
+            var resultDic = new Dictionary<string, ConversationData>();
+            foreach (var saveData in 
+                     asset.ConversationSaveData)
+            {
+                resultDic.Add(saveData.Key, ConversationUtility.JsonToConversationData(saveData.Value));
+            }
+            
+            return resultDic;
         }
     }
 }
