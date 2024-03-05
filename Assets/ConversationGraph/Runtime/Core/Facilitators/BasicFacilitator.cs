@@ -34,6 +34,9 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                     case SelectData selectData:
                         nextIndex = await OnSelect(selectData, conversationSystem.SelectParent, conversationSystem.SelectButton);
                         break;
+                    case ScriptableData scriptableData:
+                        OnScriptable(scriptableData);
+                        break;
                     case StartData startData:
                         OnStart(startData);
                         break;
@@ -116,6 +119,11 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             OnSelected?.Invoke();
             
             return index;
+        }
+
+        public override void OnScriptable(in ScriptableData data)
+        {
+            data.ScriptAsset.ScriptableConversation.OnArrival();
         }
 
         public override void OnStart(in StartData data)

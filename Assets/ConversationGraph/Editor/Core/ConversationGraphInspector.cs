@@ -5,6 +5,7 @@ using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
 using Unity.AppUI.UI;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using TextField = Unity.AppUI.UI.TextField;
 
@@ -68,6 +69,9 @@ namespace ConversationGraph.Editor.Core
                     break;
                 case SelectNode select:
                     ShowSelectInspector(select);
+                    break;
+                case ScriptableNode scriptable:
+                    ShowScriptableInspector(scriptable);
                     break;
             }
         }
@@ -181,6 +185,18 @@ namespace ConversationGraph.Editor.Core
             listView.selectedIndicesChanged += _ => node.RefreshNode();
             
             rootVisualElement.Add(selectUI);
+        }
+
+        private void ShowScriptableInspector(in ScriptableNode node)
+        {
+            if (node.ScriptableData.ScriptAsset is null)
+            {
+                node.ScriptableData.Init();
+            }
+            var scriptableUI = new InspectorElement(node.ScriptableData.ScriptAsset);
+            scriptableUI.ToAppUIElement();
+            
+            rootVisualElement.Add(scriptableUI);
         }
             
         private void StepperChangeEvent(in int i, MessageNode node, in VisualElement view)

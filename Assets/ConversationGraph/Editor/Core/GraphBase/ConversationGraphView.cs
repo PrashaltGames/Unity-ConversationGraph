@@ -159,6 +159,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
         //
                     new SearchTreeGroupEntry(new GUIContent("Logic")) { level = 1 },
                     new (new GUIContent(nameof(SelectNode))) { level = 2, userData = typeof(SelectNode) },
+                    new (new GUIContent(nameof(ScriptableNode))) {level = 2, userData = typeof(ScriptableNode)}
         //
         //             new SearchTreeEntry(new GUIContent(nameof(BranchNode))) { level = 2, userData = typeof(BranchNode)},				
         //

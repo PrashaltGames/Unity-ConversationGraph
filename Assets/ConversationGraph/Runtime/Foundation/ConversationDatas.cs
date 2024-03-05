@@ -75,4 +75,20 @@ namespace ConversationGraph.Runtime.Foundation
         }
         [SerializeField] private List<string> _selectTexts = new();
     }
+
+    [Serializable]
+    public class ScriptableData : ConversationData
+    {
+        public ConversationScriptAsset ScriptAsset
+        {
+            get => _scriptAsset;
+            set => _scriptAsset = value;
+        }
+        [SerializeField] private ConversationScriptAsset _scriptAsset;
+
+        public void Init()
+        {
+            _scriptAsset = ScriptableObject.CreateInstance<ConversationScriptAsset>();
+        }
+    }
 }
