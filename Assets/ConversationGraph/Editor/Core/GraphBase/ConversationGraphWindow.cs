@@ -54,6 +54,10 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 titleContent.text = $"{Asset.name}*";
             };
         }
+        public void OnGUI()
+        {
+            _view?.DropSubGraph();
+        }
         private async void OnEnable()
         {
             rootVisualElement.Clear();
