@@ -107,4 +107,15 @@ namespace ConversationGraph.Runtime.Foundation
         }
 #endif
     }
+
+    [Serializable]
+    public class SubGraphData : ConversationData
+    {
+        public string AssetGuid
+        {
+            get => _assetGuid;
+            set => _assetGuid = value;
+        }
+        [SerializeField] private string _assetGuid;
+    }
 }

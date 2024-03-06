@@ -48,11 +48,10 @@ namespace ConversationGraph.Editor.Core.GraphBase
             _inspector.ShowUtility();
             _inspector.SelectedNode = node;
             _inspector.ConversationGraphAsset = Asset;
-
-            Asset.OnIsModified += () =>
-            {
-                titleContent.text = $"{Asset.name}*";
-            };
+        }
+        public void OnGUI()
+        {
+            _view?.DropSubGraph();
         }
         private async void OnEnable()
         {
@@ -66,13 +65,18 @@ namespace ConversationGraph.Editor.Core.GraphBase
             var saveButton = new ToolbarButton(OnSave) { text = "Save", name = "save-button" };
             toolBar.Add(saveButton);
             rootVisualElement.Add(toolBar);
+            
+            Asset.OnIsModified += () =>
+            {
+                titleContent.text = $"{Asset.name}*";
+            };
         }
 
         private void OnDestroy()
         {
             _inspector?.Close();
             
-            if(!Asset.IsModified)
+            if(Asset is null || !Asset.IsModified)
             {
                 return;
             }

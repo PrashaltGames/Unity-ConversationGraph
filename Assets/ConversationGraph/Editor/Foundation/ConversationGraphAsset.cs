@@ -32,7 +32,7 @@ namespace ConversationGraph.Editor.Foundation
             set
             {
                 _isModified = value;
-                OnIsModified.Invoke();
+                OnIsModified?.Invoke();
             }
         }
 

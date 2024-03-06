@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ConversationGraph.Editor.Foundation;
 using ConversationGraph.Editor.Foundation.Nodes;
 using ConversationGraph.Runtime.Foundation;
 using UnityEditor;
@@ -32,6 +33,12 @@ namespace ConversationGraph.Editor.Core
             }
 
             return null;
+        }
+        public static ConversationGraphAsset GetConversationGraphAssetByGuid(string guid)
+        {
+            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            var asset = AssetDatabase.LoadAssetAtPath<ConversationGraphAsset>(assetPath);
+            return asset;
         }
         public static bool CheckPortEmpty(IEnumerable<Port> ports)
         {

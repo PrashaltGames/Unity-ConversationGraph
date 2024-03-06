@@ -7,6 +7,7 @@ using ConversationGraph.Editor.Foundation.Nodes.ConversationNode;
 using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
 using Cysharp.Threading.Tasks;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -130,12 +131,12 @@ namespace ConversationGraph.Editor.Core.GraphBase
         class SearchMenuWindowProvider : ScriptableObject, ISearchWindowProvider
         {
             private ConversationGraphView _graphView;
-            private ConversationGraphWindow _editorWindow;
+            private ConversationGraphWindow _window;
 
             public void Initialize(ConversationGraphView graphView, ConversationGraphWindow editorWindow)
             {
                 _graphView = graphView;
-                _editorWindow = editorWindow;
+                _window = editorWindow;
             }
 
             List<SearchTreeEntry> ISearchWindowProvider.CreateSearchTree(SearchWindowContext context)
@@ -165,23 +166,69 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 var node = Activator.CreateInstance(type) as Node;
                 
                 // マウスの位置にノードを追加
-                var worldMousePosition = _editorWindow.rootVisualElement.ChangeCoordinatesTo(_editorWindow.rootVisualElement.parent, context.screenMousePosition - _editorWindow.position.position);
+                var worldMousePosition = _window.rootVisualElement.ChangeCoordinatesTo(_window.rootVisualElement.parent, context.screenMousePosition - _window.position.position);
                 var localMousePosition = _graphView.contentViewContainer.WorldToLocal(worldMousePosition);
                 var nodePosition = new Rect(localMousePosition, new Vector2(100, 100));
                 node.SetPosition(nodePosition);
 
                 if (node is BaseNode baseNode)
                 {
-                    baseNode.Initialize(baseNode.Id, nodePosition, "", _editorWindow.ShowInspector);
+                    baseNode.Initialize(baseNode.Id, nodePosition, "", _window.ShowInspector);
                 }
                 _graphView.AddElement(node);
                 return true;
             }
         }
-        public GraphViewChange OnGraphViewChanged(GraphViewChange e)
+
+        private GraphViewChange OnGraphViewChanged(GraphViewChange e)
         {
             _window.Asset.IsModified = true;
             return e;
+        }
+
+        public bool DropSubGraph()
+        {
+            if (!contentRect.Contains(Event.current.mousePosition))
+            {
+                return false;
+            }
+
+            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+
+            var eventType = Event.current.type;
+            if (eventType != EventType.DragExited)
+            {
+                return false;
+            }
+            
+            DragAndDrop.AcceptDrag();
+            Event.current.Use();
+
+            var subGraphReferences = 
+                DragAndDrop.objectReferences.OfType<ConversationGraphAsset>().ToList();
+            if (subGraphReferences.Count <= 0)
+            {
+                return false;
+            }
+
+            if (subGraphReferences[0].GetInstanceID() == _window.Asset.GetInstanceID())
+            {
+                return false;
+            }
+
+            var asset = subGraphReferences[0];
+            var subGraphNode = new SubGraphNode();
+            subGraphNode.SubGraph = asset;
+            
+            var worldMousePosition = _window.rootVisualElement.ChangeCoordinatesTo(_window.rootVisualElement.parent, GUIUtility.GUIToScreenPoint(Event.current.mousePosition) - _window.position.position);
+            var localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
+            var nodePosition = new Rect(localMousePosition, new Vector2(100, 100));
+
+            subGraphNode.Initialize(subGraphNode.Id, nodePosition, "", _window.ShowInspector);
+            
+            AddElement(subGraphNode);
+
+            return true;
         }
     }
 }

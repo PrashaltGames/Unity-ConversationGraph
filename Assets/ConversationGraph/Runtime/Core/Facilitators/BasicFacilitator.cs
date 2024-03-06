@@ -16,12 +16,12 @@ namespace ConversationGraph.Runtime.Core.Facilitators
     public class BasicFacilitator : BaseFacilitator
     {
         public override async void StartConversation
-            (ConversationSystem conversationSystem)
+            (ConversationSystem conversationSystem, ConversationAsset asset)
         {
-            var id = conversationSystem.ConversationAsset.StartId;
+            var id = asset.StartId;
             var isEnd = false;
-            var conversationDataDic = GetConversationDicFromSaveDataDic(conversationSystem.ConversationAsset);
-            var scriptableAssets = ConversationUtility.GetScriptableAssets(conversationSystem.ConversationAsset);
+            var conversationDataDic = GetConversationDicFromSaveDataDic(asset);
+            var scriptableAssets = ConversationUtility.GetScriptableAssets(asset);
             while (true)
             {
                 var data = conversationDataDic[id];
@@ -39,6 +39,9 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                         break;
                     case ScriptableData scriptableData:
                         OnScriptable(scriptableData, scriptableAssets, conversationSystem);
+                        break;
+                    case SubGraphData subGraphData:
+                        OnSubGraph(subGraphData, conversationSystem);
                         break;
                     case StartData startData:
                         OnStart(startData, conversationSystem.TitleText);
@@ -66,6 +69,11 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                 }
 #endif
             }
+        }
+
+        private void Conversation()
+        {
+            
         }
 
         public override void AfterMessage(in TextMeshProUGUI text)
@@ -130,6 +138,12 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             var asset = scriptableAssets.FirstOrDefault(x =>
                 x.Guid == data.AssetGuid);
             asset?.ScriptableConversation.OnArrival(system);
+        }
+
+        public override void OnSubGraph(in SubGraphData data, ConversationSystem system)
+        {
+            var subGraphAsset = ConversationUtility.GetConversationAssetByGuid(data.AssetGuid);
+            StartConversation(system, subGraphAsset);
         }
 
         public override void OnStart(in StartData data, in TextMeshProUGUI title)

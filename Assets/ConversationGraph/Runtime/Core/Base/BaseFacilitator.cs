@@ -20,7 +20,7 @@ namespace ConversationGraph.Runtime.Core.Base
         public Action OnSpeaker;
         public Action OnShowSelectButtons;
         public Action OnSelected;
-        public abstract void StartConversation(ConversationSystem conversationSystem);
+        public abstract void StartConversation(ConversationSystem conversationSystem, ConversationAsset asset);
         
         public abstract void AfterMessage(in TextMeshProUGUI text);
         public abstract void BeforeMessage(in TextMeshProUGUI text);
@@ -31,6 +31,8 @@ namespace ConversationGraph.Runtime.Core.Base
         public abstract UniTask<int> OnSelect(SelectData data, Transform parent, Button prefab);
         public abstract void OnScriptable(ScriptableData data, IEnumerable<ConversationScriptAsset> scriptableAssets,
             ConversationSystem system);
+
+        public abstract void OnSubGraph(in SubGraphData data, ConversationSystem system);
         protected string ReflectProperty(string text, in IReadOnlyDictionary<string, string> properties)
         {
             if (string.IsNullOrEmpty(text)) return "";
