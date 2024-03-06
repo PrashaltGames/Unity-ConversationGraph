@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ConversationGraph.Runtime.Foundation;
@@ -21,12 +22,21 @@ namespace ConversationGraph.Editor.Foundation
         /// All edges in this asset.
         /// </summary>
         public IReadOnlyList<EdgeData> Edges => _edges;
-        
+        public Action OnIsModified { get; set; }
         /// <summary>
         /// Whether the asset has been modified.
         /// </summary>
-        public bool IsModified { get; set; }
+        public bool IsModified
+        {
+            get => _isModified;
+            set
+            {
+                _isModified = value;
+                OnIsModified.Invoke();
+            }
+        }
 
+        private bool _isModified;
         /// <summary>
         /// The first node in this asset.
         /// </summary>
