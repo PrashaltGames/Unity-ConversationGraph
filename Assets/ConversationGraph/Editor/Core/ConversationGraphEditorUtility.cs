@@ -34,7 +34,6 @@ namespace ConversationGraph.Editor.Core
 
             return null;
         }
-
         public static ConversationGraphAsset GetConversationGraphAssetByGuid(string guid)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);

@@ -54,7 +54,7 @@ namespace ConversationGraph.Runtime.Core.Components
 
         public void StartConversation()
         {
-            _baseFacilitator.StartConversation(this);
+            _baseFacilitator.StartConversation(this, _conversationAsset);
         }
 
         public void StartConversation(ConversationAsset asset, ConversationPropertyAsset propertyAsset)
@@ -62,7 +62,7 @@ namespace ConversationGraph.Runtime.Core.Components
             var datas = 
                 GetConversationDicFromSaveDataDic(asset.ConversationSaveData);
             
-            _baseFacilitator.StartConversation(this);
+            _baseFacilitator.StartConversation(this, _conversationAsset);
         }
 
         public void StartConversation(Dictionary<string, string> propertiesDictionary)
@@ -70,7 +70,7 @@ namespace ConversationGraph.Runtime.Core.Components
             var datas = 
                 GetConversationDicFromSaveDataDic(_conversationAsset.ConversationSaveData);
             
-            _baseFacilitator.StartConversation(this);
+            _baseFacilitator.StartConversation(this, _conversationAsset);
         }
 
         private Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(Dictionary<string, ConversationSaveData> saveDataDic)

@@ -24,6 +24,8 @@ namespace ConversationGraph.Runtime.Core
                    => JsonUtility.FromJson<SelectData>(data.Json),
                "ConversationGraph.Runtime.Foundation.ScriptableData"
                    => JsonUtility.FromJson<ScriptableData>(data.Json),
+               "ConversationGraph.Runtime.Foundation.SubGraphData"
+                   => JsonUtility.FromJson<SubGraphData>(data.Json),
                _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -42,6 +44,22 @@ namespace ConversationGraph.Runtime.Core
                     yield return conversationScriptAsset;
                 }
             }
+        }
+
+        public static ConversationAsset GetConversationAssetByGuid(string guid)
+        {
+            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            var assets = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+
+            foreach (var asset in assets)
+            {
+                if (asset is ConversationAsset conversationAsset)
+                {
+                    return conversationAsset;
+                }
+            }
+
+            return null;
         }
     }
 }

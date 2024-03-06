@@ -3,6 +3,7 @@ using ConversationGraph.Editor.Foundation.Nodes;
 using ConversationGraph.Editor.Foundation.Nodes.ConversationNode;
 using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
+using Cysharp.Threading.Tasks;
 using Unity.AppUI.UI;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -146,7 +147,7 @@ namespace ConversationGraph.Editor.Core
             startUI.Q<TextField>().RegisterValueChangedCallback(e =>
             {
                 node.StartData.Title = e.newValue;
-                ConversationGraphAsset.IsModified = true;
+                Modifier();
             });
             
             rootVisualElement.Add(startUI);
@@ -168,7 +169,7 @@ namespace ConversationGraph.Editor.Core
             var listView = selectUI.Q<ListView>();
             listView.makeItem += () =>
             {
-                ConversationGraphAsset.IsModified = true;
+                Modifier();
                 var textField = new TextField
                 {
                     size = Size.L
@@ -231,27 +232,27 @@ namespace ConversationGraph.Editor.Core
                 
                 _selectedElement.element = null;
             }
-            ConversationGraphAsset.IsModified = true;
+            Modifier();
         }
 
         private void SpeakerChangeEvent(in ChangeEvent<string> e, in SpeakerNode node)
         {
             node.MessageData.Speaker = e.newValue;
             node.ChangeSpeakerName(e.newValue);
-            ConversationGraphAsset.IsModified = true;
+            Modifier();
         }
         private void MessageChangeEvent(in ChangeEvent<string> e, in MessageNode node, in TextArea textArea)
         {
             node.MessageData.MessageList[_selectedElement.index] = e.newValue;
             node.RefreshListView();
-            ConversationGraphAsset.IsModified = true;
+            Modifier();
         }
 
         private TextArea CreateNewTextArea(in MessageNode node, in string message)
         {
             var textArea = CreateNewTextArea(node);
             textArea.value = message;
-            ConversationGraphAsset.IsModified = true;
+            Modifier();
             
             return textArea;
         }
@@ -265,9 +266,15 @@ namespace ConversationGraph.Editor.Core
             textArea.style.width = Length.Percent(100);
             textArea.RegisterValueChangedCallback(e => MessageChangeEvent(e, node, textArea));
 
-            ConversationGraphAsset.IsModified = true;
+            Modifier();
             
             return textArea;
+        }
+
+        private async void Modifier()
+        {
+            await UniTask.WaitUntil(() => ConversationGraphAsset is not null);
+            ConversationGraphAsset.IsModified = true;
         }
 
         private void OnSelectTextArea(in VisualElement element, in int index)
