@@ -29,7 +29,8 @@ namespace ConversationGraph.Runtime.Core.Base
         public abstract void OnStart(in StartData data);
         public abstract void OnEnd(in EndData data);
         public abstract UniTask<int> OnSelect(SelectData data, Transform parent, Button prefab);
-        public abstract void OnScriptable(ScriptableData data, IEnumerable<ConversationScriptAsset> scriptableAssets);
+        public abstract void OnScriptable(ScriptableData data, IEnumerable<ConversationScriptAsset> scriptableAssets,
+            ConversationSystem system);
         protected string ReflectProperty(string text, in IReadOnlyDictionary<string, string> properties)
         {
             if (string.IsNullOrEmpty(text)) return "";

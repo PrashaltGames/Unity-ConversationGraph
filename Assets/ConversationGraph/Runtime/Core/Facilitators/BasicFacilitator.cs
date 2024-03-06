@@ -38,7 +38,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                         nextIndex = await OnSelect(selectData, conversationSystem.SelectParent, conversationSystem.SelectButton);
                         break;
                     case ScriptableData scriptableData:
-                        OnScriptable(scriptableData, scriptableAssets);
+                        OnScriptable(scriptableData, scriptableAssets, conversationSystem);
                         break;
                     case StartData startData:
                         OnStart(startData);
@@ -124,11 +124,12 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             return index;
         }
 
-        public override void OnScriptable(ScriptableData data, IEnumerable<ConversationScriptAsset> scriptableAssets)
+        public override void OnScriptable(ScriptableData data, IEnumerable<ConversationScriptAsset> scriptableAssets,
+            ConversationSystem system)
         {
             var asset = scriptableAssets.FirstOrDefault(x =>
                 x.Guid == data.AssetGuid);
-            asset?.ScriptableConversation.OnArrival();
+            asset?.ScriptableConversation.OnArrival(system);
         }
 
         public override void OnStart(in StartData data)

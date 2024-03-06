@@ -1,7 +1,9 @@
-﻿namespace ConversationGraph.Runtime.Core.Interfaces
+﻿using ConversationGraph.Runtime.Core.Components;
+
+namespace ConversationGraph.Runtime.Core.Interfaces
 {
     public interface IScriptableConversation
     {
-        public void OnArrival();
+        public void OnArrival(ConversationSystem system);
     }
 }
