@@ -1,5 +1,7 @@
 ﻿using System;
+using ConversationGraph.Editor.Core;
 using ConversationGraph.Runtime.Foundation;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -28,7 +30,7 @@ namespace ConversationGraph.Editor.Foundation.Nodes.LogicNodes
             if (!string.IsNullOrEmpty(json))
             {
                 var data = JsonUtility.FromJson<ScriptableData>(json);
-                ScriptableData.ScriptAsset = data.ScriptAsset;
+                ScriptableData.ScriptAsset = ConversationGraphEditorUtility.GetScriptAssetByGuid(data.ParentGuid, data.AssetGuid);
                 
                 OnSelectScript();
             }

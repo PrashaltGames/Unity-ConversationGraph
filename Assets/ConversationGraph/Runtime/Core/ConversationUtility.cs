@@ -1,5 +1,6 @@
 using System;
 using ConversationGraph.Runtime.Foundation;
+using UnityEditor;
 using UnityEngine;
 
 namespace ConversationGraph.Runtime.Core
@@ -24,6 +25,11 @@ namespace ConversationGraph.Runtime.Core
                    => JsonUtility.FromJson<ScriptableData>(data.Json),
                _ => throw new ArgumentOutOfRangeException()
             };
+        }
+        public static string GetGuidByInstanceID(int instanceId)
+        {
+            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(instanceId, out var guid, out long _);
+            return guid;
         }
     }
 }

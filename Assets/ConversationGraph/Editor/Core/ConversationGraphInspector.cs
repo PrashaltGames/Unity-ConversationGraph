@@ -85,7 +85,7 @@ namespace ConversationGraph.Editor.Core
         private void ShowSpeakerInspector(SpeakerNode node)
         {
             var speakerUI = 
-                ConversationGraphEditorUtility.CreateElementFromGuid(SpeakerUIDocumentGuid);
+                ConversationGraphEditorUtility.CreateElementByGuid(SpeakerUIDocumentGuid);
 
             var textField = speakerUI.Q<TextField>();
             textField.value = node.MessageData.Speaker;
@@ -115,7 +115,7 @@ namespace ConversationGraph.Editor.Core
         private void ShowNarratorInspector(NarratorNode node)
         {
             var narratorUI = 
-                ConversationGraphEditorUtility.CreateElementFromGuid(NarratorUIDocumentGuid);
+                ConversationGraphEditorUtility.CreateElementByGuid(NarratorUIDocumentGuid);
 
             // Set up ScrollView
             var scrollView = narratorUI.Q<ScrollView>();
@@ -141,7 +141,7 @@ namespace ConversationGraph.Editor.Core
         {
             // MainContainerをテンプレートからコピー
             var startUI =
-                ConversationGraphEditorUtility.CreateElementFromGuid(StartUIDocumentGuid);
+                ConversationGraphEditorUtility.CreateElementByGuid(StartUIDocumentGuid);
             
             rootVisualElement.Add(startUI);
         }
@@ -149,7 +149,7 @@ namespace ConversationGraph.Editor.Core
         {
             // MainContainerをテンプレートからコピー
             var endUI =
-                ConversationGraphEditorUtility.CreateElementFromGuid(EndUIDocumentGuid);
+                ConversationGraphEditorUtility.CreateElementByGuid(EndUIDocumentGuid);
             
             rootVisualElement.Add(endUI);
         }
@@ -157,7 +157,7 @@ namespace ConversationGraph.Editor.Core
         private void ShowSelectInspector(SelectNode node)
         {
             var selectUI =
-                ConversationGraphEditorUtility.CreateElementFromGuid(SelectUIDocumentGuid);
+                ConversationGraphEditorUtility.CreateElementByGuid(SelectUIDocumentGuid);
             
             var listView = selectUI.Q<ListView>();
             listView.makeItem += () =>
@@ -191,7 +191,7 @@ namespace ConversationGraph.Editor.Core
         {
             if (node.ScriptableData.ScriptAsset is null)
             {
-                node.ScriptableData.Init();
+                node.ScriptableData.Init(node.ScriptableData.ScriptAsset);
             }
             var scriptableUI = new InspectorElement(node.ScriptableData.ScriptAsset);
             scriptableUI.ToAppUIElement();

@@ -21,7 +21,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
         /// <summary>
         /// Asset for this window.
         /// </summary>
-        public ConversationGraphAsset Asset { get; set; }
+        public ConversationGraphAsset Asset { get; private set; }
 
         private ConversationGraphView _view;
         
@@ -73,7 +73,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             
             // Nodes
             var isShowedWarning = false;
-            var scriptableAssetCollection = new Queue<ConversationScriptAsset>();
+            var scriptableAssets = GetScriptableAssets();
             foreach (var node in _view.nodes)
             {
                 if((ConversationGraphEditorUtility.
@@ -89,7 +89,13 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 {
                     if (masterNode is ScriptableNode scriptableNode)
                     {
-                        scriptableAssetCollection.Enqueue(scriptableNode.ScriptableData.ScriptAsset);
+                        var asset = scriptableAssets.FirstOrDefault(x =>
+                            x.GetInstanceID() == scriptableNode.ScriptableData.ScriptAsset.GetInstanceID());
+                        if (asset is null)
+                        {
+                            scriptableNode.ScriptableData.Init(Asset);
+                            AssetDatabase.AddObjectToAsset(scriptableNode.ScriptableData.ScriptAsset, Asset);
+                        }
                     }
                     var nodeData = ConversationGraphEditorUtility.NodeToData(masterNode);
                     Asset.SaveNode(nodeData);
@@ -129,7 +135,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             }
 
             // Subassetを追加
-            AddNewSubAsset(scriptableAssetCollection);
+            AddConversationSubAsset();
             
             EditorUtility.SetDirty(Asset);
             AssetDatabase.SaveAssets();
@@ -138,7 +144,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             titleContent.text = titleContent.text.Replace("*", "");
         }
 
-        private void AddNewSubAsset(IReadOnlyCollection<ConversationScriptAsset> assetList)
+        private void AddConversationSubAsset()
         {
             var subAsset = GetConversationSubAsset();
             if (subAsset is null)
@@ -163,17 +169,9 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     {
                         subAsset.StartId = baseNode.Id;
                     }
+
                     subAsset.ConversationSaveData.Add(baseNode.Id, saveData);
                 }
-            }
-
-            ClearScriptableAsset();
-            var index = 0;
-            foreach (var scriptableAsset in assetList)
-            {
-                scriptableAsset.name = $"{scriptableAsset.ScriptableConversation.GetType().Name}({index})";
-                AssetDatabase.AddObjectToAsset(scriptableAsset, Asset);
-                index++;
             }
         }
         private ConversationAsset GetConversationSubAsset()
@@ -189,14 +187,14 @@ namespace ConversationGraph.Editor.Core.GraphBase
 
             return null;
         }
-        private void ClearScriptableAsset()
+        private IEnumerable<ConversationScriptAsset> GetScriptableAssets()
         {
             foreach (var asset in 
                      AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(Asset))) 
             {
-                if (AssetDatabase.IsSubAsset(asset) && asset is ConversationScriptAsset)
+                if (AssetDatabase.IsSubAsset(asset) && asset is ConversationScriptAsset conversationScriptAsset)
                 {
-                    DestroyImmediate(asset, true);
+                    yield return conversationScriptAsset;
                 }
             }
         }

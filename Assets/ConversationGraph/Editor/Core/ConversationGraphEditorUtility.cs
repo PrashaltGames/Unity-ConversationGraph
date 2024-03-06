@@ -10,13 +10,28 @@ namespace ConversationGraph.Editor.Core
 {
     public static class ConversationGraphEditorUtility
     {
-        public static VisualElement CreateElementFromGuid(string guid)
+        public static VisualElement CreateElementByGuid(string guid)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
             var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(assetPath);
             var result = visualTree.CloneTree();
             result.style.height = Length.Percent(100);
             return result;
+        }
+
+        public static ConversationScriptAsset GetScriptAssetByGuid(string parentGuid, string assetGuid)
+        {
+            var assetPath = AssetDatabase.GUIDToAssetPath(parentGuid);
+            var subassets = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+            foreach (var asset in subassets)
+            {
+                if (asset is ConversationScriptAsset scriptAsset && scriptAsset.Guid == assetGuid)
+                {
+                    return scriptAsset;
+                }
+            }
+
+            return null;
         }
         public static bool CheckPortEmpty(IEnumerable<Port> ports)
         {
@@ -52,7 +67,5 @@ namespace ConversationGraph.Editor.Core
             var edgeData = new EdgeData("", baseNode.Id, targetNode.Id);
             return edgeData;
         }
-
-
     }
 }
