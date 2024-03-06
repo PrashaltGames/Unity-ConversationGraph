@@ -41,7 +41,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                         OnScriptable(scriptableData, scriptableAssets, conversationSystem);
                         break;
                     case StartData startData:
-                        OnStart(startData);
+                        OnStart(startData, conversationSystem.TitleText);
                         break;
                     case EndData endData:
                         OnEnd(endData);
@@ -132,8 +132,9 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             asset?.ScriptableConversation.OnArrival(system);
         }
 
-        public override void OnStart(in StartData data)
+        public override void OnStart(in StartData data, in TextMeshProUGUI title)
         {
+            title.text = data.Title;
             OnConversationStart?.Invoke();
         }
 

@@ -137,11 +137,15 @@ namespace ConversationGraph.Editor.Core
             
             rootVisualElement.Add(narratorUI);
         }
-        private void ShowStartInspector(in StartNode node)
+        private void ShowStartInspector(StartNode node)
         {
             // MainContainerをテンプレートからコピー
             var startUI =
                 ConversationGraphEditorUtility.CreateElementByGuid(StartUIDocumentGuid);
+            startUI.Q<TextField>().RegisterValueChangedCallback(e =>
+            {
+                node.StartData.Title = e.newValue;
+            });
             
             rootVisualElement.Add(startUI);
         }
