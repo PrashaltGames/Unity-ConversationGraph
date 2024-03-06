@@ -14,7 +14,7 @@ namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
 
             //MainContainerをテンプレートからコピー
             var defaultContainer = 
-                ConversationGraphEditorUtility.CreateElementFromGuid(UIDocumentGuid);
+                ConversationGraphEditorUtility.CreateElementByGuid(UIDocumentGuid);
             
             ListView = defaultContainer.Q<ListView>();
             ListView.makeItem += CreateMessageElement;

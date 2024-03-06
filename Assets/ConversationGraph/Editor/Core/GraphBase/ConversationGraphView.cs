@@ -88,19 +88,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
 
                 var instance = Activator.CreateInstance(t) as BaseNode;
                 if (instance is null) continue;
-     //            if(instance is PropertyNode propertyNode)
-     //            {
-     //                var obj = JsonUtility.FromJson<PropertyNode>(nodeData.Json);
-     //                if(ConversationGraphUtility.ConversationProperties.TryGetValue(obj.memberName, out _))
-     //                {
-     //                   	propertyNode.SetTitle(obj.memberName);
-     //                }
-     //                else
-     //                {
-     //                    Debug.LogWarning($"Conversation Property is missing. {obj.memberName}");
-     //                    continue;
-     //                }
-     //            }
+                
                 // else if(instance is SubGraphNode subGraphNode)
                 // {
                 //     var obj = JsonUtility.FromJson<SubGraphNode>(nodeData.json);
@@ -159,6 +147,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
         //
                     new SearchTreeGroupEntry(new GUIContent("Logic")) { level = 1 },
                     new (new GUIContent(nameof(SelectNode))) { level = 2, userData = typeof(SelectNode) },
+                    new (new GUIContent(nameof(ScriptableNode))) {level = 2, userData = typeof(ScriptableNode)}
         //
         //             new SearchTreeEntry(new GUIContent(nameof(BranchNode))) { level = 2, userData = typeof(BranchNode)},				
         //

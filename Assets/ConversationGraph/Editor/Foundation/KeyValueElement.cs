@@ -16,7 +16,7 @@ namespace ConversationGraph.Editor.Foundation
 
         public KeyValueElement()
         {
-            var element = ConversationGraphEditorUtility.CreateElementFromGuid(uiDocumentGuid);
+            var element = ConversationGraphEditorUtility.CreateElementByGuid(uiDocumentGuid);
             element.RegisterCallback<ClickEvent>(_ => OnClick?.Invoke(this));
             Add(element);
         }

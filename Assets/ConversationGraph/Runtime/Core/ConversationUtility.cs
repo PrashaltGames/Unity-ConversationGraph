@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using ConversationGraph.Runtime.Foundation;
+using UnityEditor;
 using UnityEngine;
 
 namespace ConversationGraph.Runtime.Core
@@ -20,8 +22,26 @@ namespace ConversationGraph.Runtime.Core
                    => JsonUtility.FromJson<MessageData>(data.Json),
                "ConversationGraph.Runtime.Foundation.SelectData"
                    => JsonUtility.FromJson<SelectData>(data.Json),
+               "ConversationGraph.Runtime.Foundation.ScriptableData"
+                   => JsonUtility.FromJson<ScriptableData>(data.Json),
                _ => throw new ArgumentOutOfRangeException()
             };
+        }
+        public static string GetGuidByInstanceID(int instanceId)
+        {
+            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(instanceId, out var guid, out long _);
+            return guid;
+        }
+        public static IEnumerable<ConversationScriptAsset> GetScriptableAssets(ScriptableObject parentAsset)
+        {
+            foreach (var asset in 
+                     AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(parentAsset))) 
+            {
+                if (AssetDatabase.IsSubAsset(asset) && asset is ConversationScriptAsset conversationScriptAsset)
+                {
+                    yield return conversationScriptAsset;
+                }
+            }
         }
     }
 }

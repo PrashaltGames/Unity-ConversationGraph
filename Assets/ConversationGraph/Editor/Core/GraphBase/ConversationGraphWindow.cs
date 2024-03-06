@@ -9,6 +9,8 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
 using System.Linq;
+using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
+using ConversationGraph.Runtime.Core;
 using ConversationGraph.Runtime.Foundation;
 
 namespace ConversationGraph.Editor.Core.GraphBase
@@ -20,7 +22,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
         /// <summary>
         /// Asset for this window.
         /// </summary>
-        public ConversationGraphAsset Asset { get; set; }
+        public ConversationGraphAsset Asset { get; private set; }
 
         private ConversationGraphView _view;
         
@@ -72,6 +74,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             
             // Nodes
             var isShowedWarning = false;
+            var scriptableAssets = ConversationUtility.GetScriptableAssets(Asset);
             foreach (var node in _view.nodes)
             {
                 if((ConversationGraphEditorUtility.
@@ -85,6 +88,16 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 }
                 if (node is BaseNode masterNode)
                 {
+                    if (masterNode is ScriptableNode scriptableNode)
+                    {
+                        var asset = scriptableAssets.FirstOrDefault(x =>
+                            x.GetInstanceID() == scriptableNode.ScriptableData.ScriptAsset.GetInstanceID());
+                        if (asset is null)
+                        {
+                            scriptableNode.ScriptableData.Init(Asset);
+                            AssetDatabase.AddObjectToAsset(scriptableNode.ScriptableData.ScriptAsset, Asset);
+                        }
+                    }
                     var nodeData = ConversationGraphEditorUtility.NodeToData(masterNode);
                     Asset.SaveNode(nodeData);
                 }
@@ -123,7 +136,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             }
 
             // Subassetを追加
-            AddNewSubAsset();
+            AddConversationSubAsset();
             
             EditorUtility.SetDirty(Asset);
             AssetDatabase.SaveAssets();
@@ -132,9 +145,9 @@ namespace ConversationGraph.Editor.Core.GraphBase
             titleContent.text = titleContent.text.Replace("*", "");
         }
 
-        private void AddNewSubAsset()
+        private void AddConversationSubAsset()
         {
-            var subAsset = GetSubAsset();
+            var subAsset = GetConversationSubAsset();
             if (subAsset is null)
             {
                 subAsset = CreateInstance<ConversationAsset>();
@@ -157,11 +170,12 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     {
                         subAsset.StartId = baseNode.Id;
                     }
+
                     subAsset.ConversationSaveData.Add(baseNode.Id, saveData);
                 }
             }
         }
-        private ConversationAsset GetSubAsset()
+        private ConversationAsset GetConversationSubAsset()
         {
             foreach (var asset in 
                      AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(Asset))) 

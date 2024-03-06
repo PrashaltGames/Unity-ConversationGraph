@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ConversationGraph.Runtime.Core.Base;
 using ConversationGraph.Runtime.Core.Components;
 using ConversationGraph.Runtime.Foundation;
@@ -19,6 +21,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             var id = conversationSystem.ConversationAsset.StartId;
             var isEnd = false;
             var conversationDataDic = GetConversationDicFromSaveDataDic(conversationSystem.ConversationAsset);
+            var scriptableAssets = ConversationUtility.GetScriptableAssets(conversationSystem.ConversationAsset);
             while (true)
             {
                 var data = conversationDataDic[id];
@@ -33,6 +36,9 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                         break;
                     case SelectData selectData:
                         nextIndex = await OnSelect(selectData, conversationSystem.SelectParent, conversationSystem.SelectButton);
+                        break;
+                    case ScriptableData scriptableData:
+                        OnScriptable(scriptableData, scriptableAssets, conversationSystem);
                         break;
                     case StartData startData:
                         OnStart(startData);
@@ -116,6 +122,14 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             OnSelected?.Invoke();
             
             return index;
+        }
+
+        public override void OnScriptable(ScriptableData data, IEnumerable<ConversationScriptAsset> scriptableAssets,
+            ConversationSystem system)
+        {
+            var asset = scriptableAssets.FirstOrDefault(x =>
+                x.Guid == data.AssetGuid);
+            asset?.ScriptableConversation.OnArrival(system);
         }
 
         public override void OnStart(in StartData data)

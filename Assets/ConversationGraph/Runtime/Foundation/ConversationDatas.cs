@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ConversationGraph.Runtime.Core;
 using UnityEngine;
 
 namespace ConversationGraph.Runtime.Foundation
@@ -74,5 +75,31 @@ namespace ConversationGraph.Runtime.Foundation
             set => _selectTexts = value;
         }
         [SerializeField] private List<string> _selectTexts = new();
+    }
+
+    [Serializable]
+    public class ScriptableData : ConversationData
+    {
+        public ConversationScriptAsset ScriptAsset
+        {
+            get => _scriptAsset;
+            set => _scriptAsset = value;
+        }
+
+        public string ParentGuid => _parentGuid;
+        public string AssetGuid => _assetGuid;
+        [NonSerialized] private ConversationScriptAsset _scriptAsset;
+        [SerializeField] private string _parentGuid;
+        [SerializeField] private string _assetGuid;
+
+#if UNITY_EDITOR
+        public void Init(ScriptableObject asset)
+        {
+            _scriptAsset = ScriptableObject.CreateInstance<ConversationScriptAsset>();
+            ScriptAsset.name = ScriptAsset.GetInstanceID().ToString();
+            _parentGuid = ConversationUtility.GetGuidByInstanceID(asset.GetInstanceID());
+            _assetGuid = _scriptAsset.Guid;
+        }
+#endif
     }
 }
