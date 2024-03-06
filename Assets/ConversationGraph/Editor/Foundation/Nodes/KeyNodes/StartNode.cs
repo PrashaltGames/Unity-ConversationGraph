@@ -7,16 +7,14 @@ namespace ConversationGraph.Editor.Foundation.Nodes.KeyNodes
 {
     public sealed class StartNode : BaseNode
     {
+        public StartData StartData => Data as StartData;
         public StartNode()
         {
             title = "Start";
             
             AddOutputPort("Start", Port.Capacity.Single, typeof(float));
-            
-            mainContainer.Add(new Label("Title"));
-            mainContainer.Add(new TextField());
 
-            Data = new StartData("Title");
+            Data = new StartData();
         }
 
         public override string ToJson()

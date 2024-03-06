@@ -53,12 +53,12 @@ namespace ConversationGraph.Runtime.Foundation
     [Serializable]
     public class StartData : ConversationData
     {
-        [SerializeField] private string _title;
-
-        public StartData(string title)
+        public string Title
         {
-            _title = title;
-        }
+            get => _title;
+            set => _title = value;
+        } 
+        [SerializeField] private string _title;
     }
     [Serializable]
     public class EndData : ConversationData
@@ -97,6 +97,11 @@ namespace ConversationGraph.Runtime.Foundation
         {
             _scriptAsset = ScriptableObject.CreateInstance<ConversationScriptAsset>();
             ScriptAsset.name = ScriptAsset.GetInstanceID().ToString();
+            SetGuids(asset);
+        }
+
+        public void SetGuids(ScriptableObject asset)
+        {
             _parentGuid = ConversationUtility.GetGuidByInstanceID(asset.GetInstanceID());
             _assetGuid = _scriptAsset.Guid;
         }

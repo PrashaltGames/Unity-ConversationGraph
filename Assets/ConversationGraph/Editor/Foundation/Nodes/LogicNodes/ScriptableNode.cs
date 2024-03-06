@@ -37,7 +37,10 @@ namespace ConversationGraph.Editor.Foundation.Nodes.LogicNodes
 
         public void OnSelectScript()
         {
-            title = $"{ScriptableData.ScriptAsset.ScriptableConversation.GetType().Name} (Scriptable Node)";
+            if (ScriptableData.ScriptAsset.ScriptableConversation is not null)
+            {
+                title = $"{ScriptableData.ScriptAsset.ScriptableConversation.GetType().Name} (Scriptable Node)";   
+            }
         }
     }
 }

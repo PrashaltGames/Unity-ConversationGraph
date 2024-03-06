@@ -26,7 +26,7 @@ namespace ConversationGraph.Runtime.Core.Base
         public abstract void BeforeMessage(in TextMeshProUGUI text);
         public abstract UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText, MessageData data,
             IReadOnlyDictionary<string, string> propertyDic, IReadingWaiter readingWaiter);
-        public abstract void OnStart(in StartData data);
+        public abstract void OnStart(in StartData data, in TextMeshProUGUI title);
         public abstract void OnEnd(in EndData data);
         public abstract UniTask<int> OnSelect(SelectData data, Transform parent, Button prefab);
         public abstract void OnScriptable(ScriptableData data, IEnumerable<ConversationScriptAsset> scriptableAssets,

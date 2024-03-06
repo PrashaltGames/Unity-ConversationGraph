@@ -97,6 +97,11 @@ namespace ConversationGraph.Editor.Core.GraphBase
                             scriptableNode.ScriptableData.Init(Asset);
                             AssetDatabase.AddObjectToAsset(scriptableNode.ScriptableData.ScriptAsset, Asset);
                         }
+                        else
+                        {
+                            scriptableNode.ScriptableData.SetGuids(Asset);
+                        }
+                        
                     }
                     var nodeData = ConversationGraphEditorUtility.NodeToData(masterNode);
                     Asset.SaveNode(nodeData);
