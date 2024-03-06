@@ -54,6 +54,9 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 ShowNodesFromAsset(window.Asset);
                 ShowEdgeFromAsset(window.Asset);
             }
+            
+            //グラフビューの変更を検知する
+            graphViewChanged += OnGraphViewChanged;
         }
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
@@ -174,6 +177,11 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 _graphView.AddElement(node);
                 return true;
             }
+        }
+        public GraphViewChange OnGraphViewChanged(GraphViewChange e)
+        {
+            _window.Asset.IsModified = true;
+            return e;
         }
     }
 }

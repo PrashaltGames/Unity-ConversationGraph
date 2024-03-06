@@ -47,6 +47,12 @@ namespace ConversationGraph.Editor.Core.GraphBase
             _inspector = GetWindow<ConversationGraphInspector>();
             _inspector.ShowUtility();
             _inspector.SelectedNode = node;
+            _inspector.ConversationGraphAsset = Asset;
+
+            Asset.OnIsModified += () =>
+            {
+                titleContent.text = $"{Asset.name}*";
+            };
         }
         private async void OnEnable()
         {
@@ -65,6 +71,16 @@ namespace ConversationGraph.Editor.Core.GraphBase
         private void OnDestroy()
         {
             _inspector?.Close();
+            
+            if(!Asset.IsModified)
+            {
+                return;
+            }
+            var shouldSave = EditorUtility.DisplayDialog($"{Asset.name} - Unsaved Changes Detected", "Do you want to save the changes you made in the Conversation Graph?", "Save", "Discard");
+            if(shouldSave)
+            {
+                OnSave();
+            }
         }
 
         private void OnSave()
@@ -97,11 +113,6 @@ namespace ConversationGraph.Editor.Core.GraphBase
                             scriptableNode.ScriptableData.Init(Asset);
                             AssetDatabase.AddObjectToAsset(scriptableNode.ScriptableData.ScriptAsset, Asset);
                         }
-                        else
-                        {
-                            scriptableNode.ScriptableData.SetGuids(Asset);
-                        }
-                        
                     }
                     var nodeData = ConversationGraphEditorUtility.NodeToData(masterNode);
                     Asset.SaveNode(nodeData);
