@@ -35,14 +35,7 @@ namespace ConversationGraph.Editor.Foundation.Nodes
 
         public virtual void Initialize(string id, Rect rect, string json, Action<BaseNode> onSelect)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                Id = Guid.NewGuid().ToString();
-            }
-            else
-            {
-                Id = id;
-            }
+            Id = string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id;
             SetPosition(rect);
 
             _onSelect += onSelect;

@@ -218,13 +218,13 @@ namespace ConversationGraph.Editor.Core.GraphBase
 
             var asset = subGraphReferences[0];
             var subGraphNode = new SubGraphNode();
-            subGraphNode.SetSubGraphAsset(asset);
+            subGraphNode.SubGraph = asset;
             
             var worldMousePosition = _window.rootVisualElement.ChangeCoordinatesTo(_window.rootVisualElement.parent, GUIUtility.GUIToScreenPoint(Event.current.mousePosition) - _window.position.position);
             var localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);
             var nodePosition = new Rect(localMousePosition, new Vector2(100, 100));
 
-            subGraphNode.Initialize("", nodePosition, "", _window.ShowInspector);
+            subGraphNode.Initialize(subGraphNode.Id, nodePosition, "", _window.ShowInspector);
             
             AddElement(subGraphNode);
 
