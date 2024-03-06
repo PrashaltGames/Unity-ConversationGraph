@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ConversationGraph.Runtime.Foundation;
 using UnityEditor;
 using UnityEngine;
@@ -30,6 +31,17 @@ namespace ConversationGraph.Runtime.Core
         {
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(instanceId, out var guid, out long _);
             return guid;
+        }
+        public static IEnumerable<ConversationScriptAsset> GetScriptableAssets(ScriptableObject parentAsset)
+        {
+            foreach (var asset in 
+                     AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(parentAsset))) 
+            {
+                if (AssetDatabase.IsSubAsset(asset) && asset is ConversationScriptAsset conversationScriptAsset)
+                {
+                    yield return conversationScriptAsset;
+                }
+            }
         }
     }
 }

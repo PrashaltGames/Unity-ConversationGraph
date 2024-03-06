@@ -93,7 +93,6 @@ namespace ConversationGraph.Runtime.Foundation
         [SerializeField] private string _assetGuid;
 
 #if UNITY_EDITOR
-        
         public void Init(ScriptableObject asset)
         {
             _scriptAsset = ScriptableObject.CreateInstance<ConversationScriptAsset>();

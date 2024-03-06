@@ -10,6 +10,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using System.Linq;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
+using ConversationGraph.Runtime.Core;
 using ConversationGraph.Runtime.Foundation;
 
 namespace ConversationGraph.Editor.Core.GraphBase
@@ -73,7 +74,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             
             // Nodes
             var isShowedWarning = false;
-            var scriptableAssets = GetScriptableAssets();
+            var scriptableAssets = ConversationUtility.GetScriptableAssets(Asset);
             foreach (var node in _view.nodes)
             {
                 if((ConversationGraphEditorUtility.
@@ -186,17 +187,6 @@ namespace ConversationGraph.Editor.Core.GraphBase
             }
 
             return null;
-        }
-        private IEnumerable<ConversationScriptAsset> GetScriptableAssets()
-        {
-            foreach (var asset in 
-                     AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(Asset))) 
-            {
-                if (AssetDatabase.IsSubAsset(asset) && asset is ConversationScriptAsset conversationScriptAsset)
-                {
-                    yield return conversationScriptAsset;
-                }
-            }
         }
 
         private List<string> GetNextData(string baseNodeId)
