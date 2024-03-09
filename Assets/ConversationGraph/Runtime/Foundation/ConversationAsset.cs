@@ -1,15 +1,16 @@
 using System;
+using ConversationGraph.Runtime.Core.Interfaces;
 using UnityEngine;
 
 namespace ConversationGraph.Runtime.Foundation
 {
     public class ConversationAsset : ScriptableObject
     {
-        public SerializedDictionary<string, ConversationSaveData> ConversationSaveData
-        {
-            get => _conversationSaveData;
-            set => _conversationSaveData = value;
-        }
+        public SerializedDictionary<string, ConversationSaveData> ConversationSaveData 
+            => _conversationSaveData;
+
+        public SerializeReferenceDictionary<string, IScriptableConversation> ScriptableConversationDictionary 
+            => _scriptableConversations;
 
         public string Title
         {
@@ -24,6 +25,7 @@ namespace ConversationGraph.Runtime.Foundation
         }
         
         [SerializeField] private SerializedDictionary<string, ConversationSaveData> _conversationSaveData = new();
+        [SerializeField] private SerializeReferenceDictionary<string, IScriptableConversation> _scriptableConversations = new();
         [SerializeField] private string _title;
         [SerializeField] private string _startId;
     }

@@ -21,7 +21,6 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             var id = asset.StartId;
             var isEnd = false;
             var conversationDataDic = GetConversationDicFromSaveDataDic(asset);
-            var scriptableAssets = ConversationUtility.GetScriptableAssets(asset);
             while (true)
             {
                 var data = conversationDataDic[id];
@@ -38,7 +37,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                         nextIndex = await OnSelect(selectData, conversationSystem.SelectParent, conversationSystem.SelectButton);
                         break;
                     case ScriptableData scriptableData:
-                        OnScriptable(scriptableData, scriptableAssets, conversationSystem);
+                        OnScriptable(scriptableData, conversationSystem);
                         break;
                     case SubGraphData subGraphData:
                         OnSubGraph(subGraphData, conversationSystem);
@@ -132,12 +131,10 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             return index;
         }
 
-        public override void OnScriptable(ScriptableData data, IEnumerable<ConversationScriptAsset> scriptableAssets,
-            ConversationSystem system)
+        public override void OnScriptable(ScriptableData data, ConversationSystem system)
         {
-            var asset = scriptableAssets.FirstOrDefault(x =>
-                x.Guid == data.AssetGuid);
-            asset?.ScriptableConversation.OnArrival(system);
+            var script = system.ConversationAsset.ScriptableConversationDictionary[data.Guid];
+            script.OnArrival(system);
         }
 
         public override void OnSubGraph(in SubGraphData data, ConversationSystem system)

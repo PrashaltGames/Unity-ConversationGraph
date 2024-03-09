@@ -4,6 +4,7 @@ namespace ConversationGraph.Runtime.Core.Interfaces
 {
     public interface IScriptableConversation
     {
+        public string Guid { get; set; }
         public void OnArrival(ConversationSystem system);
     }
 }

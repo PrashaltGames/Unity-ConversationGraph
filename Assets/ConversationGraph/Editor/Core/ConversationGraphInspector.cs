@@ -1,8 +1,11 @@
-﻿using ConversationGraph.Editor.Foundation;
+﻿using System;
+using System.Linq;
+using ConversationGraph.Editor.Foundation;
 using ConversationGraph.Editor.Foundation.Nodes;
 using ConversationGraph.Editor.Foundation.Nodes.ConversationNode;
 using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
+using ConversationGraph.Runtime.Core.Interfaces;
 using Cysharp.Threading.Tasks;
 using Unity.AppUI.UI;
 using UnityEditor;
@@ -19,6 +22,7 @@ namespace ConversationGraph.Editor.Core
         private const string StartUIDocumentGuid = "813588f557bf22b4693716ad76477b70";
         private const string EndUIDocumentGuid = "3130ce218a52aa440aae8d27541b8ce5";
         private const string SelectUIDocumentGuid = "ae6321a0c6aa2af408520ffa5dae5c24";
+        private const string ScriptableDocumentGuid = "5264841ee0e405c40b7bf90d52bddf5f";
 
         private const string TSSGuid = "dc39b1949c0d08c4b93d17de7fb085d0";
 
@@ -195,14 +199,27 @@ namespace ConversationGraph.Editor.Core
             rootVisualElement.Add(selectUI);
         }
 
-        private void ShowScriptableInspector(in ScriptableNode node)
+        private void ShowScriptableInspector(ScriptableNode node)
         {
-            if (node.ScriptableData.ScriptAsset is null)
+            var scriptableUI = ConversationGraphEditorUtility.CreateElementByGuid(ScriptableDocumentGuid);
+            var dropdown = scriptableUI.Q<Dropdown>();
+            var typeList = ConversationGraphEditorUtility.GetScripts().ToList();
+            dropdown.bindItem = (item, index) =>
             {
-                node.ScriptableData.Init(node.ScriptableData.ScriptAsset);
+                item.label = typeList[index].Name;
+            };
+            dropdown.sourceItems = typeList;
+            dropdown.RegisterValueChangedCallback(e =>
+            {
+                var index = e.newValue.First();
+                node.SetScript((IScriptableConversation)Activator.CreateInstance(typeList[index]));
+            });
+
+            if (node.ScriptableData.ScriptableConversation is not null)
+            {
+                dropdown.selectedIndex = 
+                    typeList.FindIndex(x => x == node.ScriptableData.ScriptableConversation.GetType());
             }
-            var scriptableUI = new InspectorElement(node.ScriptableData.ScriptAsset);
-            scriptableUI.ToAppUIElement();
             
             rootVisualElement.Add(scriptableUI);
         }

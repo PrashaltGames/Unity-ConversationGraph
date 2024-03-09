@@ -10,7 +10,6 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using System.Linq;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
-using ConversationGraph.Runtime.Core;
 using ConversationGraph.Runtime.Foundation;
 
 namespace ConversationGraph.Editor.Core.GraphBase
@@ -91,10 +90,10 @@ namespace ConversationGraph.Editor.Core.GraphBase
         {
             Asset.ClearNodes();
             Asset.ClearEdges();
+            Asset.ScriptableConversationDictionary.Clear();
             
             // Nodes
             var isShowedWarning = false;
-            var scriptableAssets = ConversationUtility.GetScriptableAssets(Asset);
             foreach (var node in _view.nodes)
             {
                 if((ConversationGraphEditorUtility.
@@ -110,13 +109,10 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 {
                     if (masterNode is ScriptableNode scriptableNode)
                     {
-                        var asset = scriptableAssets.FirstOrDefault(x =>
-                            x.GetInstanceID() == scriptableNode.ScriptableData.ScriptAsset.GetInstanceID());
-                        if (asset is null)
-                        {
-                            scriptableNode.ScriptableData.Init(Asset);
-                            AssetDatabase.AddObjectToAsset(scriptableNode.ScriptableData.ScriptAsset, Asset);
-                        }
+                        scriptableNode.ScriptableData.Guid = string.IsNullOrEmpty(scriptableNode.ScriptableData.Guid) 
+                            ? Guid.NewGuid().ToString() : scriptableNode.ScriptableData.Guid;
+                        scriptableNode.ScriptableData.ScriptableConversation ??= new DummyScriptableConversation();
+                        Asset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation);
                     }
                     var nodeData = ConversationGraphEditorUtility.NodeToData(masterNode);
                     Asset.SaveNode(nodeData);
@@ -176,6 +172,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             }
             
             subAsset.ConversationSaveData.Clear();
+            subAsset.ScriptableConversationDictionary.Clear();
             var nodes = _view.nodes.ToList();
             var count = nodes.Count;
             for (var i = 0; i < count; i++)
@@ -189,6 +186,10 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     if (baseNode.Data.GetType() == typeof(StartData))
                     {
                         subAsset.StartId = baseNode.Id;
+                    }
+                    else if (baseNode is ScriptableNode scriptableNode)
+                    {
+                        subAsset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation );
                     }
 
                     subAsset.ConversationSaveData.Add(baseNode.Id, saveData);

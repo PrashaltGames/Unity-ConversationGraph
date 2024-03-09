@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ConversationGraph.Runtime.Core;
+using ConversationGraph.Runtime.Core.Interfaces;
 using UnityEngine;
 
 namespace ConversationGraph.Runtime.Foundation
@@ -80,32 +81,13 @@ namespace ConversationGraph.Runtime.Foundation
     [Serializable]
     public class ScriptableData : ConversationData
     {
-        public ConversationScriptAsset ScriptAsset
+        public IScriptableConversation ScriptableConversation { get; set; }
+        public string Guid
         {
-            get => _scriptAsset;
-            set => _scriptAsset = value;
+            get => _guid;
+            set => _guid = value;
         }
-
-        public string ParentGuid => _parentGuid;
-        public string AssetGuid => _assetGuid;
-        [NonSerialized] private ConversationScriptAsset _scriptAsset;
-        [SerializeField] private string _parentGuid;
-        [SerializeField] private string _assetGuid;
-
-#if UNITY_EDITOR
-        public void Init(ScriptableObject asset)
-        {
-            _scriptAsset = ScriptableObject.CreateInstance<ConversationScriptAsset>();
-            ScriptAsset.name = ScriptAsset.GetInstanceID().ToString();
-            SetGuids(asset);
-        }
-
-        public void SetGuids(ScriptableObject asset)
-        {
-            _parentGuid = ConversationUtility.GetGuidByInstanceID(asset.GetInstanceID());
-            _assetGuid = _scriptAsset.Guid;
-        }
-#endif
+        [SerializeField] private string _guid;
     }
 
     [Serializable]

@@ -1,7 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using ConversationGraph.Editor.Foundation;
 using ConversationGraph.Editor.Foundation.Nodes;
+using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
+using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
+using Unity.AppUI.UI;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -61,7 +66,7 @@ namespace ConversationGraph.Editor.Core
             return new NodeData(id, rect, json, type);
         }
         /// <summary>
-        /// The edge convert to data for save. 
+        /// The edge convert to nodeData for save. 
         /// </summary>
         /// <param name="edge"></param>
         /// <returns></returns>
@@ -73,6 +78,20 @@ namespace ConversationGraph.Editor.Core
             if (baseNode is null || targetNode is null) return null;
             var edgeData = new EdgeData("", baseNode.Id, targetNode.Id);
             return edgeData;
+        }
+
+        public static IEnumerable<Type> GetScripts()
+        {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (type.IsClass && !type.IsAbstract && type.GetInterfaces().Any(x => x == typeof(IScriptableConversation)))
+                    {
+                        yield return type;
+                    }
+                }
+            }
         }
     }
 }

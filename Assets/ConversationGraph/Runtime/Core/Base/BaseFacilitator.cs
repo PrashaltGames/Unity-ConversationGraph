@@ -29,7 +29,7 @@ namespace ConversationGraph.Runtime.Core.Base
         public abstract void OnStart(in StartData data, in TextMeshProUGUI title);
         public abstract void OnEnd(in EndData data);
         public abstract UniTask<int> OnSelect(SelectData data, Transform parent, Button prefab);
-        public abstract void OnScriptable(ScriptableData data, IEnumerable<ConversationScriptAsset> scriptableAssets,
+        public abstract void OnScriptable(ScriptableData data,
             ConversationSystem system);
 
         public abstract void OnSubGraph(in SubGraphData data, ConversationSystem system);

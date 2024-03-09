@@ -5,11 +5,10 @@ using UnityEngine;
 namespace ConversationGraph.Runtime.Foundation
 {
     [Serializable]
-    public class SerializedDictionary<TKey, TValue> : Dictionary<TKey, TValue> , ISerializationCallbackReceiver
+    public class SerializeReferenceDictionary<TKey, TValue> : Dictionary<TKey, TValue> , ISerializationCallbackReceiver
     {
         [SerializeField] private List<TKey> _keys = new();
-        [SerializeField] private List<TValue> _values = new();
-        
+        [SerializeReference] private List<TValue> _values = new();
         public void OnBeforeSerialize()
         {
             _keys.Clear();

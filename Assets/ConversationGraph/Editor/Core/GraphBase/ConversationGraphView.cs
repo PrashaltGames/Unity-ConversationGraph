@@ -101,6 +101,12 @@ namespace ConversationGraph.Editor.Core.GraphBase
 
                 AddElement(instance);
                 instance.Initialize(nodeData.Id, nodeData.Rect, nodeData.Json, _window.ShowInspector);
+
+                if (instance is ScriptableNode scriptableNode)
+                {
+                    var scriptableConversation = asset.ScriptableConversationDictionary[scriptableNode.ScriptableData.Guid];
+                    scriptableNode.SetScript(scriptableConversation);
+                }
             }
         }
         private async void ShowEdgeFromAsset(ConversationGraphAsset asset)
