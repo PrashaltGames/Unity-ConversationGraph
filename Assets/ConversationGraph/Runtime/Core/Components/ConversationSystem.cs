@@ -31,7 +31,7 @@ namespace ConversationGraph.Runtime.Core.Components
         [SerializeField] private ConversationPropertyAsset _propertyAsset;
 
         [Header("▼ Conversation Settings")] 
-        [SerializeReference, SubclassSelector] private IReadingWaiter _readingWaiter;
+        [SerializeReference] private IReadingWaiter _readingWaiter;
         
         private BaseFacilitator _baseFacilitator;
 
