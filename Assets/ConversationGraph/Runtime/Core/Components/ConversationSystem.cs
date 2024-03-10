@@ -31,7 +31,7 @@ namespace ConversationGraph.Runtime.Core.Components
         [Header("▼ Conversation Settings")] 
         [SerializeReference, SubclassSelector] private IReadingWaiter _readingWaiter;
         
-        private BaseFacilitator _baseFacilitator;
+        private BaseFacilitator _baseFacilitator = new BasicFacilitator();
         
         #if ENABLE_LEGACY_INPUT_MANAGER
         private void Update()
