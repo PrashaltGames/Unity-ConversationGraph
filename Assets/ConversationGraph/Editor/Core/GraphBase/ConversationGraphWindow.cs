@@ -284,9 +284,9 @@ namespace ConversationGraph.Editor.Core.GraphBase
         
         #endregion
 
-        private void ShowWindow(ConversationGraphAsset convasationGraphAsset)
+        private void ShowWindow(ConversationGraphAsset conversationGraphAsset)
         {
-            Asset = convasationGraphAsset;
+            Asset = conversationGraphAsset;
 
             Show();
         }

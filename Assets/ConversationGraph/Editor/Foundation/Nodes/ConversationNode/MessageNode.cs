@@ -42,6 +42,10 @@ namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
         {
             base.ToJson();
 
+            if (MessageData.AnimationData is null)
+            {
+                MessageData.AnimationData = new DefaultAnimation();
+            }
             return JsonUtility.ToJson(this);
         }
         

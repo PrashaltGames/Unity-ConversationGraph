@@ -108,17 +108,4 @@ namespace ConversationGraph.Runtime.Foundation
         }
         [SerializeField] private string _guid;
     }
-
-    [Serializable]
-    public class AnimationData : ConversationData
-    {
-        public ITextAnimation Animation { get; set; }
-        public string Guid
-        {
-            get => _guid;
-            set => _guid = value;
-        }
-
-        [SerializeField] private string _guid;
-    }
 }
