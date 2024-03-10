@@ -107,6 +107,11 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     var scriptableConversation = asset.ScriptableConversationDictionary[scriptableNode.ScriptableData.Guid];
                     scriptableNode.SetScript(scriptableConversation);
                 }
+                else if (instance is SubGraphNode subGraphNode)
+                {
+                    var subGraphAsset = asset.SubGraphAssetDictinary[subGraphNode.SubGraphData.Guid];
+                    subGraphNode.SetSubGraphAsset(subGraphAsset);
+                }
             }
         }
         private async void ShowEdgeFromAsset(ConversationGraphAsset asset)
@@ -224,7 +229,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
 
             var asset = subGraphReferences[0];
             var subGraphNode = new SubGraphNode();
-            subGraphNode.SubGraph = asset;
+            subGraphNode.SubGraphAsset = asset;
             
             var worldMousePosition = _window.rootVisualElement.ChangeCoordinatesTo(_window.rootVisualElement.parent, GUIUtility.GUIToScreenPoint(Event.current.mousePosition) - _window.position.position);
             var localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);

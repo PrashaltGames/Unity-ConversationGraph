@@ -91,6 +91,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             Asset.ClearNodes();
             Asset.ClearEdges();
             Asset.ScriptableConversationDictionary.Clear();
+            Asset.SubGraphAssetDictinary.Clear();
             
             // Nodes
             var isShowedWarning = false;
@@ -105,16 +106,22 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     Debug.LogWarning("ConversationGraph : There are Empty Port!");
                     isShowedWarning = true;
                 }
-                if (node is BaseNode masterNode)
+                if (node is BaseNode baseNode)
                 {
-                    if (masterNode is ScriptableNode scriptableNode)
+                    if (baseNode is ScriptableNode scriptableNode)
                     {
                         scriptableNode.ScriptableData.Guid = string.IsNullOrEmpty(scriptableNode.ScriptableData.Guid) 
                             ? Guid.NewGuid().ToString() : scriptableNode.ScriptableData.Guid;
                         scriptableNode.ScriptableData.ScriptableConversation ??= new DummyScriptableConversation();
                         Asset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation);
                     }
-                    var nodeData = ConversationGraphEditorUtility.NodeToData(masterNode);
+                    else if (baseNode is SubGraphNode subGraphNode)
+                    {
+                        subGraphNode.SubGraphData.Guid = string.IsNullOrEmpty(subGraphNode.SubGraphData.Guid)
+                            ? Guid.NewGuid().ToString() : subGraphNode.SubGraphData.Guid;
+                        Asset.SubGraphAssetDictinary.Add(subGraphNode.SubGraphData.Guid, subGraphNode.SubGraphAsset);
+                    }
+                    var nodeData = ConversationGraphEditorUtility.NodeToData(baseNode);
                     Asset.SaveNode(nodeData);
                 }
             }
@@ -189,7 +196,11 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     }
                     else if (baseNode is ScriptableNode scriptableNode)
                     {
-                        subAsset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation );
+                        subAsset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation);
+                    }
+                    else if (baseNode is SubGraphNode subGraphNode)
+                    {
+                        subAsset.SubGraphAssetDictionary.Add(subGraphNode.SubGraphData.Guid, subGraphNode.SubGraphData.SubgraphAsset);    
                     }
 
                     subAsset.ConversationSaveData.Add(baseNode.Id, saveData);

@@ -13,7 +13,9 @@ namespace ConversationGraph.Editor.Foundation
     {
         [SerializeField] private List<NodeData> _nodes;
         [SerializeField] private List<EdgeData> _edges;
+
         [SerializeField] private SerializeReferenceDictionary<string, IScriptableConversation> _scriptableConversationDictionary;
+        [SerializeField] private SerializedDictionary<string, ConversationGraphAsset> _subGraphAssetDictionary;
         
         /// <summary>
         /// All nodes in this asset.
@@ -27,6 +29,9 @@ namespace ConversationGraph.Editor.Foundation
 
         public SerializeReferenceDictionary<string, IScriptableConversation> ScriptableConversationDictionary 
             => _scriptableConversationDictionary;
+
+        public SerializedDictionary<string, ConversationGraphAsset> SubGraphAssetDictinary
+            => _subGraphAssetDictionary;
         public Action OnIsModified { get; set; }
         /// <summary>
         /// Whether the asset has been modified.

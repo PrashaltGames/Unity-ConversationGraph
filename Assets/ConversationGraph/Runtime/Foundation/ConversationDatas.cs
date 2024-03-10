@@ -93,11 +93,12 @@ namespace ConversationGraph.Runtime.Foundation
     [Serializable]
     public class SubGraphData : ConversationData
     {
-        public string AssetGuid
+        public ConversationAsset SubgraphAsset { get; set; }
+        public string Guid
         {
-            get => _assetGuid;
-            set => _assetGuid = value;
+            get => _guid;
+            set => _guid = value;
         }
-        [SerializeField] private string _assetGuid;
+        [SerializeField] private string _guid;
     }
 }

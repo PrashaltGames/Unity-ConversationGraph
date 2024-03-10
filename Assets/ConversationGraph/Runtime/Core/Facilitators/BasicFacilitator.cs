@@ -139,7 +139,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
 
         public override void OnSubGraph(in SubGraphData data, ConversationSystem system)
         {
-            var subGraphAsset = ConversationUtility.GetConversationAssetByGuid(data.AssetGuid);
+            var subGraphAsset = system.ConversationAsset.SubGraphAssetDictionary[data.Guid];
             StartConversation(system, subGraphAsset);
         }
 
