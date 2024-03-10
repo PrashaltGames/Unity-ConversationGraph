@@ -8,7 +8,7 @@ namespace ConversationGraph.Runtime.Foundation
     {
         public string Guid => _guid;
         public IScriptableConversation ScriptableConversation => _scriptableConversation;
-        [SerializeReference, SubclassSelector] private IScriptableConversation _scriptableConversation;
+        [SerializeReference] private IScriptableConversation _scriptableConversation;
         [SerializeField] private string _guid = System.Guid.NewGuid().ToString();
     }
 }

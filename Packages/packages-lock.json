@@ -7,13 +7,6 @@
       "dependencies": {},
       "hash": "64792b672d35e43b3412fc74861f8bdbf41e3a6f"
     },
-    "com.mackysoft.serializereference-extensions": {
-      "version": "https://github.com/mackysoft/Unity-SerializeReferenceExtensions.git?path=Assets/MackySoft/MackySoft.SerializeReferenceExtensions#1.1.9",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "cdcbbedf21f4ccfc8108a2c893ad073e02c9ff62"
-    },
     "com.unity.burst": {
       "version": "1.8.12",
       "depth": 1,
