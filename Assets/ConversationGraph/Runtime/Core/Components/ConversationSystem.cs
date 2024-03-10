@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using ConversationGraph.Runtime.Core.Base;
-using ConversationGraph.Runtime.Core.Facilitators;
 using ConversationGraph.Runtime.Foundation;
 using TMPro;
 using UnityEngine;
@@ -31,7 +29,7 @@ namespace ConversationGraph.Runtime.Core.Components
         [SerializeField] private ConversationPropertyAsset _propertyAsset;
 
         [Header("▼ Conversation Settings")] 
-        [SerializeReference] private IReadingWaiter _readingWaiter;
+        [SerializeReference, SubclassSelector] private IReadingWaiter _readingWaiter;
         
         private BaseFacilitator _baseFacilitator;
         
