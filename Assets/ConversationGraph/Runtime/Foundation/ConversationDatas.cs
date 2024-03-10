@@ -47,8 +47,15 @@ namespace ConversationGraph.Runtime.Foundation
             get => _messageList; 
             set => _messageList = value;
         }
+        public ITextAnimation AnimationData
+        {
+            get => _animation;
+            set => _animation = value;
+        }
+        
         [SerializeField] private List<string> _messageList = new();
         [SerializeField] private string _speaker;
+        [SerializeReference] private ITextAnimation _animation;
     }
 
     [Serializable]
@@ -99,6 +106,19 @@ namespace ConversationGraph.Runtime.Foundation
             get => _guid;
             set => _guid = value;
         }
+        [SerializeField] private string _guid;
+    }
+
+    [Serializable]
+    public class AnimationData : ConversationData
+    {
+        public ITextAnimation Animation { get; set; }
+        public string Guid
+        {
+            get => _guid;
+            set => _guid = value;
+        }
+
         [SerializeField] private string _guid;
     }
 }

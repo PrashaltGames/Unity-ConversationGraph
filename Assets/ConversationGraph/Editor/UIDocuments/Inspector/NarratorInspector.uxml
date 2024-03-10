@@ -11,6 +11,9 @@
                 <ui:ScrollView/>
             
                 <appui:Stepper/>
+                
+                <appui:Text text="Text Animation" style="padding: 20px 0px 0px 0px;"/>
+                <appui:Dropdown />
             </ui:VisualElement>
             
         </ui:VisualElement>

@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using ConversationGraph.Runtime.Core.Base;
 using ConversationGraph.Runtime.Core.Components;
+using ConversationGraph.Runtime.Core.ReadingWaiter;
 using ConversationGraph.Runtime.Foundation;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -88,6 +90,8 @@ namespace ConversationGraph.Runtime.Core.Facilitators
         public override async UniTask OnMessage(TextMeshProUGUI speakerText, TextMeshProUGUI messageText,
             MessageData data, IReadOnlyDictionary<string, string> propertyDic, IReadingWaiter readingWaiter)
         {
+            var source = new CancellationTokenSource();
+            
             if (string.IsNullOrEmpty(data.Speaker))
             {
                 OnNarrator?.Invoke();
@@ -101,6 +105,11 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             foreach (var message in data.MessageList)
             {
                 messageText.SetText(ReflectProperty(message, propertyDic));
+                
+                data.AnimationData.StartAnimation(speakerText, messageText, source.Token);
+                await new WaitForClick().WaitReading();
+                source.Cancel();
+                
                 await readingWaiter.WaitReading();
             }
         }

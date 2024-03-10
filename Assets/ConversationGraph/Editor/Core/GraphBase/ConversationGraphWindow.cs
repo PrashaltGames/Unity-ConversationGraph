@@ -117,6 +117,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     }
                     else if (baseNode is SubGraphNode subGraphNode)
                     {
+                        if(subGraphNode.SubGraphData.SubgraphAsset is null) continue;
                         subGraphNode.SubGraphData.Guid = string.IsNullOrEmpty(subGraphNode.SubGraphData.Guid)
                             ? Guid.NewGuid().ToString() : subGraphNode.SubGraphData.Guid;
                         Asset.SubGraphAssetDictinary.Add(subGraphNode.SubGraphData.Guid, subGraphNode.SubGraphAsset);
@@ -180,6 +181,8 @@ namespace ConversationGraph.Editor.Core.GraphBase
             
             subAsset.ConversationSaveData.Clear();
             subAsset.ScriptableConversationDictionary.Clear();
+            subAsset.SubGraphAssetDictionary.Clear();
+            
             var nodes = _view.nodes.ToList();
             var count = nodes.Count;
             for (var i = 0; i < count; i++)

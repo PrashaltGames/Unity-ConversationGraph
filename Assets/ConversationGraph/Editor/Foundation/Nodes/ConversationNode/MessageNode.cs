@@ -1,4 +1,6 @@
 using System;
+using ConversationGraph.Runtime.Core.Animation;
+using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -10,6 +12,7 @@ namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
     public class MessageNode : BaseNode
     {
         public MessageData MessageData => Data as MessageData;
+        
         protected ListView ListView;
         public MessageNode()
         {
@@ -57,6 +60,7 @@ namespace ConversationGraph.Editor.Foundation.Nodes.ConversationNode
                 var data = JsonUtility.FromJson<MessageData>(json);
                 MessageData.Speaker = data.Speaker;
                 MessageData.MessageList = data.MessageList;
+                MessageData.AnimationData = data.AnimationData ?? new DefaultAnimation();
             }
             
             ListView.itemsSource = MessageData.MessageList;
