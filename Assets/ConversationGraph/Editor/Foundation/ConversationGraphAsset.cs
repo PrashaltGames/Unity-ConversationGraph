@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
 using UnityEditor;
 using UnityEngine;
@@ -12,6 +13,9 @@ namespace ConversationGraph.Editor.Foundation
     {
         [SerializeField] private List<NodeData> _nodes;
         [SerializeField] private List<EdgeData> _edges;
+
+        [SerializeField] private SerializeReferenceDictionary<string, IScriptableConversation> _scriptableConversationDictionary;
+        [SerializeField] private SerializedDictionary<string, ConversationGraphAsset> _subGraphAssetDictionary;
         
         /// <summary>
         /// All nodes in this asset.
@@ -22,6 +26,12 @@ namespace ConversationGraph.Editor.Foundation
         /// All edges in this asset.
         /// </summary>
         public IReadOnlyList<EdgeData> Edges => _edges;
+
+        public SerializeReferenceDictionary<string, IScriptableConversation> ScriptableConversationDictionary 
+            => _scriptableConversationDictionary;
+
+        public SerializedDictionary<string, ConversationGraphAsset> SubGraphAssetDictinary
+            => _subGraphAssetDictionary;
         public Action OnIsModified { get; set; }
         /// <summary>
         /// Whether the asset has been modified.

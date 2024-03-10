@@ -1,5 +1,6 @@
 ﻿using System;
 using ConversationGraph.Editor.Core;
+using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -29,17 +30,16 @@ namespace ConversationGraph.Editor.Foundation.Nodes.LogicNodes
             if (!string.IsNullOrEmpty(json))
             {
                 var data = JsonUtility.FromJson<ScriptableData>(json);
-                ScriptableData.ScriptAsset = ConversationGraphEditorUtility.GetScriptAssetByGuid(data.ParentGuid, data.AssetGuid);
-                
-                OnSelectScript();
+                ScriptableData.Guid = data.Guid;
             }
         }
 
-        public void OnSelectScript()
+        public void SetScript(IScriptableConversation scriptableConversation)
         {
-            if (ScriptableData.ScriptAsset.ScriptableConversation is not null)
+            ScriptableData.ScriptableConversation = scriptableConversation;
+            if (ScriptableData.ScriptableConversation is not null)
             {
-                title = $"{ScriptableData.ScriptAsset.ScriptableConversation.GetType().Name} (Scriptable Node)";   
+                title = $"{ScriptableData.ScriptableConversation.GetType().Name} (Scriptable Node)";   
             }
         }
     }

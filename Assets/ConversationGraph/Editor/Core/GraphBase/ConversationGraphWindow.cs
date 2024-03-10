@@ -10,7 +10,6 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using System.Linq;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
-using ConversationGraph.Runtime.Core;
 using ConversationGraph.Runtime.Foundation;
 
 namespace ConversationGraph.Editor.Core.GraphBase
@@ -91,10 +90,11 @@ namespace ConversationGraph.Editor.Core.GraphBase
         {
             Asset.ClearNodes();
             Asset.ClearEdges();
+            Asset.ScriptableConversationDictionary.Clear();
+            Asset.SubGraphAssetDictinary.Clear();
             
             // Nodes
             var isShowedWarning = false;
-            var scriptableAssets = ConversationUtility.GetScriptableAssets(Asset);
             foreach (var node in _view.nodes)
             {
                 if((ConversationGraphEditorUtility.
@@ -106,19 +106,22 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     Debug.LogWarning("ConversationGraph : There are Empty Port!");
                     isShowedWarning = true;
                 }
-                if (node is BaseNode masterNode)
+                if (node is BaseNode baseNode)
                 {
-                    if (masterNode is ScriptableNode scriptableNode)
+                    if (baseNode is ScriptableNode scriptableNode)
                     {
-                        var asset = scriptableAssets.FirstOrDefault(x =>
-                            x.GetInstanceID() == scriptableNode.ScriptableData.ScriptAsset.GetInstanceID());
-                        if (asset is null)
-                        {
-                            scriptableNode.ScriptableData.Init(Asset);
-                            AssetDatabase.AddObjectToAsset(scriptableNode.ScriptableData.ScriptAsset, Asset);
-                        }
+                        scriptableNode.ScriptableData.Guid = string.IsNullOrEmpty(scriptableNode.ScriptableData.Guid) 
+                            ? Guid.NewGuid().ToString() : scriptableNode.ScriptableData.Guid;
+                        scriptableNode.ScriptableData.ScriptableConversation ??= new DummyScriptableConversation();
+                        Asset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation);
                     }
-                    var nodeData = ConversationGraphEditorUtility.NodeToData(masterNode);
+                    else if (baseNode is SubGraphNode subGraphNode)
+                    {
+                        subGraphNode.SubGraphData.Guid = string.IsNullOrEmpty(subGraphNode.SubGraphData.Guid)
+                            ? Guid.NewGuid().ToString() : subGraphNode.SubGraphData.Guid;
+                        Asset.SubGraphAssetDictinary.Add(subGraphNode.SubGraphData.Guid, subGraphNode.SubGraphAsset);
+                    }
+                    var nodeData = ConversationGraphEditorUtility.NodeToData(baseNode);
                     Asset.SaveNode(nodeData);
                 }
             }
@@ -176,6 +179,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             }
             
             subAsset.ConversationSaveData.Clear();
+            subAsset.ScriptableConversationDictionary.Clear();
             var nodes = _view.nodes.ToList();
             var count = nodes.Count;
             for (var i = 0; i < count; i++)
@@ -189,6 +193,14 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     if (baseNode.Data.GetType() == typeof(StartData))
                     {
                         subAsset.StartId = baseNode.Id;
+                    }
+                    else if (baseNode is ScriptableNode scriptableNode)
+                    {
+                        subAsset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation);
+                    }
+                    else if (baseNode is SubGraphNode subGraphNode)
+                    {
+                        subAsset.SubGraphAssetDictionary.Add(subGraphNode.SubGraphData.Guid, subGraphNode.SubGraphData.SubgraphAsset);    
                     }
 
                     subAsset.ConversationSaveData.Add(baseNode.Id, saveData);

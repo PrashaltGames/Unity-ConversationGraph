@@ -1,9 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<engine:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:engine="UnityEngine.UIElements"
-    xmlns:editor="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd"
->
-    
-</engine:UXML>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:appui="Unity.AppUI.UI" xsi="http://www.w3.org/2001/XMLSchema-instance" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+
+    <appui:Panel class="inspector-panel">
+        <ui:VisualElement class="inspector-panel">
+            
+            <!-- Node name -->
+            <appui:Heading text="Scriptable Node"/>
+            
+            <appui:Text text="Script"/>
+            <appui:Dropdown size="M"/>
+            
+        </ui:VisualElement>
+    </appui:Panel>
+
+</ui:UXML>
