@@ -13,6 +13,6 @@
   "dependencies": {
       "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "com.unity.dt.app-ui": "1.0.1",
-      "com.mackysoft.serializereference-extensions": "com.mackysoft.serializereference-extensions"
+      "com.mackysoft.serializereference-extensions": "https://github.com/mackysoft/Unity-SerializeReferenceExtensions.git?path=Assets/MackySoft/MackySoft.SerializeReferenceExtensions"
   }
 }
