@@ -38,6 +38,7 @@ SOFTWARE.
 
 ### Dependencies Packages
 **UniTask**
+
 The MIT License (MIT)
 
 Copyright (c) 2019 Yoshifumi Kawai / Cysharp, Inc.
@@ -61,6 +62,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 **Unity-SerializeReferenceExtensions**
+
 MIT License
 
 Copyright (c) 2021 Hiroya Aramaki
