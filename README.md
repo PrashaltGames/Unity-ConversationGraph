@@ -3,7 +3,7 @@
 # ConversationGraph; Node Based Script Engine for Unity.
 ## Set up
 ### Requirement
-- Unity 2022 or newer.
+- Unity 2022 or later.
 - UniTask is installed.
 
 ### Install
