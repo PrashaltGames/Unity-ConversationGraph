@@ -12,3 +12,8 @@
 3. Enter the following
      - `https://github.com/PrashaltGames/Unity-ConversationGraph.git?path=/Assets/ConversationGraph`
 
+## How to Use
+1. Make `Conversation Graph Asset` in ProjectWindow.
+2. Create your Conversation using Nodes.
+3. Use `ConversationSystem` in Runtime with your Conversation Asset(Sub asset of Conversation Graph Asset).
+4. Use `StartConvesation` Method in ConversationSystem Component.
