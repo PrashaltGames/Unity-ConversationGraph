@@ -116,6 +116,26 @@ namespace ConversationGraph.Editor.Core
             var stepper = speakerUI.Q<Stepper>();
             stepper.RegisterValueChangedCallback(i => StepperChangeEvent(i.newValue, node, scrollView));
             
+            // Set up Animation
+            var animationDropdown = speakerUI.Q<Dropdown>();
+            var typeList = ConversationGraphEditorUtility.GetSubClassesByInterface<ITextAnimation>().ToList();
+            animationDropdown.bindItem = (item, i) =>
+            {
+                item.label = typeList[i].Name;
+            };
+            animationDropdown.sourceItems = typeList;
+            animationDropdown.RegisterValueChangedCallback(e =>
+            {
+                var i = e.newValue.First();
+                node.MessageData.AnimationData = (ITextAnimation)Activator.CreateInstance(typeList[i]);
+                Modifier();
+            });
+            if (node.MessageData.AnimationData is not null)
+            {
+                animationDropdown.selectedIndex = 
+                    typeList.FindIndex(x => x == node.MessageData.AnimationData.GetType());
+            }
+            
             rootVisualElement.Add(speakerUI);
         }
         private void ShowNarratorInspector(NarratorNode node)
@@ -141,6 +161,25 @@ namespace ConversationGraph.Editor.Core
             var stepper = narratorUI.Q<Stepper>();
             stepper.RegisterValueChangedCallback(i => StepperChangeEvent(i.newValue, node, scrollView));
             
+            // Set up Animation
+            var animationDropdown = narratorUI.Q<Dropdown>();
+            var typeList = ConversationGraphEditorUtility.GetSubClassesByInterface<ITextAnimation>().ToList();
+            animationDropdown.bindItem = (item, i) =>
+            {
+                item.label = typeList[i].Name;
+            };
+            animationDropdown.sourceItems = typeList;
+            animationDropdown.RegisterValueChangedCallback(e =>
+            {
+                var i = e.newValue.First();
+                node.MessageData.AnimationData = (ITextAnimation)Activator.CreateInstance(typeList[i]);
+                Modifier();
+            });
+            if (node.MessageData.AnimationData is not null)
+            {
+                animationDropdown.selectedIndex = 
+                    typeList.FindIndex(x => x == node.MessageData.AnimationData.GetType());
+            }
             rootVisualElement.Add(narratorUI);
         }
         private void ShowStartInspector(StartNode node)
@@ -203,7 +242,7 @@ namespace ConversationGraph.Editor.Core
         {
             var scriptableUI = ConversationGraphEditorUtility.CreateElementByGuid(ScriptableDocumentGuid);
             var dropdown = scriptableUI.Q<Dropdown>();
-            var typeList = ConversationGraphEditorUtility.GetScripts().ToList();
+            var typeList = ConversationGraphEditorUtility.GetSubClassesByInterface<IScriptableConversation>().ToList();
             dropdown.bindItem = (item, index) =>
             {
                 item.label = typeList[index].Name;
@@ -213,6 +252,7 @@ namespace ConversationGraph.Editor.Core
             {
                 var index = e.newValue.First();
                 node.SetScript((IScriptableConversation)Activator.CreateInstance(typeList[index]));
+                Modifier();
             });
 
             if (node.ScriptableData.ScriptableConversation is not null)

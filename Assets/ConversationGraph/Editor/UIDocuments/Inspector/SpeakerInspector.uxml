@@ -1,4 +1,8 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" appui="Unity.AppUI.UI" xsi="http://www.w3.org/2001/XMLSchema-instance" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:appui="Unity.AppUI.UI"
+         appui="Unity.AppUI.UI" xsi="http://www.w3.org/2001/XMLSchema-instance" editor="UnityEditor.UIElements"
+         noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="Unity.AppUI.UI file:/C:/Users/Kaido-Atsuya/ConversationGraph-v2/UIElementsSchema/Unity.AppUI.UI.xsd">
     <Unity.AppUI.UI.Panel class="inspector-panel">
         <ui:VisualElement class="inspector-panel">
             <Unity.AppUI.UI.Heading text="Speaker Node" />
@@ -9,6 +13,8 @@
                 </ui:VisualElement>
                 <ui:ScrollView />
                 <Unity.AppUI.UI.Stepper />
+                <appui:Text text="Text Animation" style="padding: 20px 0px 0px 0px;"/>
+                <appui:Dropdown />
             </ui:VisualElement>
         </ui:VisualElement>
     </Unity.AppUI.UI.Panel>
