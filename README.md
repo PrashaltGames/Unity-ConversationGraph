@@ -14,7 +14,7 @@
 
 ## License
 ### Conversation Graph
-[ConversationGraph](https://github.com/PrashaltGames/Unity-ConversationGraph/blob/main/LICENSE)
+[LICENSE](https://github.com/PrashaltGames/Unity-ConversationGraph/blob/main/LICENSE)
 
 ### Dependencies Packages
 **UniTask**
