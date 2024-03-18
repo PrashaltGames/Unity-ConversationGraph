@@ -119,16 +119,18 @@ namespace ConversationGraph.Editor.Core.GraphBase
             await UniTask.Delay(10);
             foreach (var edgeData in asset.Edges)
             {
+                // Split Id and Count.
                 var baseNodeGuidWithCount = edgeData.BaseNodeId.Split(":");
                 var targetNodeGuidWithCount = edgeData.TargetNodeId.Split(":");
                 
+                // Get node from Id.
                 var baseNode = nodes.Select(x => x as BaseNode)
                     .FirstOrDefault(x => x?.Id == baseNodeGuidWithCount[0]);
                 var targetNode = nodes.Select(x => x as BaseNode)
                     .FirstOrDefault(x => x?.Id == targetNodeGuidWithCount[0]);
-
+                
                 if (baseNode is null || targetNode is null) return;
-
+                
                 var input = targetNode.inputContainer.Children().Where(x => x is Port).ElementAt(targetNodeGuidWithCount.Length == 1 ? 0 : int.Parse(targetNodeGuidWithCount[1])) as Port;
                 var output = baseNode.outputContainer.Children().Where(x => x is Port).ElementAt(baseNodeGuidWithCount.Length == 1 ? 0 : int.Parse(baseNodeGuidWithCount[1])) as Port;
 
