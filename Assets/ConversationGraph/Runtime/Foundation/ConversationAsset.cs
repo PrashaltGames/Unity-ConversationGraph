@@ -15,6 +15,9 @@ namespace ConversationGraph.Runtime.Foundation
         public SerializeReferenceDictionary<string, IScriptableConversation> ScriptableConversationDictionary 
             => _scriptableConversations;
 
+        public ConversationPropertyAsset ConversationPropertyAsset
+            => _propertyAsset;
+
         public string Title
         {
             get => _title;
@@ -26,7 +29,8 @@ namespace ConversationGraph.Runtime.Foundation
             get => _startId;
             set => _startId = value;
         }
-        
+
+        [SerializeField] private ConversationPropertyAsset _propertyAsset;
         [SerializeField] private SerializedDictionary<string, ConversationSaveData> _conversationSaveData = new();
         [SerializeField] private SerializeReferenceDictionary<string, IScriptableConversation> _scriptableConversations = new();
         [SerializeField] private SerializedDictionary<string, ConversationAsset> _subGraphAssetDictionary = new();

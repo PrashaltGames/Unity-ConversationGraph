@@ -7,7 +7,7 @@ namespace ConversationGraph.Runtime.Foundation
     public class DummyScriptableConversation : IScriptableConversation
     {
         public string Guid { get; set; }
-        public void OnArrival(ConversationSystem system)
+        public void OnArrival()
         {
 #if UNITY_EDITOR
             Debug.LogWarning("ScriptableNodeにクラスが設定されていません");
