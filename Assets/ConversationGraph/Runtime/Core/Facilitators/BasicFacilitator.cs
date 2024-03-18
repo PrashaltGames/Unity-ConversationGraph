@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using ConversationGraph.Runtime.Core.Base;
 using ConversationGraph.Runtime.Core.Components;
+using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Core.ReadingWaiter;
 using ConversationGraph.Runtime.Foundation;
 using Cysharp.Threading.Tasks;
