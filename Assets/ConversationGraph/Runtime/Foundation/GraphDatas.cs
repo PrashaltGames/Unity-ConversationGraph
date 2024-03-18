@@ -24,8 +24,8 @@ namespace ConversationGraph.Runtime.Foundation
     public class EdgeData
     {
         [field:SerializeField]public string Id { get; set; }
-        [field:SerializeField]public string BaseNodeId { get; private set; }
-        [field:SerializeField]public string TargetNodeId { get; private set; }
+        [field:SerializeField]public string BaseNodeId { get; set; }
+        [field:SerializeField]public string TargetNodeId { get; set; }
 
         public EdgeData(string id, string baseNodeId, string targetNodeId)
         {

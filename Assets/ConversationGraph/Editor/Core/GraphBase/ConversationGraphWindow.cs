@@ -143,7 +143,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     }
                     inputOptionId++;
                 }
-                edgeData.Id += $":{inputOptionId}";
+                edgeData.TargetNodeId += $":{inputOptionId}";
 
                 var outputOptionId = 0;
                 foreach (var parentChild in edge.output.parent.Children())
@@ -154,7 +154,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     }
                     outputOptionId++;
                 }
-                edgeData.Id += $":{outputOptionId}";
+                edgeData.BaseNodeId += $":{outputOptionId}";
 
                 Asset.SaveEdge(edgeData);
             }

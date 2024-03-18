@@ -1,6 +1,9 @@
 using Cysharp.Threading.Tasks;
 
-public interface IReadingWaiter
+namespace ConversationGraph.Runtime.Core.Interfaces
 {
-    public UniTask WaitReading();
+    public interface IReadingWaiter
+    {
+        public UniTask WaitReading();
+    }
 }
