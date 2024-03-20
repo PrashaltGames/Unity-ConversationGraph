@@ -24,6 +24,8 @@ namespace ConversationGraph.Runtime.Core
                    => JsonUtility.FromJson<ScriptableData>(data.Json),
                "ConversationGraph.Runtime.Foundation.SubGraphData"
                    => JsonUtility.FromJson<SubGraphData>(data.Json),
+               "ConversationGraph.Runtime.Foundation.ScriptableBranchData"
+                   => JsonUtility.FromJson<ScriptableBranchData>(data.Json),
                _ => throw new ArgumentOutOfRangeException()
             };
         }

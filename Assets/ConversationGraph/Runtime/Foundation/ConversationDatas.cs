@@ -98,6 +98,18 @@ namespace ConversationGraph.Runtime.Foundation
     }
 
     [Serializable]
+    public class ScriptableBranchData : ConversationData
+    {
+        public IScriptableBranch ScriptableBranch { get; set; }
+        public string Guid
+        {
+            get => _guid;
+            set => _guid = value;
+        }
+        [SerializeField] private string _guid;
+    }
+
+    [Serializable]
     public class SubGraphData : ConversationData
     {
         public ConversationAsset SubgraphAsset { get; set; }

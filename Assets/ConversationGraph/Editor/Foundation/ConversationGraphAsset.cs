@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
-using UnityEditor;
 using UnityEngine;
 
 namespace ConversationGraph.Editor.Foundation
@@ -11,12 +9,6 @@ namespace ConversationGraph.Editor.Foundation
     [CreateAssetMenu(menuName = "ConversationGraph")]
     public class ConversationGraphAsset : ScriptableObject
     {
-        [SerializeField] private List<NodeData> _nodes;
-        [SerializeField] private List<EdgeData> _edges;
-
-        [SerializeField] private SerializeReferenceDictionary<string, IScriptableConversation> _scriptableConversationDictionary;
-        [SerializeField] private SerializedDictionary<string, ConversationGraphAsset> _subGraphAssetDictionary;
-        
         /// <summary>
         /// All nodes in this asset.
         /// </summary>
@@ -30,9 +22,19 @@ namespace ConversationGraph.Editor.Foundation
         public SerializeReferenceDictionary<string, IScriptableConversation> ScriptableConversationDictionary 
             => _scriptableConversationDictionary;
 
-        public SerializedDictionary<string, ConversationGraphAsset> SubGraphAssetDictinary
+        public SerializeReferenceDictionary<string, IScriptableBranch> ScriptableBranchDictionary
+            => _scriptableBranchDictionary;
+
+        public SerializedDictionary<string, ConversationGraphAsset> SubGraphAssetDictionary
             => _subGraphAssetDictionary;
         public Action OnIsModified { get; set; }
+        
+        /// <summary>
+        /// The first node in this asset.
+        /// </summary>
+        public NodeData StartNode => 
+            _nodes.Find(x => x.TypeName == nameof(StartNode));
+        
         /// <summary>
         /// Whether the asset has been modified.
         /// </summary>
@@ -45,13 +47,15 @@ namespace ConversationGraph.Editor.Foundation
                 OnIsModified?.Invoke();
             }
         }
+        
+        [SerializeField] private List<NodeData> _nodes;
+        [SerializeField] private List<EdgeData> _edges;
+
+        [SerializeField] private SerializeReferenceDictionary<string, IScriptableConversation> _scriptableConversationDictionary;
+        [SerializeField] private SerializeReferenceDictionary<string, IScriptableBranch> _scriptableBranchDictionary;
+        [SerializeField] private SerializedDictionary<string, ConversationGraphAsset> _subGraphAssetDictionary;
 
         private bool _isModified;
-        /// <summary>
-        /// The first node in this asset.
-        /// </summary>
-        public NodeData StartNode => 
-            _nodes.Find(x => x.TypeName == nameof(StartNode));
 
         /// <summary>
         /// Save the node to this asset.

@@ -3,7 +3,8 @@
     public interface IScriptableBranch
     {
         public string Guid { get; set; }
-        public int BranchCount { get; set; }
+        // to source generator?
+        public int BranchCount { get; protected set; }
         public int OnArrival();
     }
 }

@@ -23,6 +23,7 @@ namespace ConversationGraph.Editor.Core
         private const string EndUIDocumentGuid = "3130ce218a52aa440aae8d27541b8ce5";
         private const string SelectUIDocumentGuid = "ae6321a0c6aa2af408520ffa5dae5c24";
         private const string ScriptableDocumentGuid = "5264841ee0e405c40b7bf90d52bddf5f";
+        private const string ScriptableBranchDocumentGuid = "ab840144c686f084f9a76cf378ff6317";
 
         private const string TSSGuid = "dc39b1949c0d08c4b93d17de7fb085d0";
 
@@ -78,6 +79,9 @@ namespace ConversationGraph.Editor.Core
                     break;
                 case ScriptableNode scriptable:
                     ShowScriptableInspector(scriptable);
+                    break;
+                case ScriptableBranchNode scriptableBranch:
+                    ShowScriptableBranchInspector(scriptableBranch);
                     break;
             }
         }
@@ -262,6 +266,32 @@ namespace ConversationGraph.Editor.Core
             }
             
             rootVisualElement.Add(scriptableUI);
+        }
+
+        private void ShowScriptableBranchInspector(ScriptableBranchNode node)
+        {
+            var scriptableBranchUI = ConversationGraphEditorUtility.CreateElementByGuid(ScriptableBranchDocumentGuid);
+            var dropdown = scriptableBranchUI.Q<Dropdown>();
+            var typeList = ConversationGraphEditorUtility.GetSubClassesByInterface<IScriptableBranch>().ToList();
+            dropdown.bindItem = (item, index) =>
+            {
+                item.label = typeList[index].Name;
+            };
+            dropdown.sourceItems = typeList;
+            dropdown.RegisterValueChangedCallback(e =>
+            {
+                var index = e.newValue.First();
+                node.SetScript((IScriptableBranch)Activator.CreateInstance(typeList[index]));
+                Modifier();
+            });
+
+            if (node.ScriptableBranchData.ScriptableBranch is not null)
+            {
+                dropdown.selectedIndex = 
+                    typeList.FindIndex(x => x == node.ScriptableBranchData.ScriptableBranch.GetType());
+            }
+            
+            rootVisualElement.Add(scriptableBranchUI);
         }
             
         private void StepperChangeEvent(in int i, MessageNode node, in VisualElement view)

@@ -49,6 +49,9 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                     case ScriptableData scriptableData:
                         OnScriptable(scriptableData);
                         break;
+                    case ScriptableBranchData scriptableBranchData:
+                        nextIndex = OnScriptableBranch(scriptableBranchData);
+                        break;
                     case SubGraphData subGraphData:
                         OnSubGraph(subGraphData);
                         break;
@@ -147,7 +150,13 @@ namespace ConversationGraph.Runtime.Core.Facilitators
 
         private void OnScriptable(in ScriptableData data)
         {
-            data.ScriptableConversation.OnArrival();
+            _asset.ScriptableConversationDictionary[data.Guid].OnArrival();
+        }
+
+        private int OnScriptableBranch(in ScriptableBranchData data)
+        {
+            var result = _asset.ScriptableBranchDictionary[data.Guid].OnArrival();
+            return result;
         }
 
         private void OnSubGraph(in SubGraphData data)
