@@ -15,6 +15,9 @@ namespace ConversationGraph.Runtime.Foundation
         public SerializeReferenceDictionary<string, IScriptableConversation> ScriptableConversationDictionary 
             => _scriptableConversations;
 
+        public SerializeReferenceDictionary<string, IScriptableBranch> ScriptableBranchDictionary
+            => _scriptableBranches;
+
         public ConversationPropertyAsset ConversationPropertyAsset
             => _propertyAsset;
 
@@ -33,6 +36,7 @@ namespace ConversationGraph.Runtime.Foundation
         [SerializeField] private ConversationPropertyAsset _propertyAsset;
         [SerializeField] private SerializedDictionary<string, ConversationSaveData> _conversationSaveData = new();
         [SerializeField] private SerializeReferenceDictionary<string, IScriptableConversation> _scriptableConversations = new();
+        [SerializeField] private SerializeReferenceDictionary<string, IScriptableBranch> _scriptableBranches = new();
         [SerializeField] private SerializedDictionary<string, ConversationAsset> _subGraphAssetDictionary = new();
         [SerializeField] private string _title;
         [SerializeField] private string _startId;

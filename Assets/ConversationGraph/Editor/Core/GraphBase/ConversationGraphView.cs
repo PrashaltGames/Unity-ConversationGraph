@@ -92,12 +92,6 @@ namespace ConversationGraph.Editor.Core.GraphBase
 
                 var instance = Activator.CreateInstance(t) as BaseNode;
                 if (instance is null) continue;
-                
-                // else if(instance is SubGraphNode subGraphNode)
-                // {
-                //     var obj = JsonUtility.FromJson<SubGraphNode>(nodeData.json);
-                //     subGraphNode.SetSubGraphAsset(obj.subGraph);
-                // }
 
                 AddElement(instance);
                 instance.Initialize(nodeData.Id, nodeData.Rect, nodeData.Json, _window.ShowInspector);
@@ -107,9 +101,14 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     var scriptableConversation = asset.ScriptableConversationDictionary[scriptableNode.ScriptableData.Guid];
                     scriptableNode.SetScript(scriptableConversation);
                 }
+                else if (instance is ScriptableBranchNode scriptableBranchNode)
+                {
+                    var scriptableBranch = asset.ScriptableBranchDictionary[scriptableBranchNode.ScriptableBranchData.Guid];
+                    scriptableBranchNode.SetScript(scriptableBranch);
+                }
                 else if (instance is SubGraphNode subGraphNode)
                 {
-                    var subGraphAsset = asset.SubGraphAssetDictinary[subGraphNode.SubGraphData.Guid];
+                    var subGraphAsset = asset.SubGraphAssetDictionary[subGraphNode.SubGraphData.Guid];
                     subGraphNode.SetSubGraphAsset(subGraphAsset);
                 }
             }
@@ -158,16 +157,14 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 {
                     new SearchTreeGroupEntry(new GUIContent("Create Node")),
 
-                    new SearchTreeGroupEntry(new GUIContent("Conversation")) { level = 1 },
+                    new SearchTreeGroupEntry(new GUIContent("Basic")) { level = 1 },
                     new (new GUIContent(nameof(NarratorNode))) { level = 2, userData = typeof(NarratorNode) }, 
                     new (new GUIContent(nameof(SpeakerNode))) { level = 2, userData = typeof(SpeakerNode) }, 
-        //
-                    new SearchTreeGroupEntry(new GUIContent("Logic")) { level = 1 },
                     new (new GUIContent(nameof(SelectNode))) { level = 2, userData = typeof(SelectNode) },
-                    new (new GUIContent(nameof(ScriptableNode))) {level = 2, userData = typeof(ScriptableNode)}
-        //
-        //             new SearchTreeEntry(new GUIContent(nameof(BranchNode))) { level = 2, userData = typeof(BranchNode)},				
-        //
+                    
+                    new SearchTreeGroupEntry(new GUIContent("Scriptable")) { level = 1 },
+                    new (new GUIContent(nameof(ScriptableNode))) {level = 2, userData = typeof(ScriptableNode)},
+                    new (new GUIContent(nameof(ScriptableBranchNode))) {level = 2, userData = typeof(ScriptableBranchNode)}
                 };
 
                 return entries;

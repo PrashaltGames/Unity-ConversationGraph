@@ -11,6 +11,7 @@ using UnityEngine;
 using System.Linq;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
 using ConversationGraph.Runtime.Foundation;
+using ConversationGraph.Runtime.Foundation.Dummies;
 
 namespace ConversationGraph.Editor.Core.GraphBase
 {
@@ -91,7 +92,8 @@ namespace ConversationGraph.Editor.Core.GraphBase
             Asset.ClearNodes();
             Asset.ClearEdges();
             Asset.ScriptableConversationDictionary.Clear();
-            Asset.SubGraphAssetDictinary.Clear();
+            Asset.ScriptableBranchDictionary.Clear();
+            Asset.SubGraphAssetDictionary.Clear();
             
             // Nodes
             var isShowedWarning = false;
@@ -115,12 +117,19 @@ namespace ConversationGraph.Editor.Core.GraphBase
                         scriptableNode.ScriptableData.ScriptableConversation ??= new DummyScriptableConversation();
                         Asset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation);
                     }
+                    else if (baseNode is ScriptableBranchNode scriptableBranchNode)
+                    {
+                        scriptableBranchNode.ScriptableBranchData.Guid = string.IsNullOrEmpty(scriptableBranchNode.ScriptableBranchData.Guid) 
+                            ? Guid.NewGuid().ToString() : scriptableBranchNode.ScriptableBranchData.Guid;
+                        scriptableBranchNode.ScriptableBranchData.ScriptableBranch ??= new DummyScriptableBranch();
+                        Asset.ScriptableBranchDictionary.Add(scriptableBranchNode.ScriptableBranchData.Guid, scriptableBranchNode.ScriptableBranchData.ScriptableBranch);
+                    }
                     else if (baseNode is SubGraphNode subGraphNode)
                     {
                         if(subGraphNode.SubGraphData.SubgraphAsset is null) continue;
                         subGraphNode.SubGraphData.Guid = string.IsNullOrEmpty(subGraphNode.SubGraphData.Guid)
                             ? Guid.NewGuid().ToString() : subGraphNode.SubGraphData.Guid;
-                        Asset.SubGraphAssetDictinary.Add(subGraphNode.SubGraphData.Guid, subGraphNode.SubGraphAsset);
+                        Asset.SubGraphAssetDictionary.Add(subGraphNode.SubGraphData.Guid, subGraphNode.SubGraphAsset);
                     }
                     var nodeData = ConversationGraphEditorUtility.NodeToData(baseNode);
                     Asset.SaveNode(nodeData);
@@ -181,6 +190,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             
             subAsset.ConversationSaveData.Clear();
             subAsset.ScriptableConversationDictionary.Clear();
+            subAsset.ScriptableBranchDictionary.Clear();
             subAsset.SubGraphAssetDictionary.Clear();
             
             var nodes = _view.nodes.ToList();
@@ -200,6 +210,10 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     else if (baseNode is ScriptableNode scriptableNode)
                     {
                         subAsset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation);
+                    }
+                    else if (baseNode is ScriptableBranchNode scriptableBranchNode)
+                    {
+                        subAsset.ScriptableBranchDictionary.Add(scriptableBranchNode.ScriptableBranchData.Guid, scriptableBranchNode.ScriptableBranchData.ScriptableBranch);
                     }
                     else if (baseNode is SubGraphNode subGraphNode)
                     {
