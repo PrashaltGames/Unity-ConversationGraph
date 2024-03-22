@@ -15,6 +15,8 @@ namespace ConversationGraph.Editor.Foundation.Nodes.KeyNodes
             AddOutputPort("Start", Port.Capacity.Single, typeof(float));
 
             Data = new StartData();
+            
+            capabilities &= ~Capabilities.Deletable;
         }
 
         public override string ToJson()
