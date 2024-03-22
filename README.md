@@ -116,7 +116,7 @@ It branch conversation by your script on arrive.
 ```
 
 ## Animation
-ConversationGraph is ready to create custom Text Animation.
+ConversationGraph is ready to create the custom Text Animation.
 1. Create C# Script.
 2. Implement `ITextAnimation` in your script.
 3. Choise your script in `Narrator Node` or `Speaker Node` on Node Editor.
