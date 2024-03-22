@@ -4,7 +4,9 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "ConversationGraph.Runtime"
+        "ConversationGraph.Runtime",
+        "ConversationGraph.Editor",
+        "UniTask"
     ],
     "includePlatforms": [
         "Editor"

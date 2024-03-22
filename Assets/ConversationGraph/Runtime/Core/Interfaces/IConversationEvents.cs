@@ -2,16 +2,16 @@
 {
     public interface IConversationEvents
     {
-        internal void OnConversationStart();
+        public void OnConversationStart();
 
-        internal void OnConversationEnd();
+        public void OnConversationEnd();
 
-        internal void OnNarrator();
+        public void OnNarrator();
 
-        internal void OnSpeaker();
+        public void OnSpeaker();
 
-        internal void OnShowSelectButtons();
+        public void OnShowSelectButtons();
 
-        internal void OnSelected();
+        public void OnSelected();
     }
 }

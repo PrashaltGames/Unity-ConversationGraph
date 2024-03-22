@@ -222,6 +222,8 @@ namespace ConversationGraph.Editor.Core.GraphBase
 
                     subAsset.ConversationSaveData.Add(baseNode.Id, saveData);
                 }
+
+                Asset.SubAsset = subAsset;
             }
         }
         private ConversationAsset GetConversationSubAsset()

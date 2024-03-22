@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4399038572802350357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7e1d08ffcaf5f54d87c5710ca075874, type: 3}
+  m_Name: Conversation Asset
+  m_EditorClassIdentifier: 
+  _propertyAsset: {fileID: 11400000, guid: 60ea7b2d82a638645a13650a4eb36cc8, type: 2}
+  _conversationSaveData:
+    _keys:
+    - 01d57f0a-ec63-4aa5-9a66-36cafdfb388a
+    - e46c434e-15f3-4174-a5d5-ac8449c54c6a
+    - afcdfe67-8f7e-4957-942e-254f2061d131
+    _values:
+    - _typeName: ConversationGraph.Runtime.Foundation.StartData
+      _json: '{"_nextDataIds":["afcdfe67-8f7e-4957-942e-254f2061d131"],"_title":""}'
+    - _typeName: ConversationGraph.Runtime.Foundation.EndData
+      _json: '{"_nextDataIds":[]}'
+    - _typeName: ConversationGraph.Runtime.Foundation.MessageData
+      _json: '{"_nextDataIds":["e46c434e-15f3-4174-a5d5-ac8449c54c6a"],"_messageList":["Hello,
+        World!"],"_speaker":"","_animation":{"rid":-2},"references":{"version":2,"RefIds":[{"rid":-2,"type":{"class":"","ns":"","asm":""},"data":{}}]}}'
+  _scriptableConversations:
+    _keys: []
+    _values: []
+  _scriptableBranches:
+    _keys: []
+    _values: []
+  _subGraphAssetDictionary:
+    _keys: []
+    _values: []
+  _title: 
+  _startId: 01d57f0a-ec63-4aa5-9a66-36cafdfb388a
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24315df17abdc5e4da28c44659f72e4c, type: 3}
+  m_Name: Narrator1
+  m_EditorClassIdentifier: 
+  _nodes:
+  - <Id>k__BackingField: 01d57f0a-ec63-4aa5-9a66-36cafdfb388a
+    <TypeName>k__BackingField: ConversationGraph.Editor.Foundation.Nodes.KeyNodes.StartNode
+    <Rect>k__BackingField:
+      serializedVersion: 2
+      x: 100
+      y: 150
+      width: 74
+      height: 77
+    <Json>k__BackingField: '{"_nextDataIds":[],"_title":""}'
+  - <Id>k__BackingField: e46c434e-15f3-4174-a5d5-ac8449c54c6a
+    <TypeName>k__BackingField: ConversationGraph.Editor.Foundation.Nodes.KeyNodes.EndNode
+    <Rect>k__BackingField:
+      serializedVersion: 2
+      x: 800
+      y: 150
+      width: 68
+      height: 77
+    <Json>k__BackingField: '{"_nextDataIds":[]}'
+  - <Id>k__BackingField: afcdfe67-8f7e-4957-942e-254f2061d131
+    <TypeName>k__BackingField: ConversationGraph.Editor.Foundation.Nodes.ConversationNode.NarratorNode
+    <Rect>k__BackingField:
+      serializedVersion: 2
+      x: 414
+      y: 37
+      width: 136
+      height: 227
+    <Json>k__BackingField: '{"_nextDataIds":[],"_messageList":["Hello, World!"],"_speaker":"","_animation":{"rid":-2},"references":{"version":2,"RefIds":[{"rid":-2,"type":{"class":"","ns":"","asm":""},"data":{}}]}}'
+  _edges:
+  - <Id>k__BackingField: 32e252da3aca401d990d147222b5446c
+    <BaseNodeId>k__BackingField: 01d57f0a-ec63-4aa5-9a66-36cafdfb388a:0
+    <TargetNodeId>k__BackingField: afcdfe67-8f7e-4957-942e-254f2061d131:0
+  - <Id>k__BackingField: 0d87e5a26da843b4b3c7df285c54982d
+    <BaseNodeId>k__BackingField: afcdfe67-8f7e-4957-942e-254f2061d131:0
+    <TargetNodeId>k__BackingField: e46c434e-15f3-4174-a5d5-ac8449c54c6a:0
+  _scriptableConversationDictionary:
+    _keys: []
+    _values: []
+  _scriptableBranchDictionary:
+    _keys: []
+    _values: []
+  _subGraphAssetDictionary:
+    _keys: []
+    _values: []
+  _subAsset: {fileID: -4399038572802350357}
+  references:
+    version: 2
+    RefIds: []
