@@ -12,6 +12,8 @@ namespace ConversationGraph.Editor.Foundation.Nodes.KeyNodes
             AddInputPort("End", Port.Capacity.Multi, typeof(float));
 
             Data = new EndData();
+            
+            capabilities &= ~Capabilities.Deletable;
         }
     }
 }
