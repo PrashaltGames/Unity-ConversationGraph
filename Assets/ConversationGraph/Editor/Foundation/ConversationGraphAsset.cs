@@ -47,13 +47,20 @@ namespace ConversationGraph.Editor.Foundation
                 OnIsModified?.Invoke();
             }
         }
-        
+
+        public ConversationAsset SubAsset
+        {
+            get => _subAsset;
+            set => _subAsset = value;
+        }
+
         [SerializeField] private List<NodeData> _nodes;
         [SerializeField] private List<EdgeData> _edges;
 
         [SerializeField] private SerializeReferenceDictionary<string, IScriptableConversation> _scriptableConversationDictionary;
         [SerializeField] private SerializeReferenceDictionary<string, IScriptableBranch> _scriptableBranchDictionary;
         [SerializeField] private SerializedDictionary<string, ConversationGraphAsset> _subGraphAssetDictionary;
+        [SerializeField] private ConversationAsset _subAsset;
 
         private bool _isModified;
 

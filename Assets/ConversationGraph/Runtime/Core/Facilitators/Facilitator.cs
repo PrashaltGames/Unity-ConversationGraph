@@ -118,10 +118,11 @@ namespace ConversationGraph.Runtime.Core.Facilitators
 
         private void OnStart(in StartData data)
         {
+            _events.OnConversationStart();
             _view.ChangeTitle(ReflectProperty(data.Title, _conversationPropertiesDic));
         }
 
-        private void OnEnd(in EndData data)
+        private void OnEnd(in EndData _)
         {
             _events.OnConversationEnd();
         }
