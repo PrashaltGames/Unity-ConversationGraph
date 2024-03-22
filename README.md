@@ -55,6 +55,7 @@ Entry point of Conversation.
 
 Properties
 - Title
+
 ![image](https://github.com/PrashaltGames/Unity-ConversationGraph/assets/58623243/f674bc0f-d5fe-4b15-8c31-1ca63db8c363)
 
 ### End Node
@@ -95,6 +96,52 @@ It branch conversation by your script on arrive.
 1. Create C# Script.
 2. Implement `IScriptableConversation` or `IScriptableBranch` in your script.
 3. Choise your script in `Scriptable Conversation Node` or `Scriptable Branch Node` on Node Editor.
+
+### Sample
+```CSharp
+    public class ScriptableBranchExample : IScriptableBranch
+    {
+        public string Guid { get; set; }
+
+        int IScriptableBranch.BranchCount { get; set; } = 2;
+
+        public int OnArrival()
+        {
+            var random = new Random().Next(0, 2);
+            Debug.Log(random);
+
+            return random;
+        }
+    }
+```
+
+## Animation
+ConversationGraph is ready to create custom Text Animation.
+1. Create C# Script.
+2. Implement `ITextAnimation` in your script.
+3. Choise your script in `Narrator Node` or `Speaker Node` on Node Editor.
+
+### Sample
+```CSharp
+public class DefaultAnimation : ITextAnimation
+{
+   public async UniTask StartAnimation(TextMeshProUGUI speakerText, TextMeshProUGUI messageText, CancellationToken cancellationToken)
+   {
+       messageText.maxVisibleCharacters = 0;
+       for (var i = 1; i <= messageText.text.Length; i++)
+       {
+           messageText.maxVisibleCharacters = i;
+           await UniTask.Delay(500);
+
+           if (cancellationToken.IsCancellationRequested)
+           {
+               messageText.maxVisibleCharacters = messageText.text.Length;
+               break;
+           }
+       }
+   }
+}
+```
   
 ## License
 ### Conversation Graph
