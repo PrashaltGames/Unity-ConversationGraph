@@ -32,6 +32,7 @@ namespace ConversationGraph.Runtime.Core.Components
         [Header("▼ Conversation Settings")] 
         [SerializeReference, SubclassSelector] private IReadingWaiter _readingWaiter;
 
+        [SerializeField, HideInInspector] private ConversationHistory _history;
         private Facilitator _facilitator;
         private TextMeshProUGUI _prefabText;
         private int _selectIndex;
@@ -127,5 +128,12 @@ namespace ConversationGraph.Runtime.Core.Components
         {
             OnSelectedEvent?.Invoke();
         }
+
+#if UNITY_EDITOR
+        public void Reset()
+        {
+            _history = GetComponent<ConversationHistory>();
+        }
+#endif
     }
 }

@@ -173,7 +173,6 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             
             foreach (Match propertyNameMatch in matches)
             {
-                //正規表現分からないので、ゴリ押す
                 var propertyName = propertyNameMatch.Value.Replace("{", "");
                 propertyName = propertyName.Replace("}", "");
 
