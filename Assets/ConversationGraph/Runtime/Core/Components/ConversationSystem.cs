@@ -56,7 +56,7 @@ namespace ConversationGraph.Runtime.Core.Components
 
         public void StartConversation()
         {
-            _facilitator = new(_conversationAsset, this, this);
+            _facilitator = new(_conversationAsset, this, this, _history);
             _facilitator.Facilitate();
         }
 
