@@ -6,6 +6,9 @@
 - Intuitive!
 - Great degree of freedom!
 - Strong Performance on Runtime **maybe**!
+  
+![image](https://github.com/PrashaltGames/Unity-ConversationGraph/assets/58623243/b78854ad-f1ad-430c-bbed-65f5d0391af7)
+
 
 ## Set up
 ### Requirement
@@ -142,7 +145,13 @@ public class DefaultAnimation : ITextAnimation
    }
 }
 ```
-  
+
+## Properties System
+It is to show player name or character name.
+1. Create `Conversation Properties Asset` in Project Window.
+2. Set your Properties Asset in ConversationAsset; SubAsset of ConversationGraphAsset.
+3. Edit text like `{PROPERTY NAME}` in Narrator Node or Speaker Node.
+
 ## License
 ### Conversation Graph
 [LICENSE](https://github.com/PrashaltGames/Unity-ConversationGraph/blob/main/LICENSE)
