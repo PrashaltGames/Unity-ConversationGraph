@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using ConversationGraph.Runtime.Core;
+using ConversationGraph.Runtime.Core.Components;
 using ConversationGraph.Runtime.Foundation;
 using UnityEngine;
 
-namespace ConversationGraph.Runtime.Core.Components
+namespace ConversationGraph.Runtime.ADV.Components
 {
     [RequireComponent(typeof(ConversationSystem))]
     public class ConversationHistory : MonoBehaviour
