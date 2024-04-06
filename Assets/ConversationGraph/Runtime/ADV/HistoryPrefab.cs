@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace ConversationGraph.Runtime.Core
+namespace ConversationGraph.Runtime.ADV
 {
     public class HistoryPrefab : MonoBehaviour
     {
