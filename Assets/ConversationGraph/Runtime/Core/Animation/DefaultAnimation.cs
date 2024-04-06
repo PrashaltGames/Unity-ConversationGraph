@@ -2,11 +2,13 @@
 using ConversationGraph.Runtime.Core.Interfaces;
 using Cysharp.Threading.Tasks;
 using TMPro;
+using UnityEngine;
 
 namespace ConversationGraph.Runtime.Core.Animation
 {
     public class DefaultAnimation : ITextAnimation
     {
+        private const int DelayMilliseconds = 100;
         public async UniTask StartAnimation(TextMeshProUGUI speakerText, TextMeshProUGUI messageText,
             CancellationToken cancellationToken)
         {
@@ -15,7 +17,7 @@ namespace ConversationGraph.Runtime.Core.Animation
             for (var i = 1; i <= messageText.text.Length; i++)
             {
                 messageText.maxVisibleCharacters = i;
-                await UniTask.Delay(500);
+                await UniTask.Delay(DelayMilliseconds, cancellationToken: cancellationToken);
 
                 if (cancellationToken.IsCancellationRequested)
                 {
