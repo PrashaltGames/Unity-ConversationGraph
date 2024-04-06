@@ -16,7 +16,7 @@ namespace ConversationGraph.Tests.Foundation
             
         }
 
-        public async UniTask ChangeMessage(string message)
+        public async UniTask ChangeMessage(string message, ITextAnimation textAnimation)
         {
             
         }

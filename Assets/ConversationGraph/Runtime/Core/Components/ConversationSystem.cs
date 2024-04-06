@@ -1,7 +1,9 @@
 using System;
+using System.Threading;
 using ConversationGraph.Runtime.ADV.Components;
 using ConversationGraph.Runtime.Core.Facilitators;
 using ConversationGraph.Runtime.Core.Interfaces;
+using ConversationGraph.Runtime.Core.ReadingWaiter;
 using ConversationGraph.Runtime.Foundation;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -71,10 +73,15 @@ namespace ConversationGraph.Runtime.Core.Components
             _speakerText.SetText(speaker);
         }
 
-        public async UniTask ChangeMessage(string message)
+        public async UniTask ChangeMessage(string message, ITextAnimation textAnimation)
         {
+            var cancellationTokenSource = new CancellationTokenSource();
             _messageText.SetText(message);
 
+            textAnimation.StartAnimation(_speakerText, _messageText, cancellationTokenSource.Token);
+            await new WaitForClick().WaitReading();
+            cancellationTokenSource.Cancel();
+            
             await _readingWaiter.WaitReading();
         }
 

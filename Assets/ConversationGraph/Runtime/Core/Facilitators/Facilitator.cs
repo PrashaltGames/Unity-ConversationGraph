@@ -116,7 +116,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             
             foreach (var message in data.MessageList)
             {
-                await _view.ChangeMessage(ReflectProperty(message, _asset.ConversationPropertyAsset.PropertiesDictionary));
+                await _view.ChangeMessage(ReflectProperty(message, _asset.ConversationPropertyAsset.PropertiesDictionary), data.AnimationData);
             }
             
             _history?.HistoryList.Add(data);

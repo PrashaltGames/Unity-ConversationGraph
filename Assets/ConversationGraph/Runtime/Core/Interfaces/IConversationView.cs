@@ -7,7 +7,7 @@ namespace ConversationGraph.Runtime.Core.Interfaces
     {
         public void ChangeTitle(string title);
         public void ChangeSpeaker(string speaker);
-        public UniTask ChangeMessage(string message);
+        public UniTask ChangeMessage(string message, ITextAnimation textAnimation);
 
         public void AddSelect(string selectText, Action onSelected);
 
