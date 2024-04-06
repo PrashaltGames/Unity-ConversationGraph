@@ -8,7 +8,6 @@ namespace ConversationGraph.Runtime.Foundation.Dummies
 
         int IScriptableBranch.BranchCount { get; set; } = 1;
 
-
         /// <summary>
         /// 
         /// </summary>

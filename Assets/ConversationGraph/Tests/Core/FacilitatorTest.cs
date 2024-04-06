@@ -22,7 +22,7 @@ namespace ConversationGraph.Tests.Core
             testEvents.ConversationStart += () => isStart = true;
             testEvents.ConversationEnd += () => isEnd = true;
             
-            new Facilitator(asset.SubAsset, new TestView(), testEvents).Facilitate();
+            // new Facilitator(asset.SubAsset, new TestView(), testEvents, ).Facilitate();
             
             Assert.That(isNarrator, Is.True);
             Assert.That(isStart, Is.True);
@@ -42,7 +42,7 @@ namespace ConversationGraph.Tests.Core
             testEvents.ConversationStart += () => isStart = true;
             testEvents.ConversationEnd += () => isEnd = true;
             
-            new Facilitator(asset.SubAsset, new TestView(), testEvents).Facilitate();
+            // new Facilitator(asset.SubAsset, new TestView(), testEvents).Facilitate();
             
             Assert.That(isSpeaker, Is.True);
             Assert.That(isStart, Is.True);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using ConversationGraph.Runtime.Core.Components;
 using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
 using Cysharp.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
     {
         private readonly IConversationView _view;
         private readonly IConversationEvents _events;
+        private readonly ConversationHistory _history;
 
         private readonly ConversationAsset _asset;
         private readonly Dictionary<string, ConversationData> _conversationDataDic;
@@ -20,13 +22,16 @@ namespace ConversationGraph.Runtime.Core.Facilitators
         public Facilitator(
             ConversationAsset asset, 
             IConversationView view,
-            IConversationEvents events)
+            IConversationEvents events,
+            ConversationHistory history
+            )
         {
             _asset = asset;
             _conversationDataDic = GetConversationDicFromSaveDataDic(asset.ConversationSaveData);
 
             _view = view;
             _events = events;
+            _history = history;
         }
         public async void Facilitate()
         {
@@ -113,6 +118,8 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                 await _view.ChangeMessage(ReflectProperty(message, _asset.ConversationPropertyAsset.PropertiesDictionary));
             }
             
+            _history?.HistoryList.Add(data);
+            
             AfterMessage();
         }
 
@@ -163,7 +170,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
         private void OnSubGraph(in SubGraphData data)
         {
             var subGraph = _asset.SubGraphAssetDictionary[data.Guid];
-            var facilitator = new Facilitator(subGraph, _view, _events);
+            var facilitator = new Facilitator(subGraph, _view, _events, _history);
             facilitator.Facilitate();
         }
         private string ReflectProperty(string text, in IReadOnlyDictionary<string, string> properties)
@@ -173,7 +180,6 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             
             foreach (Match propertyNameMatch in matches)
             {
-                //正規表現分からないので、ゴリ押す
                 var propertyName = propertyNameMatch.Value.Replace("{", "");
                 propertyName = propertyName.Replace("}", "");
 

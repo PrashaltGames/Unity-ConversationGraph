@@ -1,6 +1,5 @@
 using System;
 using ConversationGraph.Runtime.Core.Animation;
-using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
