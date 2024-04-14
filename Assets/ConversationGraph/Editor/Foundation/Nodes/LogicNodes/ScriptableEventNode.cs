@@ -8,18 +8,18 @@ using UnityEngine;
 namespace ConversationGraph.Editor.Foundation.Nodes.LogicNodes
 {
     [Serializable]
-    public class ScriptableNode : BaseNode
+    public class ScriptableEventNode : BaseNode
     {
-        public ScriptableData ScriptableData => Data as ScriptableData;
+        public ScriptableEventData ScriptableEventData => Data as ScriptableEventData;
 
-        public ScriptableNode()
+        public ScriptableEventNode()
         {
-            title = "None (Scriptable Node)";
+            title = "None (Scriptable Event)";
             
             AddInputPort("Input", Port.Capacity.Single, typeof(float));
             AddOutputPort("Output", Port.Capacity.Single, typeof(float));
 
-            Data = new ScriptableData();
+            Data = new ScriptableEventData();
         }
 
         public override void Initialize(string id, Rect rect, string json, Action<BaseNode> onSelect)
@@ -29,17 +29,17 @@ namespace ConversationGraph.Editor.Foundation.Nodes.LogicNodes
             // Setup to item list
             if (!string.IsNullOrEmpty(json))
             {
-                var data = JsonUtility.FromJson<ScriptableData>(json);
-                ScriptableData.Guid = data.Guid;
+                var data = JsonUtility.FromJson<ScriptableEventData>(json);
+                ScriptableEventData.Guid = data.Guid;
             }
         }
 
-        public void SetScript(IScriptableConversation scriptableConversation)
+        public void SetScript(IScriptableEvent scriptableEvent)
         {
-            ScriptableData.ScriptableConversation = scriptableConversation;
-            if (ScriptableData.ScriptableConversation is not null)
+            ScriptableEventData.ScriptableEvent = scriptableEvent;
+            if (ScriptableEventData.ScriptableEvent is not null)
             {
-                title = $"{ScriptableData.ScriptableConversation.GetType().Name} (Scriptable Node)";   
+                title = $"{ScriptableEventData.ScriptableEvent.GetType().Name} (Scriptable Node)";   
             }
         }
     }

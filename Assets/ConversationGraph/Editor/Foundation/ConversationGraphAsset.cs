@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
 using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
 using UnityEngine;
@@ -19,7 +21,7 @@ namespace ConversationGraph.Editor.Foundation
         /// </summary>
         public IReadOnlyList<EdgeData> Edges => _edges;
 
-        public SerializeReferenceDictionary<string, IScriptableConversation> ScriptableConversationDictionary 
+        public SerializeReferenceDictionary<string, IScriptableEvent> ScriptableConversationDictionary 
             => _scriptableConversationDictionary;
 
         public SerializeReferenceDictionary<string, IScriptableBranch> ScriptableBranchDictionary
@@ -33,7 +35,7 @@ namespace ConversationGraph.Editor.Foundation
         /// The first node in this asset.
         /// </summary>
         public NodeData StartNode => 
-            _nodes.Find(x => x.TypeName == nameof(StartNode));
+            _nodes.Find(x => x.TypeName == typeof(StartNode).FullName);
         
         /// <summary>
         /// Whether the asset has been modified.
@@ -57,7 +59,7 @@ namespace ConversationGraph.Editor.Foundation
         [SerializeField] private List<NodeData> _nodes;
         [SerializeField] private List<EdgeData> _edges;
 
-        [SerializeField] private SerializeReferenceDictionary<string, IScriptableConversation> _scriptableConversationDictionary;
+        [SerializeField] private SerializeReferenceDictionary<string, IScriptableEvent> _scriptableConversationDictionary;
         [SerializeField] private SerializeReferenceDictionary<string, IScriptableBranch> _scriptableBranchDictionary;
         [SerializeField] private SerializedDictionary<string, ConversationGraphAsset> _subGraphAssetDictionary;
         [SerializeField] private ConversationAsset _subAsset;
@@ -166,6 +168,19 @@ namespace ConversationGraph.Editor.Foundation
             {
                 result = _nodes.Find(x => x.Id == nodeId);
             }
+            return result;
+        }
+        
+        public List<NodeData> GetNextNode(NodeData nodeData)
+        {
+            var edges = Edges.Where(x => x.BaseNodeId.Split(":")[0] == nodeData.Id);
+            List<NodeData> result = new();
+            foreach(var edge in edges)
+            {
+                var nextNode = Nodes.First(x => x.Id == edge.TargetNodeId.Split(":")[0]);
+                result.Add(nextNode);
+            }
+
             return result;
         }
     }

@@ -86,9 +86,9 @@ namespace ConversationGraph.Runtime.Foundation
     }
 
     [Serializable]
-    public class ScriptableData : ConversationData
+    public class ScriptableEventData : ConversationData
     {
-        public IScriptableConversation ScriptableConversation { get; set; }
+        public IScriptableEvent ScriptableEvent { get; set; }
         public string Guid
         {
             get => _guid;

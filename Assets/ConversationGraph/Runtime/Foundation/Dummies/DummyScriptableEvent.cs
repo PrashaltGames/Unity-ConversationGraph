@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ConversationGraph.Runtime.Foundation.Dummies
 {
-    public class DummyScriptableConversation : IScriptableConversation
+    public class DummyScriptableEvent : IScriptableEvent
     {
         public string Guid { get; set; }
 

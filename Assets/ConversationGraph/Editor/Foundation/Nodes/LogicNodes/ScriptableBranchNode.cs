@@ -12,7 +12,7 @@ namespace ConversationGraph.Editor.Foundation.Nodes.LogicNodes
 
         public ScriptableBranchNode()
         {
-            title = "None (Scriptable Branch Node)";
+            title = "None (Scriptable Branch)";
             
             AddInputPort("Input", Port.Capacity.Single, typeof(float));
             AddOutputPort("Output", Port.Capacity.Single, typeof(float));

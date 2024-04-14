@@ -96,9 +96,9 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 AddElement(instance);
                 instance.Initialize(nodeData.Id, nodeData.Rect, nodeData.Json, _window.ShowInspector);
 
-                if (instance is ScriptableNode scriptableNode)
+                if (instance is ScriptableEventNode scriptableNode)
                 {
-                    var scriptableConversation = asset.ScriptableConversationDictionary[scriptableNode.ScriptableData.Guid];
+                    var scriptableConversation = asset.ScriptableConversationDictionary[scriptableNode.ScriptableEventData.Guid];
                     scriptableNode.SetScript(scriptableConversation);
                 }
                 else if (instance is ScriptableBranchNode scriptableBranchNode)
@@ -163,7 +163,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     new (new GUIContent(nameof(SelectNode))) { level = 2, userData = typeof(SelectNode) },
                     
                     new SearchTreeGroupEntry(new GUIContent("Scriptable")) { level = 1 },
-                    new (new GUIContent(nameof(ScriptableNode))) {level = 2, userData = typeof(ScriptableNode)},
+                    new (new GUIContent(nameof(ScriptableEventNode))) {level = 2, userData = typeof(ScriptableEventNode)},
                     new (new GUIContent(nameof(ScriptableBranchNode))) {level = 2, userData = typeof(ScriptableBranchNode)}
                 };
 
