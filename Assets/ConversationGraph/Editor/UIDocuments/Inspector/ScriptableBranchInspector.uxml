@@ -4,6 +4,7 @@
             <Unity.AppUI.UI.Heading text="Scriptable Branch Node" />
             <Unity.AppUI.UI.Text text="Script" />
             <Unity.AppUI.UI.Dropdown size="M" />
+            <ui:VisualElement name="fieldList" style="flex-grow: 1; margin-top: 0; padding-top: 15px;" />
         </ui:VisualElement>
     </Unity.AppUI.UI.Panel>
 </ui:UXML>

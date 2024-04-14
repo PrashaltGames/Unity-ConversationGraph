@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ConversationGraph.Runtime.Foundation;
 using UnityEngine;
 
@@ -20,14 +21,24 @@ namespace ConversationGraph.Runtime.Core
                    => JsonUtility.FromJson<MessageData>(data.Json),
                "ConversationGraph.Runtime.Foundation.SelectData"
                    => JsonUtility.FromJson<SelectData>(data.Json),
-               "ConversationGraph.Runtime.Foundation.ScriptableData"
-                   => JsonUtility.FromJson<ScriptableData>(data.Json),
+               "ConversationGraph.Runtime.Foundation.ScriptableEventData"
+                   => JsonUtility.FromJson<ScriptableEventData>(data.Json),
                "ConversationGraph.Runtime.Foundation.SubGraphData"
                    => JsonUtility.FromJson<SubGraphData>(data.Json),
                "ConversationGraph.Runtime.Foundation.ScriptableBranchData"
                    => JsonUtility.FromJson<ScriptableBranchData>(data.Json),
                _ => throw new ArgumentOutOfRangeException()
             };
+        }
+        public static Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(IReadOnlyDictionary<string, ConversationSaveData> saveDatas)
+        {
+            var resultDic = new Dictionary<string, ConversationData>();
+            foreach (var saveData in saveDatas)
+            {
+                resultDic.Add(saveData.Key, JsonToConversationData(saveData.Value));
+            }
+            
+            return resultDic;
         }
     }
 }

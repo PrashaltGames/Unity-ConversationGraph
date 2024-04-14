@@ -110,12 +110,12 @@ namespace ConversationGraph.Editor.Core.GraphBase
                 }
                 if (node is BaseNode baseNode)
                 {
-                    if (baseNode is ScriptableNode scriptableNode)
+                    if (baseNode is ScriptableEventNode scriptableNode)
                     {
-                        scriptableNode.ScriptableData.Guid = string.IsNullOrEmpty(scriptableNode.ScriptableData.Guid) 
-                            ? Guid.NewGuid().ToString() : scriptableNode.ScriptableData.Guid;
-                        scriptableNode.ScriptableData.ScriptableConversation ??= new DummyScriptableConversation();
-                        Asset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation);
+                        scriptableNode.ScriptableEventData.Guid = string.IsNullOrEmpty(scriptableNode.ScriptableEventData.Guid) 
+                            ? Guid.NewGuid().ToString() : scriptableNode.ScriptableEventData.Guid;
+                        scriptableNode.ScriptableEventData.ScriptableEvent ??= new DummyScriptableEvent();
+                        Asset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableEventData.Guid, scriptableNode.ScriptableEventData.ScriptableEvent);
                     }
                     else if (baseNode is ScriptableBranchNode scriptableBranchNode)
                     {
@@ -207,9 +207,9 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     {
                         subAsset.StartId = baseNode.Id;
                     }
-                    else if (baseNode is ScriptableNode scriptableNode)
+                    else if (baseNode is ScriptableEventNode scriptableNode)
                     {
-                        subAsset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableData.Guid, scriptableNode.ScriptableData.ScriptableConversation);
+                        subAsset.ScriptableConversationDictionary.Add(scriptableNode.ScriptableEventData.Guid, scriptableNode.ScriptableEventData.ScriptableEvent);
                     }
                     else if (baseNode is ScriptableBranchNode scriptableBranchNode)
                     {

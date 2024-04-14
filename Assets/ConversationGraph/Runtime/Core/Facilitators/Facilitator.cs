@@ -28,13 +28,27 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             )
         {
             _asset = asset;
-            _conversationDataDic = GetConversationDicFromSaveDataDic(asset.ConversationSaveData);
+            _conversationDataDic = ConversationUtility.GetConversationDicFromSaveDataDic(asset.ConversationSaveData);
 
             _view = view;
             _events = events;
             _history = history;
         }
-        public async void Facilitate()
+        
+        public Facilitator(
+            ConversationAsset asset, 
+            IConversationView view,
+            IConversationEvents events
+        )
+        {
+            _asset = asset;
+            _conversationDataDic = ConversationUtility.GetConversationDicFromSaveDataDic(asset.ConversationSaveData);
+
+            _view = view;
+            _events = events;
+        }
+        
+        public async UniTask Facilitate()
         {
             var isEnd = false;
             var id = _asset.StartId;
@@ -52,7 +66,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                     case SelectData selectData:
                         nextIndex = await OnSelect(selectData);
                         break;
-                    case ScriptableData scriptableData:
+                    case ScriptableEventData scriptableData:
                         OnScriptable(scriptableData);
                         break;
                     case ScriptableBranchData scriptableBranchData:
@@ -70,7 +84,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                         break;
                 }
                 
-                // if now data is End Data, finish conversation.
+                // if now eventData is End Data, finish conversation.
                 if (isEnd)
                 {
                     break;
@@ -157,9 +171,9 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             return index;
         }
 
-        private void OnScriptable(in ScriptableData data)
+        private void OnScriptable(in ScriptableEventData eventData)
         {
-            _asset.ScriptableConversationDictionary[data.Guid].OnArrival();
+            _asset.ScriptableConversationDictionary[eventData.Guid].OnArrival();
         }
 
         private int OnScriptableBranch(in ScriptableBranchData data)
@@ -196,16 +210,6 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                 text = text.Replace($"{{{propertyName}}}", value);
             }
             return text;
-        }
-        protected Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(IReadOnlyDictionary<string, ConversationSaveData> saveDatas)
-        {
-            var resultDic = new Dictionary<string, ConversationData>();
-            foreach (var saveData in saveDatas)
-            {
-                resultDic.Add(saveData.Key, ConversationUtility.JsonToConversationData(saveData.Value));
-            }
-            
-            return resultDic;
         }
     }
 }

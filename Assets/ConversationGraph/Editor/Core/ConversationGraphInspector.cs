@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using ConversationGraph.Editor.Foundation;
 using ConversationGraph.Editor.Foundation.Nodes;
 using ConversationGraph.Editor.Foundation.Nodes.ConversationNode;
@@ -10,7 +11,9 @@ using Cysharp.Threading.Tasks;
 using Unity.AppUI.UI;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
+using FloatField = UnityEngine.UIElements.FloatField;
 using TextField = Unity.AppUI.UI.TextField;
 
 namespace ConversationGraph.Editor.Core
@@ -25,7 +28,7 @@ namespace ConversationGraph.Editor.Core
         private const string ScriptableDocumentGuid = "5264841ee0e405c40b7bf90d52bddf5f";
         private const string ScriptableBranchDocumentGuid = "ab840144c686f084f9a76cf378ff6317";
 
-        private const string TSSGuid = "dc39b1949c0d08c4b93d17de7fb085d0";
+        private const string TssGuid = "dc39b1949c0d08c4b93d17de7fb085d0";
 
         private (int index, VisualElement element) _selectedElement;
         
@@ -46,7 +49,7 @@ namespace ConversationGraph.Editor.Core
         public ConversationGraphAsset ConversationGraphAsset { get; set; }
         private void OnEnable()
         {
-            var tssAsset = AssetDatabase.GUIDToAssetPath(TSSGuid);
+            var tssAsset = AssetDatabase.GUIDToAssetPath(TssGuid);
             rootVisualElement.styleSheets.Add(AssetDatabase.LoadAssetAtPath<ThemeStyleSheet>(tssAsset));
             rootVisualElement.AddToClassList("appui--editor-dark"); 
         }
@@ -77,8 +80,8 @@ namespace ConversationGraph.Editor.Core
                 case SelectNode select:
                     ShowSelectInspector(select);
                     break;
-                case ScriptableNode scriptable:
-                    ShowScriptableInspector(scriptable);
+                case ScriptableEventNode scriptable:
+                    ShowScriptableEventInspector(scriptable);
                     break;
                 case ScriptableBranchNode scriptableBranch:
                     ShowScriptableBranchInspector(scriptableBranch);
@@ -199,7 +202,7 @@ namespace ConversationGraph.Editor.Core
             
             rootVisualElement.Add(startUI);
         }
-        private void ShowEndInspector(in EndNode node)
+        private void ShowEndInspector(in EndNode _)
         {
             // MainContainerをテンプレートからコピー
             var endUI =
@@ -242,11 +245,12 @@ namespace ConversationGraph.Editor.Core
             rootVisualElement.Add(selectUI);
         }
 
-        private void ShowScriptableInspector(ScriptableNode node)
+        private void ShowScriptableEventInspector(ScriptableEventNode eventNode)
         {
-            var scriptableUI = ConversationGraphEditorUtility.CreateElementByGuid(ScriptableDocumentGuid);
-            var dropdown = scriptableUI.Q<Dropdown>();
-            var typeList = ConversationGraphEditorUtility.GetSubClassesByInterface<IScriptableConversation>().ToList();
+            var scriptableEventUI = ConversationGraphEditorUtility.CreateElementByGuid(ScriptableDocumentGuid);
+            var fieldList = scriptableEventUI.Q<VisualElement>("fieldList");
+            var dropdown = scriptableEventUI.Q<Dropdown>();
+            var typeList = ConversationGraphEditorUtility.GetSubClassesByInterface<IScriptableEvent>().ToList();
             dropdown.bindItem = (item, index) =>
             {
                 item.label = typeList[index].Name;
@@ -255,22 +259,27 @@ namespace ConversationGraph.Editor.Core
             dropdown.RegisterValueChangedCallback(e =>
             {
                 var index = e.newValue.First();
-                node.SetScript((IScriptableConversation)Activator.CreateInstance(typeList[index]));
+                var instance = (IScriptableEvent)Activator.CreateInstance(typeList[index]);
+                eventNode.SetScript(instance);
+                
+                AddSerializeField(fieldList, instance);
                 Modifier();
             });
 
-            if (node.ScriptableData.ScriptableConversation is not null)
+            if (eventNode.ScriptableEventData.ScriptableEvent is not null)
             {
                 dropdown.selectedIndex = 
-                    typeList.FindIndex(x => x == node.ScriptableData.ScriptableConversation.GetType());
+                    typeList.FindIndex(x => x == eventNode.ScriptableEventData.ScriptableEvent.GetType());
+                AddSerializeField(fieldList, eventNode.ScriptableEventData.ScriptableEvent);
             }
             
-            rootVisualElement.Add(scriptableUI);
+            rootVisualElement.Add(scriptableEventUI);
         }
 
         private void ShowScriptableBranchInspector(ScriptableBranchNode node)
         {
             var scriptableBranchUI = ConversationGraphEditorUtility.CreateElementByGuid(ScriptableBranchDocumentGuid);
+            var fieldList = scriptableBranchUI.Q<VisualElement>("fieldList");
             var dropdown = scriptableBranchUI.Q<Dropdown>();
             var typeList = ConversationGraphEditorUtility.GetSubClassesByInterface<IScriptableBranch>().ToList();
             dropdown.bindItem = (item, index) =>
@@ -281,7 +290,10 @@ namespace ConversationGraph.Editor.Core
             dropdown.RegisterValueChangedCallback(e =>
             {
                 var index = e.newValue.First();
-                node.SetScript((IScriptableBranch)Activator.CreateInstance(typeList[index]));
+                var instance = (IScriptableBranch)Activator.CreateInstance(typeList[index]);
+                node.SetScript(instance);
+                
+                AddSerializeField(fieldList, instance);
                 Modifier();
             });
 
@@ -289,6 +301,7 @@ namespace ConversationGraph.Editor.Core
             {
                 dropdown.selectedIndex = 
                     typeList.FindIndex(x => x == node.ScriptableBranchData.ScriptableBranch.GetType());
+                AddSerializeField(fieldList, node.ScriptableBranchData.ScriptableBranch);
             }
             
             rootVisualElement.Add(scriptableBranchUI);
@@ -328,7 +341,7 @@ namespace ConversationGraph.Editor.Core
             node.ChangeSpeakerName(e.newValue);
             Modifier();
         }
-        private void MessageChangeEvent(in ChangeEvent<string> e, in MessageNode node, in TextArea textArea)
+        private void MessageChangeEvent(in ChangeEvent<string> e, in MessageNode node, in TextArea _)
         {
             node.MessageData.MessageList[_selectedElement.index] = e.newValue;
             node.RefreshListView();
@@ -345,12 +358,17 @@ namespace ConversationGraph.Editor.Core
         }
         private TextArea CreateNewTextArea(MessageNode node)
         {
-            var textArea = new TextArea();
-            textArea.style.marginBottom = 2;
-            textArea.style.marginTop = 2;
-            textArea.style.marginRight = 2;
-            textArea.style.marginLeft = 2;
-            textArea.style.width = Length.Percent(100);
+            var textArea = new TextArea
+            {
+                style =
+                {
+                    marginBottom = 2,
+                    marginTop = 2,
+                    marginRight = 2,
+                    marginLeft = 2,
+                    width = Length.Percent(100)
+                }
+            };
             textArea.RegisterValueChangedCallback(e => MessageChangeEvent(e, node, textArea));
 
             Modifier();
@@ -368,6 +386,68 @@ namespace ConversationGraph.Editor.Core
         {
             _selectedElement.element = element;
             _selectedElement.index = index;
+        }
+
+        private void AddSerializeField<T>(VisualElement parent, T instance)
+        {
+            parent.Clear();
+            
+            var fields = instance.GetType()
+                .GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
+            foreach (var field in fields)
+            {
+                if (IsSerializeField(field))
+                {
+                    var label = new Text(field.Name);
+                    parent.Add(label);
+                    
+                    if (field.FieldType == typeof(int))
+                    {
+                        var intField = new IntField();
+                        intField.SetValueWithoutNotify((int)field.GetValue(instance));
+                        intField.RegisterValueChangedCallback(e =>
+                        {
+                            field.SetValue(instance, e.newValue);
+                        });
+                        parent.Add(intField);
+                    }
+                    else if (field.FieldType == typeof(string))
+                    {
+                        var textField = new TextField();
+                        textField.SetValueWithoutNotify((string)field.GetValue(instance));
+                        textField.RegisterValueChangedCallback(e =>
+                        {
+                            field.SetValue(instance, e.newValue);
+                        });
+                        parent.Add(textField);
+                    }
+                    else if (field.FieldType == typeof(float))
+                    {
+                        var floatField = new FloatField();
+                        floatField.SetValueWithoutNotify((float)field.GetValue(instance));
+                        floatField.RegisterValueChangedCallback(e =>
+                        {
+                            field.SetValue(instance, e.newValue);
+                        });
+                        parent.Add(floatField);
+                    }
+                    else if (field.FieldType.IsSubclassOf(typeof(MonoBehaviour)))
+                    {
+                        var objectField = new ObjectField();
+                        objectField.objectType = field.FieldType;
+                        objectField.RegisterValueChangedCallback(e =>
+                        {
+                            field.SetValue(instance, e.newValue);
+                        });
+                        parent.Add(objectField);
+                    }
+                }
+            }
+        }
+
+        private bool IsSerializeField(in MemberInfo field)
+        {
+            return Attribute.GetCustomAttributes(field).OfType<SerializeField>().Any();
         }
     }
 }

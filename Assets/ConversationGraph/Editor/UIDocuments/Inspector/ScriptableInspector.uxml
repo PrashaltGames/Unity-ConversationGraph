@@ -1,15 +1,10 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:appui="Unity.AppUI.UI" xsi="http://www.w3.org/2001/XMLSchema-instance" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-
-    <appui:Panel class="inspector-panel">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" appui="Unity.AppUI.UI" xsi="http://www.w3.org/2001/XMLSchema-instance" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Unity.AppUI.UI.Panel class="inspector-panel">
         <ui:VisualElement class="inspector-panel">
-            
-            <!-- Node name -->
-            <appui:Heading text="Scriptable Node"/>
-            
-            <appui:Text text="Script"/>
-            <appui:Dropdown size="M"/>
-            
+            <Unity.AppUI.UI.Heading text="Scriptable Node" />
+            <Unity.AppUI.UI.Text text="Script" />
+            <Unity.AppUI.UI.Dropdown size="M" />
+            <ui:VisualElement name="fieldList" style="flex-grow: 1; margin-top: 0; padding-top: 15px;" />
         </ui:VisualElement>
-    </appui:Panel>
-
+    </Unity.AppUI.UI.Panel>
 </ui:UXML>
