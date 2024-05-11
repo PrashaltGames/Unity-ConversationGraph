@@ -95,6 +95,11 @@ It excute your ccript on arrive.
 ### Scriptable Branch
 It branch conversation by your script on arrive.
 
+## Other Nodes
+### TimelineNode
+ConversationGraph provides dynamic link with the Timeline.
+Useable for images animation.
+
 ## How to create script for Scriptable Node
 1. Create C# Script.
 2. Implement `IScriptableConversation` or `IScriptableBranch` in your script.
