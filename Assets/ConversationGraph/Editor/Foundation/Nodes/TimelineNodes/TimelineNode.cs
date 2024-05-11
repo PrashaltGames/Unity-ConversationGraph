@@ -3,6 +3,7 @@
 using System;
 using ConversationGraph.Editor.Core;
 using ConversationGraph.Runtime.Foundation;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -27,6 +28,11 @@ namespace ConversationGraph.Editor.Foundation.Nodes.TimelineNodes
                 ConversationGraphEditorUtility.CreateElementByGuid(UIDocumentGuid);
 
             _objectField = defaultContainer.Q<ObjectField>();
+            _objectField.RegisterValueChangedCallback(e =>
+            {
+                var timelineAsset = (TimelineAsset)e.newValue;
+                TimelineData.TimelineAsset = timelineAsset;
+            });
             mainContainer.Add(defaultContainer);
             
             AddInputPort("Input", Port.Capacity.Single, typeof(float));
@@ -44,8 +50,9 @@ namespace ConversationGraph.Editor.Foundation.Nodes.TimelineNodes
             {
                 var data = JsonUtility.FromJson<TimelineData>(json);
 
-                TimelineData.TimelineAsset = data.TimelineAsset;
-                _objectField.SetValueWithoutNotify(TimelineData.TimelineAsset);
+                var timelineAsset = ConversationGraphEditorUtility.GetAssetByGuid<TimelineAsset>(data.AssetGuid);
+                TimelineData.TimelineAsset = timelineAsset;
+                _objectField.SetValueWithoutNotify(timelineAsset);
             }
         }
     }

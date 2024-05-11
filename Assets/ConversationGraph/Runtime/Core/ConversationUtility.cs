@@ -9,7 +9,18 @@ namespace ConversationGraph.Runtime.Core
     {
         public static bool ShouldNext { get; set; }
         public static bool WaitForInput { get; set; }
-        public static ConversationData JsonToConversationData(ConversationSaveData data)
+        
+        public static Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(IReadOnlyDictionary<string, ConversationSaveData> saveDatas)
+        {
+            var resultDic = new Dictionary<string, ConversationData>();
+            foreach (var saveData in saveDatas)
+            {
+                resultDic.Add(saveData.Key, JsonToConversationData(saveData.Value));
+            }
+            
+            return resultDic;
+        }
+        private static ConversationData JsonToConversationData(ConversationSaveData data)
         {
             return data.TypeName switch
             {
@@ -21,6 +32,8 @@ namespace ConversationGraph.Runtime.Core
                    => JsonUtility.FromJson<MessageData>(data.Json),
                "ConversationGraph.Runtime.Foundation.SelectData"
                    => JsonUtility.FromJson<SelectData>(data.Json),
+               "ConversationGraph.Runtime.Foundation.TimelineData"
+                   => JsonUtility.FromJson<TimelineData>(data.Json),
                "ConversationGraph.Runtime.Foundation.ScriptableEventData"
                    => JsonUtility.FromJson<ScriptableEventData>(data.Json),
                "ConversationGraph.Runtime.Foundation.SubGraphData"
@@ -29,16 +42,6 @@ namespace ConversationGraph.Runtime.Core
                    => JsonUtility.FromJson<ScriptableBranchData>(data.Json),
                _ => throw new ArgumentOutOfRangeException()
             };
-        }
-        public static Dictionary<string, ConversationData> GetConversationDicFromSaveDataDic(IReadOnlyDictionary<string, ConversationSaveData> saveDatas)
-        {
-            var resultDic = new Dictionary<string, ConversationData>();
-            foreach (var saveData in saveDatas)
-            {
-                resultDic.Add(saveData.Key, JsonToConversationData(saveData.Value));
-            }
-            
-            return resultDic;
         }
     }
 }

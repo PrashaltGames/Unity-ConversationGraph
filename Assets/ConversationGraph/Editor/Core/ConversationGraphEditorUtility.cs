@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace ConversationGraph.Editor.Core
 {
@@ -22,10 +23,10 @@ namespace ConversationGraph.Editor.Core
             return result;
         }
         
-        public static ConversationGraphAsset GetConversationGraphAssetByGuid(string guid)
+        public static T GetAssetByGuid<T>(string guid) where T : Object
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            var asset = AssetDatabase.LoadAssetAtPath<ConversationGraphAsset>(assetPath);
+            var asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
             return asset;
         }
         public static bool CheckPortEmpty(IEnumerable<Port> ports)

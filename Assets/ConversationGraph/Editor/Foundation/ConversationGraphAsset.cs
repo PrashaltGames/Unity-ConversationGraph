@@ -5,6 +5,8 @@ using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
 using ConversationGraph.Runtime.Foundation;
 using ConversationGraph.Runtime.Foundation.Interfaces;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 namespace ConversationGraph.Editor.Foundation
 {
@@ -26,6 +28,9 @@ namespace ConversationGraph.Editor.Foundation
 
         public SerializeReferenceDictionary<string, IScriptableBranch> ScriptableBranchDictionary
             => _scriptableBranchDictionary;
+
+        public SerializedDictionary<string, PlayableAsset> PlayableAssetsDictionary
+            => _playableAssetsDictionary;
 
         public SerializedDictionary<string, ConversationGraphAsset> SubGraphAssetDictionary
             => _subGraphAssetDictionary;
@@ -62,6 +67,7 @@ namespace ConversationGraph.Editor.Foundation
         [SerializeField] private SerializeReferenceDictionary<string, IScriptableEvent> _scriptableConversationDictionary;
         [SerializeField] private SerializeReferenceDictionary<string, IScriptableBranch> _scriptableBranchDictionary;
         [SerializeField] private SerializedDictionary<string, ConversationGraphAsset> _subGraphAssetDictionary;
+        [SerializeField] private SerializedDictionary<string, PlayableAsset> _playableAssetsDictionary;
         [SerializeField] private ConversationAsset _subAsset;
 
         private bool _isModified;

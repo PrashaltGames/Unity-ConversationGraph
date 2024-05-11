@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ConversationGraph.Runtime.Foundation.Interfaces;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Timeline;
 
@@ -127,8 +128,16 @@ namespace ConversationGraph.Runtime.Foundation
         public TimelineAsset TimelineAsset
         {
             get => _timelineAsset;
-            set => _timelineAsset = value;
+            set
+            {
+                _timelineAsset = value;
+                var assetPath = AssetDatabase.GetAssetPath(value);
+                _assetGuid = AssetDatabase.GUIDFromAssetPath(assetPath).ToString();
+            }
         }
-        [SerializeField] private TimelineAsset _timelineAsset;
+        public string AssetGuid => _assetGuid;
+
+        private TimelineAsset _timelineAsset;
+        [SerializeField] private string _assetGuid;
     }
 }
