@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ConversationGraph.Runtime.Foundation.Interfaces;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 namespace ConversationGraph.Runtime.Foundation
 {
@@ -118,5 +119,16 @@ namespace ConversationGraph.Runtime.Foundation
             set => _guid = value;
         }
         [SerializeField] private string _guid;
+    }
+
+    [Serializable]
+    public class TimelineData : ConversationData
+    {
+        public TimelineAsset TimelineAsset
+        {
+            get => _timelineAsset;
+            set => _timelineAsset = value;
+        }
+        [SerializeField] private TimelineAsset _timelineAsset;
     }
 }

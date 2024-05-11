@@ -6,6 +6,7 @@ using ConversationGraph.Editor.Foundation.Nodes;
 using ConversationGraph.Editor.Foundation.Nodes.ConversationNode;
 using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
+using ConversationGraph.Editor.Foundation.Nodes.TimelineNodes;
 using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -164,7 +165,10 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     
                     new SearchTreeGroupEntry(new GUIContent("Scriptable")) { level = 1 },
                     new (new GUIContent(nameof(ScriptableEventNode))) {level = 2, userData = typeof(ScriptableEventNode)},
-                    new (new GUIContent(nameof(ScriptableBranchNode))) {level = 2, userData = typeof(ScriptableBranchNode)}
+                    new (new GUIContent(nameof(ScriptableBranchNode))) {level = 2, userData = typeof(ScriptableBranchNode)},
+                    
+                    new SearchTreeGroupEntry(new GUIContent("Other")) {level = 1},
+                    new (new GUIContent(nameof(TimelineNode))) {level = 2, userData = typeof(TimelineNode)}
                 };
 
                 return entries;
