@@ -1,7 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 
-namespace ConversationGraph.Runtime.Core.Interfaces
+namespace ConversationGraph.Runtime.Foundation.Interfaces
 {
     public interface IConversationView
     {

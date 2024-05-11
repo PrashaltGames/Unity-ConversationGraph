@@ -1,10 +1,9 @@
 using System;
 using System.Threading;
-using ConversationGraph.Runtime.ADV.Components;
 using ConversationGraph.Runtime.Core.Facilitators;
-using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Core.ReadingWaiter;
 using ConversationGraph.Runtime.Foundation;
+using ConversationGraph.Runtime.Foundation.Interfaces;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -15,7 +14,7 @@ namespace ConversationGraph.Runtime.Core.Components
     public class ConversationSystem : MonoBehaviour, IConversationView, IConversationEvents
     {
         // for user event
-        public Action OnConversationStartEvent { get; set; }
+        public Action<Facilitator> OnConversationStartEvent { get; set; }
         public Action OnConversationEndEvent { get; set; }
         public Action OnNarratorEvent { get; set; }
         public Action OnSpeakerEvent { get; set; }
@@ -34,8 +33,7 @@ namespace ConversationGraph.Runtime.Core.Components
 
         [Header("▼ Conversation Settings")] 
         [SerializeReference, SubclassSelector] private IReadingWaiter _readingWaiter;
-
-        [SerializeField, HideInInspector] private ConversationHistory _history;
+        
         private Facilitator _facilitator;
         private TextMeshProUGUI _prefabText;
         private int _selectIndex;
@@ -59,8 +57,8 @@ namespace ConversationGraph.Runtime.Core.Components
 
         public void StartConversation()
         {
-            _facilitator = new(_conversationAsset, this, this, _history);
-            _facilitator.Facilitate().Forget();
+            _facilitator = new(_conversationAsset, this, this);
+            _facilitator.Facilitate();
         }
 
         public void ChangeTitle(string title)
@@ -109,7 +107,7 @@ namespace ConversationGraph.Runtime.Core.Components
 
         void IConversationEvents.OnConversationStart()
         {
-            OnConversationStartEvent?.Invoke();
+            OnConversationStartEvent?.Invoke(_facilitator);
         }
 
         void IConversationEvents.OnConversationEnd()
@@ -136,12 +134,5 @@ namespace ConversationGraph.Runtime.Core.Components
         {
             OnSelectedEvent?.Invoke();
         }
-
-#if UNITY_EDITOR
-        public void Reset()
-        {
-            _history = GetComponent<ConversationHistory>();
-        }
-#endif
     }
 }

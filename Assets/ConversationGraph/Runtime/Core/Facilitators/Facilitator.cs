@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using ConversationGraph.Runtime.ADV.Components;
-using ConversationGraph.Runtime.Core.Components;
-using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
+using ConversationGraph.Runtime.Foundation.Interfaces;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -12,9 +10,10 @@ namespace ConversationGraph.Runtime.Core.Facilitators
 {
     public class Facilitator
     {
+        public Action<MessageData> AfterMessageEvent { get; set; }
+        
         private readonly IConversationView _view;
         private readonly IConversationEvents _events;
-        private readonly ConversationHistory _history;
 
         private readonly ConversationAsset _asset;
         private readonly Dictionary<string, ConversationData> _conversationDataDic;
@@ -23,23 +22,8 @@ namespace ConversationGraph.Runtime.Core.Facilitators
         public Facilitator(
             ConversationAsset asset, 
             IConversationView view,
-            IConversationEvents events,
-            ConversationHistory history
-            )
-        {
-            _asset = asset;
-            _conversationDataDic = ConversationUtility.GetConversationDicFromSaveDataDic(asset.ConversationSaveData);
-
-            _view = view;
-            _events = events;
-            _history = history;
-        }
-        
-        public Facilitator(
-            ConversationAsset asset, 
-            IConversationView view,
             IConversationEvents events
-        )
+            )
         {
             _asset = asset;
             _conversationDataDic = ConversationUtility.GetConversationDicFromSaveDataDic(asset.ConversationSaveData);
@@ -103,9 +87,9 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             }
         }
 
-        public void AfterMessage()
+        public void AfterMessage(MessageData data)
         {
-            
+            AfterMessageEvent?.Invoke(data);
         }
 
         public void BeforeMessage()
@@ -132,13 +116,8 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             {
                 await _view.ChangeMessage(ReflectProperty(message, _asset.ConversationPropertyAsset.PropertiesDictionary), data.AnimationData);
             }
-
-            if (_history != null)
-            {
-                _history.HistoryList.Add(data);
-            }
             
-            AfterMessage();
+            AfterMessage(data);
         }
 
         private void OnStart(in StartData data)
@@ -188,8 +167,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
         private void OnSubGraph(in SubGraphData data)
         {
             var subGraph = _asset.SubGraphAssetDictionary[data.Guid];
-            var facilitator = new Facilitator(subGraph, _view, _events, _history);
-            facilitator.Facilitate().Forget();
+            var facilitator = new Facilitator(subGraph, _view, _events);
         }
         private string ReflectProperty(string text, in IReadOnlyDictionary<string, string> properties)
         {

@@ -6,7 +6,7 @@ using ConversationGraph.Editor.Foundation.Nodes;
 using ConversationGraph.Editor.Foundation.Nodes.ConversationNode;
 using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
-using ConversationGraph.Runtime.Core.Interfaces;
+using ConversationGraph.Runtime.Foundation.Interfaces;
 using Cysharp.Threading.Tasks;
 using Unity.AppUI.UI;
 using UnityEditor;

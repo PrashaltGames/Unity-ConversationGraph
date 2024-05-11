@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ConversationGraph.Runtime.Core;
 using ConversationGraph.Runtime.Core.Components;
 using ConversationGraph.Runtime.Foundation;
@@ -15,6 +16,18 @@ namespace ConversationGraph.Runtime.ADV.Components
         [SerializeField] private Transform _historyParent;
 
         [SerializeField] private CanvasGroup _historyCanvas;
+        [SerializeField] private ConversationSystem _system;
+
+        private void Awake()
+        {
+            _system.OnConversationStartEvent += facilitator =>
+            {
+                facilitator.AfterMessageEvent += data =>
+                {   
+                    HistoryList.Add(data);
+                };
+            };
+        }
 
         public void SetHistoryActive(bool isActive)
         {
@@ -52,7 +65,6 @@ namespace ConversationGraph.Runtime.ADV.Components
         private void Reset()
         {
             var system = GetComponent<ConversationSystem>();
-            system.Reset();
         }
 #endif
         

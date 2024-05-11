@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "ConversationGraph.Runtime",
         "ConversationGraph.Editor",
-        "UniTask"
+        "UniTask",
+        "ConversationGraph.Foundation"
     ],
     "includePlatforms": [
         "Editor"
