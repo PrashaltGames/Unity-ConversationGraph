@@ -168,7 +168,6 @@ namespace ConversationGraph.Runtime.Core.Facilitators
         {
             var subGraph = _asset.SubGraphAssetDictionary[data.Guid];
             var facilitator = new Facilitator(subGraph, _view, _events);
-            facilitator.Facilitate().Forget();
         }
         private string ReflectProperty(string text, in IReadOnlyDictionary<string, string> properties)
         {

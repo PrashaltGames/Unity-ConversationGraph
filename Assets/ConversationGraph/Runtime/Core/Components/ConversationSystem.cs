@@ -76,7 +76,7 @@ namespace ConversationGraph.Runtime.Core.Components
             var cancellationTokenSource = new CancellationTokenSource();
             _messageText.SetText(message);
 
-            textAnimation.StartAnimation(_speakerText, _messageText, cancellationTokenSource.Token);
+            textAnimation.StartAnimation(_speakerText, _messageText, cancellationTokenSource.Token).Forget();
             await new WaitForClick().WaitReading();
             cancellationTokenSource.Cancel();
             
