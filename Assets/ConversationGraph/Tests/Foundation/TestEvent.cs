@@ -1,6 +1,5 @@
-
 using System;
-using ConversationGraph.Runtime.Core.Interfaces;
+using ConversationGraph.Runtime.Foundation.Interfaces;
 
 namespace ConversationGraph.Tests.Foundation
 {

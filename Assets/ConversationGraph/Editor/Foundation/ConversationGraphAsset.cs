@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ConversationGraph.Editor.Foundation.Nodes.KeyNodes;
-using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
+using ConversationGraph.Runtime.Foundation.Interfaces;
 using UnityEngine;
 
 namespace ConversationGraph.Editor.Foundation

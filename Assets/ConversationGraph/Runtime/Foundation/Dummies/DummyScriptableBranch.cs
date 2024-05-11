@@ -1,4 +1,4 @@
-﻿using ConversationGraph.Runtime.Core.Interfaces;
+﻿using ConversationGraph.Runtime.Foundation.Interfaces;
 
 namespace ConversationGraph.Runtime.Foundation.Dummies
 {

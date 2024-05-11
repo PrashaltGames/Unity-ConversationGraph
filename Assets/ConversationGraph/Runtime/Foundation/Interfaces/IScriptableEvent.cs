@@ -1,4 +1,4 @@
-﻿namespace ConversationGraph.Runtime.Core.Interfaces
+﻿namespace ConversationGraph.Runtime.Foundation.Interfaces
 {
     public interface IScriptableEvent
     {

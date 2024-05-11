@@ -1,5 +1,5 @@
 using System;
-using ConversationGraph.Runtime.Core.Interfaces;
+using ConversationGraph.Runtime.Foundation.Interfaces;
 using UnityEngine;
 
 namespace ConversationGraph.Runtime.Foundation

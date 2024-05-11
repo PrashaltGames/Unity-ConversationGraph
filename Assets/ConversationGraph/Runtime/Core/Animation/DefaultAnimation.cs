@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using ConversationGraph.Runtime.Core.Interfaces;
+using ConversationGraph.Runtime.Foundation.Interfaces;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;

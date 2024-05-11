@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ConversationGraph.Editor.Foundation;
 using ConversationGraph.Editor.Foundation.Nodes;
-using ConversationGraph.Runtime.Core.Interfaces;
 using ConversationGraph.Runtime.Foundation;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
