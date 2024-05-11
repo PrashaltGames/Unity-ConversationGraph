@@ -1,6 +1,7 @@
 using System;
 using ConversationGraph.Runtime.Foundation.Interfaces;
 using Cysharp.Threading.Tasks;
+using UnityEngine.Playables;
 
 namespace ConversationGraph.Tests.Foundation
 {
@@ -17,6 +18,11 @@ namespace ConversationGraph.Tests.Foundation
         }
 
         public async UniTask ChangeMessage(string message, ITextAnimation textAnimation)
+        {
+            
+        }
+
+        public async UniTask PlayTimeline(PlayableAsset playableAsset)
         {
             
         }

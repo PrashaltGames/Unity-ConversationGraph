@@ -7,6 +7,7 @@ using ConversationGraph.Runtime.Foundation.Interfaces;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 namespace ConversationGraph.Runtime.Core.Components
@@ -21,17 +22,19 @@ namespace ConversationGraph.Runtime.Core.Components
         public Action OnShowSelectButtonsEvent { get; set; }
         public Action OnSelectedEvent { get; set; }
         
-        [Header("▼ Conversation GUI")] 
+        [Header("▼ Conversation GUI")]
         [SerializeField] private TextMeshProUGUI _messageText;
         [SerializeField] private TextMeshProUGUI _speakerText;
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private Transform _selectParent;
         [SerializeField] private Button _selectButtonPrefab;
 
-        [Header("▼ Conversation Asset")] 
+        [Header("▼ Conversation Asset")]
         [SerializeField] private ConversationAsset _conversationAsset;
 
-        [Header("▼ Conversation Settings")] 
+        [SerializeField] private PlayableDirector _playableDirector;
+        
+        [Header("▼ Conversation Settings")]
         [SerializeReference, SubclassSelector] private IReadingWaiter _readingWaiter;
         
         private Facilitator _facilitator;
@@ -81,6 +84,14 @@ namespace ConversationGraph.Runtime.Core.Components
             cancellationTokenSource.Cancel();
             
             await _readingWaiter.WaitReading();
+        }
+
+        public async UniTask PlayTimeline(PlayableAsset playableAsset)
+        {
+            _playableDirector.playableAsset = playableAsset;
+            _playableDirector.Play();
+
+            await UniTask.WaitWhile(() => _playableDirector.state == PlayState.Playing);
         }
 
         public void AddSelect(string selectText, Action onSelected)

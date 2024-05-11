@@ -5,6 +5,7 @@ using ConversationGraph.Runtime.Foundation;
 using ConversationGraph.Runtime.Foundation.Interfaces;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace ConversationGraph.Runtime.Core.Facilitators
 {
@@ -27,7 +28,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
         {
             _asset = asset;
             _conversationDataDic = ConversationUtility.GetConversationDicFromSaveDataDic(asset.ConversationSaveData);
-
+            
             _view = view;
             _events = events;
         }
@@ -58,6 +59,9 @@ namespace ConversationGraph.Runtime.Core.Facilitators
                         break;
                     case SubGraphData subGraphData:
                         OnSubGraph(subGraphData);
+                        break;
+                    case TimelineData timelineData:
+                        await OnTimeline(timelineData);
                         break;
                     case StartData startData:
                         OnStart(startData);
@@ -169,6 +173,13 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             var subGraph = _asset.SubGraphAssetDictionary[data.Guid];
             var facilitator = new Facilitator(subGraph, _view, _events);
         }
+
+        private async UniTask OnTimeline(TimelineData data)
+        {
+            var timelineAsset = _asset.TimelineAssetsDictionary[data.AssetGuid];
+            await _view.PlayTimeline(timelineAsset);
+        }
+        
         private string ReflectProperty(string text, in IReadOnlyDictionary<string, string> properties)
         {
             if (string.IsNullOrEmpty(text)) return "";

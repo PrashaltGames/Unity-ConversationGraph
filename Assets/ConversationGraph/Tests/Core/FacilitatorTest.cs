@@ -1,4 +1,5 @@
 using ConversationGraph.Editor.Core;
+using ConversationGraph.Editor.Foundation;
 using ConversationGraph.Runtime.Core.Facilitators;
 using ConversationGraph.Tests.Foundation;
 using NUnit.Framework;
@@ -11,7 +12,7 @@ namespace ConversationGraph.Tests.Core
         [TestCase("4d7ee7be3dfb4ae4bb405e6d81c64fc5")]
         public void FacilitateToOnNarrator(string guid)
         {
-            var asset = ConversationGraphEditorUtility.GetConversationGraphAssetByGuid(guid);
+            var asset = ConversationGraphEditorUtility.GetAssetByGuid<ConversationGraphAsset>(guid);
             var isStart = false;
             var isEnd = false;
             var isNarrator = false;
@@ -32,7 +33,7 @@ namespace ConversationGraph.Tests.Core
         [TestCase("4d7ee7be3dfb4ae4bb405e6d81c64fc5")]
         public void FacilitateToOnSpeaker(string guid)
         {
-            var asset = ConversationGraphEditorUtility.GetConversationGraphAssetByGuid(guid);
+            var asset = ConversationGraphEditorUtility.GetAssetByGuid<ConversationGraphAsset>(guid);
             var isStart = false;
             var isEnd = false;
             var isSpeaker = false;

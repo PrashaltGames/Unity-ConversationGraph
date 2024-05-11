@@ -10,8 +10,10 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using System.Linq;
 using ConversationGraph.Editor.Foundation.Nodes.LogicNodes;
+using ConversationGraph.Editor.Foundation.Nodes.TimelineNodes;
 using ConversationGraph.Runtime.Foundation;
 using ConversationGraph.Runtime.Foundation.Dummies;
+using UnityEngine.Timeline;
 
 namespace ConversationGraph.Editor.Core.GraphBase
 {
@@ -94,6 +96,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             Asset.ScriptableConversationDictionary.Clear();
             Asset.ScriptableBranchDictionary.Clear();
             Asset.SubGraphAssetDictionary.Clear();
+            Asset.PlayableAssetsDictionary.Clear();
             
             // Nodes
             var isShowedWarning = false;
@@ -130,6 +133,13 @@ namespace ConversationGraph.Editor.Core.GraphBase
                         subGraphNode.SubGraphData.Guid = string.IsNullOrEmpty(subGraphNode.SubGraphData.Guid)
                             ? Guid.NewGuid().ToString() : subGraphNode.SubGraphData.Guid;
                         Asset.SubGraphAssetDictionary.Add(subGraphNode.SubGraphData.Guid, subGraphNode.SubGraphAsset);
+                    }
+                    else if (baseNode is TimelineNode timelineNode)
+                    {
+                        if (timelineNode.TimelineData.TimelineAsset is null) continue;
+
+                        Asset.PlayableAssetsDictionary.TryAdd(timelineNode.TimelineData.AssetGuid,
+                            timelineNode.TimelineData.TimelineAsset);
                     }
                     var nodeData = ConversationGraphEditorUtility.NodeToData(baseNode);
                     Asset.SaveNode(nodeData);
@@ -192,6 +202,7 @@ namespace ConversationGraph.Editor.Core.GraphBase
             subAsset.ScriptableConversationDictionary.Clear();
             subAsset.ScriptableBranchDictionary.Clear();
             subAsset.SubGraphAssetDictionary.Clear();
+            subAsset.TimelineAssetsDictionary.Clear();
             
             var nodes = _view.nodes.ToList();
             var count = nodes.Count;
@@ -218,6 +229,10 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     else if (baseNode is SubGraphNode subGraphNode)
                     {
                         subAsset.SubGraphAssetDictionary.Add(subGraphNode.SubGraphData.Guid, subGraphNode.SubGraphData.SubgraphAsset);    
+                    }
+                    else if (baseNode is TimelineNode timelineNode)
+                    {
+                        subAsset.TimelineAssetsDictionary.TryAdd(timelineNode.TimelineData.AssetGuid, timelineNode.TimelineData.TimelineAsset);
                     }
 
                     subAsset.ConversationSaveData.Add(baseNode.Id, saveData);

@@ -1,6 +1,8 @@
 using System;
 using ConversationGraph.Runtime.Foundation.Interfaces;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 namespace ConversationGraph.Runtime.Foundation
 {
@@ -17,6 +19,9 @@ namespace ConversationGraph.Runtime.Foundation
 
         public SerializeReferenceDictionary<string, IScriptableBranch> ScriptableBranchDictionary
             => _scriptableBranches;
+        
+        public SerializedDictionary<string, PlayableAsset> TimelineAssetsDictionary
+            => _timelineAssetsDictionary;
 
         public ConversationPropertyAsset ConversationPropertyAsset
             => _propertyAsset;
@@ -38,6 +43,7 @@ namespace ConversationGraph.Runtime.Foundation
         [SerializeField] private SerializeReferenceDictionary<string, IScriptableEvent> _scriptableConversations = new();
         [SerializeField] private SerializeReferenceDictionary<string, IScriptableBranch> _scriptableBranches = new();
         [SerializeField] private SerializedDictionary<string, ConversationAsset> _subGraphAssetDictionary = new();
+        [SerializeField] private SerializedDictionary<string, PlayableAsset> _timelineAssetsDictionary = new();
         [SerializeField] private string _title;
         [SerializeField] private string _startId;
     }
