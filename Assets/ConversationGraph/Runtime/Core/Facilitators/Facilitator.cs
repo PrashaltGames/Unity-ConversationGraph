@@ -132,8 +132,11 @@ namespace ConversationGraph.Runtime.Core.Facilitators
             {
                 await _view.ChangeMessage(ReflectProperty(message, _asset.ConversationPropertyAsset.PropertiesDictionary), data.AnimationData);
             }
-            
-            _history?.HistoryList.Add(data);
+
+            if (_history != null)
+            {
+                _history.HistoryList.Add(data);
+            }
             
             AfterMessage();
         }
@@ -186,7 +189,7 @@ namespace ConversationGraph.Runtime.Core.Facilitators
         {
             var subGraph = _asset.SubGraphAssetDictionary[data.Guid];
             var facilitator = new Facilitator(subGraph, _view, _events, _history);
-            facilitator.Facilitate();
+            facilitator.Facilitate().Forget();
         }
         private string ReflectProperty(string text, in IReadOnlyDictionary<string, string> properties)
         {

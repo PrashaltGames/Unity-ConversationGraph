@@ -60,7 +60,7 @@ namespace ConversationGraph.Runtime.Core.Components
         public void StartConversation()
         {
             _facilitator = new(_conversationAsset, this, this, _history);
-            _facilitator.Facilitate();
+            _facilitator.Facilitate().Forget();
         }
 
         public void ChangeTitle(string title)
@@ -78,7 +78,7 @@ namespace ConversationGraph.Runtime.Core.Components
             var cancellationTokenSource = new CancellationTokenSource();
             _messageText.SetText(message);
 
-            textAnimation.StartAnimation(_speakerText, _messageText, cancellationTokenSource.Token);
+            textAnimation.StartAnimation(_speakerText, _messageText, cancellationTokenSource.Token).Forget();
             await new WaitForClick().WaitReading();
             cancellationTokenSource.Cancel();
             
