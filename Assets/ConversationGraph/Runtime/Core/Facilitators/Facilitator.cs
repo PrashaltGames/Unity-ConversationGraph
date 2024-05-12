@@ -5,7 +5,6 @@ using ConversationGraph.Runtime.Foundation;
 using ConversationGraph.Runtime.Foundation.Interfaces;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Playables;
 
 namespace ConversationGraph.Runtime.Core.Facilitators
 {

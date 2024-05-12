@@ -32,6 +32,9 @@ namespace ConversationGraph.Editor.Foundation.Nodes.TimelineNodes
             {
                 var timelineAsset = (TimelineAsset)e.newValue;
                 TimelineData.TimelineAsset = timelineAsset;
+
+                var path = AssetDatabase.GetAssetPath(timelineAsset);
+                TimelineData.AssetGuid = AssetDatabase.GUIDFromAssetPath(path).ToString();
             });
             mainContainer.Add(defaultContainer);
             

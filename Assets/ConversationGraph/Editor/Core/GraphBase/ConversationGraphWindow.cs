@@ -137,7 +137,6 @@ namespace ConversationGraph.Editor.Core.GraphBase
                     else if (baseNode is TimelineNode timelineNode)
                     {
                         if (timelineNode.TimelineData.TimelineAsset is null) continue;
-
                         Asset.PlayableAssetsDictionary.TryAdd(timelineNode.TimelineData.AssetGuid,
                             timelineNode.TimelineData.TimelineAsset);
                     }
