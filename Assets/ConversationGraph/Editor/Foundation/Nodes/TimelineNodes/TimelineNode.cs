@@ -56,6 +56,9 @@ namespace ConversationGraph.Editor.Foundation.Nodes.TimelineNodes
                 var timelineAsset = ConversationGraphEditorUtility.GetAssetByGuid<TimelineAsset>(data.AssetGuid);
                 TimelineData.TimelineAsset = timelineAsset;
                 _objectField.SetValueWithoutNotify(timelineAsset);
+                
+                var path = AssetDatabase.GetAssetPath(timelineAsset);
+                TimelineData.AssetGuid = AssetDatabase.GUIDFromAssetPath(path).ToString();
             }
         }
     }
