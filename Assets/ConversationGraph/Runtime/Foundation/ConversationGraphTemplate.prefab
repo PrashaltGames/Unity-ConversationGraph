@@ -495,6 +495,7 @@ GameObject:
   - component: {fileID: 208153147386611977}
   - component: {fileID: 6972087155708364426}
   - component: {fileID: 964768943562985242}
+  - component: {fileID: 1128797507449995334}
   m_Layer: 5
   m_Name: ConversationGraphTemplate
   m_TagString: Untagged
@@ -605,6 +606,7 @@ MonoBehaviour:
     type: 3}
   _conversationAsset: {fileID: 5173816361499322646, guid: c8ad665bee2538a4dab51a66dec9b06f,
     type: 2}
+  _playableDirector: {fileID: 1128797507449995334}
   _readingWaiter:
     rid: 5194001904117481472
   references:
@@ -614,6 +616,23 @@ MonoBehaviour:
       type: {class: WaitForClick, ns: ConversationGraph.Runtime.Core.ReadingWaiter,
         asm: ConversationGraph.Runtime}
       data: 
+--- !u!320 &1128797507449995334
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6852980797240086557}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 0}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings: []
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &7475409470088255403
 GameObject:
   m_ObjectHideFlags: 0

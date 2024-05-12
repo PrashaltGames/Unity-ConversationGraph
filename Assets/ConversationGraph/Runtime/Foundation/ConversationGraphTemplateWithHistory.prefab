@@ -1865,6 +1865,7 @@ GameObject:
   - component: {fileID: 1340550707165677706}
   - component: {fileID: 8774827754486983073}
   - component: {fileID: 4723706736225664156}
+  - component: {fileID: 4937825712408133333}
   m_Layer: 5
   m_Name: Main
   m_TagString: Untagged
@@ -1979,9 +1980,9 @@ MonoBehaviour:
     type: 3}
   _conversationAsset: {fileID: 5173816361499322646, guid: c8ad665bee2538a4dab51a66dec9b06f,
     type: 2}
+  _playableDirector: {fileID: 4937825712408133333}
   _readingWaiter:
     rid: 5194001904117481472
-  _history: {fileID: 4723706736225664156}
   references:
     version: 2
     RefIds:
@@ -2005,6 +2006,28 @@ MonoBehaviour:
     type: 3}
   _historyParent: {fileID: 1800968864734709886}
   _historyCanvas: {fileID: 5997636971609520664}
+  _system: {fileID: 0}
+--- !u!320 &4937825712408133333
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7659866395081131066}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 0}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 4375383035104524127, guid: d0842406ce0db144c88dd69fbbe7a291, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -1883090468930875892, guid: 390be484ccf18af4e91ec188633405af, type: 2}
+    value: {fileID: 0}
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &7860648139321376071
 GameObject:
   m_ObjectHideFlags: 0
