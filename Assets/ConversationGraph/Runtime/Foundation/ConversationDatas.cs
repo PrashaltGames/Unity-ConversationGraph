@@ -131,11 +131,13 @@ namespace ConversationGraph.Runtime.Foundation
             set
             {
                 _timelineAsset = value;
-                var assetPath = AssetDatabase.GetAssetPath(value);
-                _assetGuid = AssetDatabase.GUIDFromAssetPath(assetPath).ToString();
             }
         }
-        public string AssetGuid => _assetGuid;
+        public string AssetGuid
+        {
+            get => _assetGuid; 
+            set => _assetGuid = value;
+        }
 
         private TimelineAsset _timelineAsset;
         [SerializeField] private string _assetGuid;
