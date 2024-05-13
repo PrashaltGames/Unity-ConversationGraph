@@ -79,9 +79,15 @@ namespace ConversationGraph.Runtime.Core.Components
             var cancellationTokenSource = new CancellationTokenSource();
             _messageText.SetText(message);
 
-            textAnimation.StartAnimation(_speakerText, _messageText, cancellationTokenSource.Token).Forget();
-            await new WaitForClick().WaitReading();
+            await UniTask.WhenAny(
+                textAnimation.StartAnimation(_speakerText, _messageText, cancellationTokenSource.Token),
+                new WaitForClick().WaitReading()
+            );
             cancellationTokenSource.Cancel();
+            // Clear Animation by TextInfo
+            _messageText.GetTextInfo(message).ClearMeshInfo(true);
+            // Clear Animation by maxVisibleCharacters
+            _messageText.maxVisibleCharacters = message.Length;
             
             await _readingWaiter.WaitReading();
         }
