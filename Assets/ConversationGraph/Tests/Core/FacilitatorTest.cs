@@ -2,6 +2,7 @@ using ConversationGraph.Editor.Core;
 using ConversationGraph.Editor.Foundation;
 using ConversationGraph.Runtime.Core.Facilitators;
 using ConversationGraph.Tests.Foundation;
+using Cysharp.Threading.Tasks;
 using NUnit.Framework;
 
 namespace ConversationGraph.Tests.Core
@@ -23,7 +24,7 @@ namespace ConversationGraph.Tests.Core
             testEvents.ConversationStart += () => isStart = true;
             testEvents.ConversationEnd += () => isEnd = true;
             
-            // new Facilitator(asset.SubAsset, new TestView(), testEvents, ).Facilitate();
+            new Facilitator(asset.SubAsset, new TestView(), testEvents).Facilitate().Forget();
             
             Assert.That(isNarrator, Is.True);
             Assert.That(isStart, Is.True);
@@ -43,7 +44,7 @@ namespace ConversationGraph.Tests.Core
             testEvents.ConversationStart += () => isStart = true;
             testEvents.ConversationEnd += () => isEnd = true;
             
-            // new Facilitator(asset.SubAsset, new TestView(), testEvents).Facilitate();
+            new Facilitator(asset.SubAsset, new TestView(), testEvents).Facilitate().Forget();
             
             Assert.That(isSpeaker, Is.True);
             Assert.That(isStart, Is.True);
