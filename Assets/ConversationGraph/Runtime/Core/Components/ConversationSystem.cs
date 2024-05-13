@@ -36,6 +36,8 @@ namespace ConversationGraph.Runtime.Core.Components
         
         [Header("▼ Conversation Settings")]
         [SerializeReference, SubclassSelector] private IReadingWaiter _readingWaiter;
+
+        [SerializeField] private bool _playOnAwake = true;
         
         private Facilitator _facilitator;
         private TextMeshProUGUI _prefabText;
@@ -45,6 +47,11 @@ namespace ConversationGraph.Runtime.Core.Components
         private void Start()
         {
             _prefabText = _selectButtonPrefab.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (_playOnAwake)
+            {
+                StartConversation();
+            }
         }
 #if ENABLE_LEGACY_INPUT_MANAGER
         private void Update()
