@@ -67,16 +67,7 @@ namespace ConversationGraph.Editor.Core
 
         public static IEnumerable<Type> GetSubClassesByInterface<T>()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (type.IsClass && !type.IsAbstract && type.GetInterfaces().Any(x => x == typeof(T)))
-                    {
-                        yield return type;
-                    }
-                }
-            }
+            return TypeCache.GetTypesDerivedFrom<T>().AsEnumerable();
         }
     }
 }
